@@ -1,0 +1,277 @@
+<title>Homepage</title>
+<!-- <link rel="stylesheet" href="/public/CSS/homepage.css"> -->
+<script src="/public/JavaScripts/jquery-3.7.1.js"></script>
+<script>
+    $(function () {
+        $("#header").load("header.html");
+    })
+</script>
+
+<body class="row">
+    <header id="header" style="width: 7vw;"></header>
+    <div class="right" style="width: 93vw;">
+        <div class="tr" style="width: 92.5vw; height: auto;">
+            <span style="font-size: 30px;">BEUMER Cement</span>
+            <div id="dates" style="float: right; margin-top: 7px;">
+                <div class="dropdown">
+                    <button class="btn btn-secondary dropdown-toggle dates" type="button" data-bs-toggle="dropdown"
+                        aria-expanded="false" style="background: none; color: #000;">
+                        Today
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li><button class="dropdown-item" type="button">Yesterday</button></li>
+                        <li><button class="dropdown-item" type="button">Tomorrow</button></li>
+                    </ul>
+                </div>
+            </div>
+            <hr>
+        </div>
+        <div class="tm" style="width: 92.5vw; height: auto;">
+            <div class="content-container">
+                <div class="goBack btn btn-secondary" onclick="history.back()" style="height: 5vh;">&#8249; Go Back
+                </div>
+                <main class="row mt-1" style="height: 80vh;">
+                    <div class="leftcharts row text-center" style="height: 38vh;">
+                        <!-- <a style="text-decoration: none; color: #000;">
+                            <div class="chart1 m-2 mt-0" style="height: 38vh;">
+                                <span>Plant</span>
+                                <canvas id="Chart1" style="margin: auto;"></canvas>
+                            </div>
+                        </a> -->
+                        <div class="chart1" style="width: 92vw; height: inherit;">
+                            <a href="/templates/views/Packer.html"
+                                style="height: inherit; text-decoration: none; display: block; color: #000;">
+                                <span class="mt-0">Packer</span>
+                                <canvas id="Chart1" style="margin: auto; width: inherit; height: inherit;"></canvas>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="rightcharts mt-1 row justify-content-between text-center" style="height: 38vh;">
+                        <div class="chart2" style="width: 46vw; height: inherit;">
+                            <a href="/templates/views/BucketElevator.html"
+                                style="height: inherit; display: block; text-decoration: none; color: #000;">
+                                <span class="">Bucket Elevator</span>
+                                <canvas id="Chart2" style="margin: auto; width: inherit; height: inherit;"></canvas>
+                            </a>
+                        </div>
+                        <div class="chart3" style="width: 46vw; height: inherit;">
+                            <a href="/templates/views/TruckLoader.html"
+                                style="height: inherit; display: block; text-decoration: none; color: #000;">
+                                <span>Truck Loader</span>
+                                <canvas id="Chart3" style="margin: auto; width: inherit; height: inherit;"></canvas>
+                            </a>
+                        </div>
+                    </div>
+                </main>
+            </div>
+        </div>
+    </div>
+    <footer id="footer" style=" width: 100vw; height: 2vw;"></footer>
+</body>
+<script>
+    $(function () {
+        $("#footer").load("footer.html");
+    })
+</script>
+<script src="/public/JavaScripts/chart.umd.js"></script>
+<script>
+    // var ctx1 = document.getElementById("Chart1").getContext('2d');
+    // var myBarChart = new Chart(ctx1, {
+    //     type: 'bar',
+    //     data: {
+    //         labels: ["Availability", "Performance", "Quality", "Overall"],
+    //         datasets: [{
+    //             label: 'Expected',
+    //             data: [79.5, 96.8, 83.3, 64.1],
+    //             backgroundColor: [
+    //                 'rgb(231, 58, 58, 0.4)',
+    //                 'rgb(231, 58, 58, 0.4)',
+    //                 'rgb(231, 58, 58, 0.4)',
+    //                 'rgb(231, 58, 58, 0.4)'
+    //             ],
+    //             borderColor: [
+    //                 'rgb(231, 58, 58)',
+    //                 'rgb(231, 58, 58)',
+    //                 'rgb(231, 58, 58)',
+    //                 'rgb(231, 58, 58)'
+    //             ],
+    //             borderWidth: 1
+    //         }, {
+    //             label: 'Actual',
+    //             data: [98, 90, 85, 75], // Add your second dataset values here
+    //             backgroundColor: [
+    //                 'rgba(118, 13, 216, 0.4)',
+    //                 'rgba(118, 13, 216, 0.4)',
+    //                 'rgba(118, 13, 216, 0.4)',
+    //                 'rgba(118, 13, 216, 0.4)'
+    //             ],
+    //             borderColor: [
+    //                 'rgba(118, 13, 216)',
+    //                 'rgba(118, 13, 216)',
+    //                 'rgba(118, 13, 216)',
+    //                 'rgba(118, 13, 216)'
+    //             ],
+    //             borderWidth: 1
+    //         }]
+    //     },
+    //     options: {
+    //         scales: {
+    //             y: {
+    //                 ticks: {
+    //                     beginAtZero: true
+    //                 }
+    //             }
+    //         }
+    //     }
+    // });
+
+    var ctx1 = document.getElementById("Chart1").getContext('2d');
+    var myBarChart = new Chart(ctx1, {
+        type: 'bar',
+        data: {
+            labels: ["Availability", "Performance", "Quality", "Overall"],
+            datasets: [{
+                label: 'Expected',
+                data: [79.5, 96.8, 83.3, 64.1],
+                backgroundColor: [
+                    'rgb(231, 58, 58, 0.4)',
+                    'rgb(231, 58, 58, 0.4)',
+                    'rgb(231, 58, 58, 0.4)',
+                    'rgb(231, 58, 58, 0.4)'
+                ],
+                borderColor: [
+                    'rgb(231, 58, 58)',
+                    'rgb(231, 58, 58)',
+                    'rgb(231, 58, 58)',
+                    'rgb(231, 58, 58)'
+                ],
+                borderWidth: 1
+            }, {
+                label: 'Actual',
+                data: [98, 90, 85, 75], // Add your second dataset values here
+                backgroundColor: [
+                    'rgba(54, 162, 235, 0.4)',
+                    'rgba(54, 162, 235, 0.4)',
+                    'rgba(54, 162, 235, 0.4)',
+                    'rgba(54, 162, 235, 0.4)'
+                ],
+                borderColor: [
+                    'rgba(54, 162, 235)',
+                    'rgba(54, 162, 235)',
+                    'rgba(54, 162, 235)',
+                    'rgba(54, 162, 235)'
+                ],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    ticks: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        }
+    });
+
+    var ctx2 = document.getElementById("Chart2").getContext('2d');
+    var myBarChart = new Chart(ctx2, {
+        type: 'bar',
+        data: {
+            labels: ["Availability", "Performance", "Quality", "Overall"],
+            datasets: [{
+                label: 'Expected',
+                data: [79.5, 96.8, 83.3, 64.1],
+                backgroundColor: [
+                    'rgb(231, 58, 58, 0.4)',
+                    'rgb(231, 58, 58, 0.4)',
+                    'rgb(231, 58, 58, 0.4)',
+                    'rgb(231, 58, 58, 0.4)'
+                ],
+                borderColor: [
+                    'rgb(231, 58, 58)',
+                    'rgb(231, 58, 58)',
+                    'rgb(231, 58, 58)',
+                    'rgb(231, 58, 58)'
+                ],
+                borderWidth: 1
+            }, {
+                label: 'Actual',
+                data: [98, 90, 85, 75], // Add your second dataset values here
+                backgroundColor: [
+                    'rgba(227, 242, 20, 0.5)',
+                    'rgba(227, 242, 20, 0.5)',
+                    'rgba(227, 242, 20, 0.5)',
+                    'rgba(227, 242, 20, 0.5)'
+                ],
+                borderColor: [
+                    'rgba(227, 242, 20)',
+                    'rgba(227, 242, 20)',
+                    'rgba(227, 242, 20)',
+                    'rgba(227, 242, 20)'
+                ],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    ticks: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        }
+    });
+
+    var ctx3 = document.getElementById("Chart3").getContext('2d');
+    var myBarChart = new Chart(ctx3, {
+        type: 'bar',
+        data: {
+            labels: ["Availability", "Performance", "Quality", "Overall"],
+            datasets: [{
+                label: 'Expected',
+                data: [79.5, 96.8, 83.3, 64.1],
+                backgroundColor: [
+                    'rgb(231, 58, 58, 0.4)',
+                    'rgb(231, 58, 58, 0.4)',
+                    'rgb(231, 58, 58, 0.4)',
+                    'rgb(231, 58, 58, 0.4)'
+                ],
+                borderColor: [
+                    'rgb(231, 58, 58)',
+                    'rgb(231, 58, 58)',
+                    'rgb(231, 58, 58)',
+                    'rgb(231, 58, 58)'
+                ],
+                borderWidth: 1
+            }, {
+                label: 'Actual',
+                data: [98, 90, 85, 75], // Add your second dataset values here
+                backgroundColor: [
+                    'rgb(69, 241, 69, 0.4)',
+                    'rgb(69, 241, 69, 0.4)',
+                    'rgb(69, 241, 69, 0.4)',
+                    'rgb(69, 241, 69, 0.4)'
+                ],
+                borderColor: [
+                    'rgb(69, 241, 69)',
+                    'rgb(69, 241, 69)',
+                    'rgb(69, 241, 69)',
+                    'rgb(69, 241, 69)'
+                ],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    ticks: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        }
+    });
+</script>

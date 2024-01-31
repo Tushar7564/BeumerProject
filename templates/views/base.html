@@ -1,0 +1,2801 @@
+<title>All Machines</title>
+
+<head>
+    <link rel="stylesheet" href="/public/CSS/base.css">
+    <link rel="stylesheet" href="/public/CSS/bootstrap/bootstrap.min.css">
+    <script src="/public/JavaScripts/jquery-3.7.1.js"></script>
+    <script src="/public/JavaScripts/bootstrap/bootstrap.min.js"></script>
+    <script src="/public/JavaScripts/canvasjs.min.js"></script>
+    <style>
+        .canvasjs-chart-container {
+            width: inherit;
+            height: inherit;
+        }
+
+        .canvasjs-chart-canvas {
+            width: inherit !important;
+            height: 39vh !important;
+            margin: 5px;
+            /* margin-right: 0; */
+            margin-bottom: 0;
+        }
+
+        .canvasjs-chart-toolbar {
+            /* right: 10 !important; */
+            top: 5 !important;
+        }
+
+        input::placeholder {
+            font-size: x-small;
+        }
+
+        .row {
+            --bs-gutter-x: 0 !important;
+        }
+
+        .form-select {
+            background: url('custom-arrow.png') no-repeat right center;
+        }
+
+        .form-select:hover {
+            border-color: #007bff;
+        }
+
+        td i {
+            width: 36px;
+            height: 36px;
+            margin-right: .5rem;
+            border-radius: 50%;
+            vertical-align: middle;
+        }
+
+        table,
+        th,
+        td {
+            border-collapse: collapse;
+            padding: 1rem;
+            text-align: center;
+        }
+
+        thead th {
+            /* position: sticky;
+            top: 55;
+            left: 0; */
+            cursor: pointer;
+            text-transform: capitalize;
+        }
+
+        #table-bottom,
+        #table-bottom2,
+        #table-bottom3 {
+            position: sticky;
+            bottom: 0;
+            /* left: 0; */
+            cursor: pointer;
+            text-transform: capitalize;
+        }
+
+        tbody tr {
+            --delay: .1s;
+            transition: .5s ease-in-out var(--delay), background-color 0s;
+        }
+
+        tbody tr.hide {
+            opacity: 0;
+            transform: translateX(100%);
+        }
+
+        tbody tr:hover {
+            background-color: #fff6 !important;
+        }
+
+        tbody tr td,
+        tbody tr td p,
+        tbody tr td i {
+            transition: .2s ease-in-out;
+        }
+
+        thead th i.bi-arrow-up {
+            display: inline-block;
+            width: 1.3rem;
+            height: 1.3rem;
+            color: #6c00bd;
+            border: 1.4px solid transparent;
+            border-radius: 50%;
+            text-align: center;
+            font-size: 1rem;
+        }
+
+        thead th:hover i.bi-arrow-up {
+            border: 1.4px solid #6c00bd;
+        }
+
+        thead th:hover {
+            color: #6c00bd;
+        }
+
+        thead th.active i.bi-arrow-up {
+            background-color: #6c00bd;
+            color: #fff;
+        }
+
+        thead th.asc i.bi-arrow-up {
+            transform: rotate(180deg);
+        }
+
+        thead th.active,
+        tbody td.active {
+            color: #6c00bd;
+        }
+    </style>
+    <script>
+        $(function () {
+            $("#header").load("header.html");
+        })
+    </script>
+</head>
+
+<body class="row" style="background-color: rgb(237, 237, 237); position: fixed;">
+    <header id="header" style="width: 6vw;"></header>
+    <div class="right row" style="width: 94vw; padding: 0; height: 100vh; overflow: auto;">
+        <div class="top-row row"
+            style="width: 27.5vw; border-right: 1px solid #d3d3d3; background-color: white; padding: 0;">
+            <nav aria-label="breadcrumb" class="m-2 mt-1 mb-0" id="ambc" style="display: block; width: auto;">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="dashboard.html">Dashboard</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">AllMachines</li>
+                </ol>
+            </nav>
+            <nav aria-label="breadcrumb" class="m-2 mt-1 mb-0" id="pbc" style="display: none; width: auto;">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="dashboard.html">Dashboard</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Packers</li>
+                </ol>
+            </nav>
+            <nav aria-label="breadcrumb" class="m-2 mt-1 mb-0" id="bebc" style="display: none; width: auto;">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="dashboard.html">Dashboard</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">BucketElevators</li>
+                </ol>
+            </nav>
+            <nav aria-label="breadcrumb" class="m-2 mt-1 mb-0" id="tlbc" style="display: none; width: auto;">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="dashboard.html">Dashboard</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">TruckLoaders</li>
+                </ol>
+            </nav>
+            <div class="row" style="background: white; position: sticky; top: 2;">
+                <select class="form-select m-2 mt-0" id="AllMachines" aria-label="Default select example"
+                    style="width: 21.5vw;">
+                    <option selected value="AllMachines" id="onselecting">All Machines</option>
+                    <optgroup label="Packer">
+                        <option value="AllPackers" id="APoption">All Packers</option>
+                        <option value="P-01" id="Poption1">Packer-01</option>
+                        <option value="P-02" id="Poption2">Packer-02</option>
+                        <option value="P-03" id="Poption3">Packer-03</option>
+                        <option value="P-04" id="Poption4">Packer-04</option>
+                    </optgroup>
+                    <optgroup label="BucketElevator">
+                        <option value="AllBucketElevators" id="ABEoption">All Bucket Elevators</option>
+                        <option value="BE-01" id="BEoption1">BucketElevator-01</option>
+                        <option value="BE-02" id="BEoption2">BucketElevator-02</option>
+                        <option value="BE-03" id="BEoption3">BucketElevator-03</option>
+                        <option value="BE-04" id="BEoption4">BucketElevator-04</option>
+                    </optgroup>
+                    <optgroup label="TruckLoader">
+                        <option value="AllTruckLoaders" id="ATLoption">All Truck Loaders</option>
+                        <option value="TL-01" id="TLoption1">TruckLoader-01</option>
+                        <option value="TL-02" id="TLoption2">TruckLoader-02</option>
+                        <option value="TL-03" id="TLoption3">TruckLoader-03</option>
+                        <option value="TL-04" id="TLoption4">TruckLoader-04</option>
+                    </optgroup>
+                </select>
+                <div class="btn-group" style="padding-left:4px; padding-right:4px; width: auto;">
+                    <button type="button" class="btn mt-0" data-bs-toggle="dropdown" data-bs-display="static"
+                        aria-expanded="false"
+                        style="border: 1px solid lightgray; border-radius: 5px; width: inherit; margin: 0.5rem; padding: 10px; text-align: center; font-size: 17px;">
+                        <i class="bi bi-arrow-down-up"></i>
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-end" style="width: max-content;">
+                        <li class="list-group-item list-group-item-flex">
+                            <input class="form-check-input mx-1" value="defaultOrder" type="radio" name="orderType"
+                                id="defaultOrder" checked>
+                            <label class="form-check-label" for="defaultOrder">Default Machine Order</label>
+                        </li>
+                        <li class="list-group-item list-group-item-flex">
+                            <input class="form-check-input mx-1" value="topPerforming" type="radio" name="orderType"
+                                id="topPerforming">
+                            <label class="form-check-label" for="topPerforming">Top Performing Machines</label>
+                        </li>
+                        <li class="list-group-item list-group-item-flex">
+                            <input class="form-check-input mx-1" value="lowestPerforming" type="radio" name="orderType"
+                                id="lowestPerforming">
+                            <label class="form-check-label" for="lowestPerforming">Lowest Performing
+                                Machines</label>
+                        </li>
+                        <li class="list-group-item list-group-item-flex">
+                            <input class="form-check-input mx-1" value="machineNamesAZ" type="radio" name="orderType"
+                                id="machineNamesAZ">
+                            <label class="form-check-label" for="machineNamesAZ">Machine Names (A-Z)</label>
+                        </li>
+                        <li class="list-group-item list-group-item-flex">
+                            <input class="form-check-input mx-1" value="machineNamesZA" type="radio" name="orderType"
+                                id="machineNamesZA">
+                            <label class="form-check-label" for="machineNamesZA">Machine Names (Z-A)</label>
+                        </li>
+                    </ul>
+                </div>
+                <hr>
+                <div class="col-md-4 m-2 mt-0" id="iSearch" style="width: 21vw;">
+                    <input type="search" id="searchBar"
+                        style="width: inherit; border: 1px solid lightgray; font-size: 17.5px; border-radius: 15px; outline: none; padding-left: 5px; padding-right: 5px;"
+                        placeholder="Search...">
+                </div>
+                <div class="col-md-4 mb-2 row justify-content-between"
+                    style="width: auto; text-align: center; height: auto;">
+                    <div id="filters"
+                        style="border: 1px solid lightgray; width: auto; font-size: 22px; border-radius: 5px; padding: 2px;">
+                        <i class="bi-filter"></i>
+                    </div>
+                    <div id="dots"
+                        style="width: auto; height: auto; border: 1px solid lightgray; border-radius: 5px; margin-left: 0.5rem; padding: 5px; text-align: center;">
+                        <i class="bi-three-dots"></i>
+                    </div>
+                </div>
+                <hr style="margin-bottom: 5px;">
+                <div class="row">
+                    <label class="ms-3" for="Live"
+                        style="border: 1px solid lightgray; border-radius: 30px; text-align: center; width: 50px; font-size: 12px; height: 20px;">LIVE</label>
+                    <h6 style="width: auto;">Compared to: Baseline</h6>
+                </div>
+                <hr style="margin-bottom: 5px;">
+            </div>
+            <div id="Machines" style="height: auto;">
+                <a onclick="">
+                    <div id="m1">
+                        <div id="pMachine1"
+                            style="display: block; background-color: lightblue; border-right: 2px solid red; margin-left: 0 !important;">
+                            <div class="ms-3">
+                                <h4 id="pSpan1" style="margin-top: 0.5rem;">Packer-01</h4>
+                                <span class="ms-2"
+                                    style="height: 7px; width: 7px; background-color: green; border-radius: 50%; display: inline-block;"></span>
+                                <span style="font-size: small;">Active: 5h 20m</span>
+                                <h6 style="margin-top: 10px;">OEE Rate</h6>
+                                <h3>93.7%</h3>
+                            </div>
+                            <hr style="margin-left: 0;">
+                        </div>
+                        <div id="beMachine1" style="display: block;">
+                            <div class="ms-3">
+                                <h4 id="beSpan1" style="margin-top: 0.5rem;">BucketElevator-01</h4>
+                                <span class="ms-2"
+                                    style="height: 7px; width: 7px; background-color: green; border-radius: 50%; display: inline-block;"></span>
+                                <span style="font-size: small;">Active: 5h 20m</span>
+                                <h6 style="margin-top: 10px;">OEE Rate</h6>
+                                <h3>93.7%</h3>
+                            </div>
+                            <hr style="margin-left: 0;">
+                        </div>
+                        <div id="tlMachine1" style="display: block;">
+                            <div class="ms-3">
+                                <h4 id="tlSpan1" style="margin-top: 0.5rem;">TruckLoader-01</h4>
+                                <span class="ms-2"
+                                    style="height: 7px; width: 7px; background-color: green; border-radius: 50%; display: inline-block;"></span>
+                                <span style="font-size: small;">Active: 5h 20m</span>
+                                <h6 style="margin-top: 10px;">OEE Rate</h6>
+                                <h3>93.7%</h3>
+                            </div>
+                            <hr style="margin-left: 0;">
+                        </div>
+                    </div>
+                </a>
+                <a onclick="">
+                    <div id="m2">
+                        <div id="pMachine2" style="display: block;">
+                            <div class="ms-3">
+                                <h4 id="pSpan2" style="margin-top: 0.5rem;">Packer-02</h4>
+                                <span class="ms-2"
+                                    style="height: 7px; width: 7px; background-color: green; border-radius: 50%; display: inline-block;"></span>
+                                <span style="font-size: small;">Active: 5h 20m</span>
+                                <h6 style="margin-top: 10px;">OEE Rate</h6>
+                                <h3>96.9%</h3>
+                            </div>
+                            <hr style="margin-left: 0;">
+                        </div>
+                        <div id="beMachine2" style="display: block;">
+                            <div class="ms-3">
+                                <h4 id="beSpan2" style="margin-top: 0.5rem;">BucketElevator-02</h4>
+                                <span class="ms-2"
+                                    style="height: 7px; width: 7px; background-color: green; border-radius: 50%; display: inline-block;"></span>
+                                <span style="font-size: small;">Active: 5h 20m</span>
+                                <h6 style="margin-top: 10px;">OEE Rate</h6>
+                                <h3>96.9%</h3>
+                            </div>
+                            <hr style="margin-left: 0;">
+                        </div>
+                        <div id="tlMachine2" style="display: block;">
+                            <div class="ms-3">
+                                <h4 id="tlSpan2" style="margin-top: 0.5rem;">TruckLoader-02</h4>
+                                <span class="ms-2"
+                                    style="height: 7px; width: 7px; background-color: green; border-radius: 50%; display: inline-block;"></span>
+                                <span style="font-size: small;">Active: 5h 20m</span>
+                                <h6 style="margin-top: 10px;">OEE Rate</h6>
+                                <h3>96.9%</h3>
+                            </div>
+                            <hr class="ms-0">
+                        </div>
+                    </div>
+                </a>
+                <a onclick="">
+                    <div id="m3">
+                        <div id="pMachine3" style="display: block;">
+                            <div class="ms-3">
+                                <h4 id="pSpan3" style="margin-top: 0.5rem;">Packer-03</h4>
+                                <span class="ms-2"
+                                    style="height: 7px; width: 7px; background-color: green; border-radius: 50%; display: inline-block;"></span>
+                                <span style="font-size: small;">Active: 5h 20m</span>
+                                <h6 style="margin-top: 10px;">OEE Rate</h6>
+                                <h3>95%</h3>
+                            </div>
+                            <hr style="margin-left: 0;">
+                        </div>
+                        <div id="beMachine3" style="display: block;">
+                            <div class="ms-3">
+                                <h4 id="beSpan3" style="margin-top: 0.5rem;">BucketElevator-03</h4>
+                                <span class="ms-2"
+                                    style="height: 7px; width: 7px; background-color: green; border-radius: 50%; display: inline-block;"></span>
+                                <span style="font-size: small;">Active: 5h 20m</span>
+                                <h6 style="margin-top: 10px;">OEE Rate</h6>
+                                <h3>95%</h3>
+                            </div>
+                            <hr style="margin-left: 0;">
+                        </div>
+                        <div id="tlMachine3" style="display: block;">
+                            <div class="ms-3">
+                                <h4 id="tlSpan3" style="margin-top: 0.5rem;">TruckLoader-03</h4>
+                                <span class="ms-2"
+                                    style="height: 7px; width: 7px; background-color: green; border-radius: 50%; display: inline-block;"></span>
+                                <span style="font-size: small;">Active: 5h 20m</span>
+                                <h6 style="margin-top: 10px;">OEE Rate</h6>
+                                <h3>95%</h3>
+                            </div>
+                            <hr style="margin-left: 0;">
+                        </div>
+                    </div>
+                </a>
+                <a onclick="">
+                    <div id="m4">
+                        <div id="pMachine4" style="display: block;">
+                            <div class="ms-3">
+                                <h4 id="pSpan4" style="margin-top: 0.5rem;">Packer-04</h4>
+                                <span class="ms-2"
+                                    style="height: 7px; width: 7px; background-color: green; border-radius: 50%; display: inline-block;"></span>
+                                <span style="font-size: small; padding-top: 3px;">Active: 5h 20m</span>
+                                <h6 style="margin-top: 10px;">OEE Rate</h6>
+                                <h3>92%</h3>
+                            </div>
+                            <hr style="margin-left: 0; margin-bottom: 1px;">
+                        </div>
+                        <div id="beMachine4" style="display: block;">
+                            <div class="ms-3">
+                                <h4 id="beSpan4" style="margin-top: 0.5rem;">BucketElevator-04</h4>
+                                <span class="ms-2"
+                                    style="height: 7px; width: 7px; background-color: green; border-radius: 50%; display: inline-block;"></span>
+                                <span style="font-size: small; padding-top: 3px;">Active: 5h 20m</span>
+                                <h6 style="margin-top: 10px;">OEE Rate</h6>
+                                <h3>92%</h3>
+                            </div>
+                            <hr style="margin-left: 0; margin-bottom: 1px;">
+                        </div>
+                        <div id="tlMachine4" style="display: block;">
+                            <div class="ms-3">
+                                <h4 id="tlSpan4" style="margin-top: 0.5rem;">TruckLoader-04</h4>
+                                <span class="ms-2"
+                                    style="height: 7px; width: 7px; background-color: green; border-radius: 50%; display: inline-block;"></span>
+                                <span style="font-size: small; padding-top: 3px;">Active: 5h 20m</span>
+                                <h6 style="margin-top: 10px;">OEE Rate</h6>
+                                <h3>92%</h3>
+                            </div>
+                            <hr style="margin-left: 0; margin-bottom: 1px;">
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </div>
+        <div class="top-mid" style="width: 66.5vw; padding: 0; right: 5px;">
+            <div class="row justify-content-between" id="topdetails" style="position: sticky; top: 0; background: whitesmoke;">
+                <div class="row w-auto">
+                    <h2 id="pm" style="padding-top: 10px; padding-left: 10px; width: 12vw;">Packer-01</h2>
+                    <span class="m-4 mx-0" id="rorg"
+                        style="height: 7px; width: 7px; background-color: green; border-radius: 50%;"></span>
+                    <span class="m-3 mx-0" id="ActiveTime"
+                        style="font-size: 13px; width: auto; padding-top: 1px; padding-left: 5px;">Active: 5h
+                        20m</span>
+                </div>
+                <nav class="mt-2" id="ps" aria-label="Page navigation example" style="width: 46.8vw; padding: 0;">
+                    <ul class="pagination justify-content-end" style="margin: inherit;">
+                        <li class="page-item" id="lsaquo">
+                            <a class="page-link"
+                                style="background-color: transparent; border: none; padding: 0; padding-right: 15px; height: auto; cursor: pointer;">&lsaquo;</a>
+                        </li>
+                        <li class="page-item disabled">
+                            <a class="page-link"
+                                style="height: auto; border: none; padding: 0; background-color: transparent; color: #000;">
+                                <span id="PageNumber" style="padding-right: 5px;">1</span>
+                            </a>
+                        </li>
+                        <li class="page-item disabled">
+                            <a class="page-link" href=""
+                                style="height: auto; border: none; padding: 0; padding-right: 5px; background-color: transparent; color: #000;">of</a>
+                        </li>
+                        <li class="page-item disabled">
+                            <a class="page-link"
+                                style="height: auto; border: none; padding: 0; padding-right: 5px; background-color: transparent; color: #000;">4</a>
+                        </li>
+                        <li class="page-item" id="rsaquo">
+                            <a class="page-link"
+                                style="background-color: transparent; border: none; padding: 0; padding-left: 15px; height: auto; cursor: pointer;">&rsaquo;</a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+            <div class="row" id="details"
+                style="cursor: pointer; position: sticky; top: 3.5rem; background: whitesmoke;">
+                <div class="col-md-4">
+                    <a id="info">
+                        <h5 id="overviewHeading" style="padding-left: 20px; text-align: center; margin-bottom: 4px;">
+                            Overview</h5>
+                        <hr id="overviewHr"
+                            style="margin: 0; margin-left: 21px; border-top: 5px solid blue; opacity: 0.5;">
+                    </a>
+                </div>
+                <div class="col-md-4">
+                    <a id="info">
+                        <h5 id="statisticsHeading" style="padding-left: 20px; text-align: center; margin-bottom: 4px;">
+                            Statistics</h5>
+                        <hr id="statisticsHr" style="margin: 0; display: none;">
+                    </a>
+                </div>
+                <div class="col-md-4">
+                    <a id="info">
+                        <h5 id="timelineHeading" style="padding-left: 20px; text-align: center; margin-bottom: 4px;">
+                            Timeline</h5>
+                        <hr id="timelineHr" style="margin: 0; display: none;">
+                    </a>
+                </div>
+            </div>
+            <hr id="info" style="margin-top: 0px; position: sticky; top: 5.5rem; background: whitesmoke;">
+            <div id="Packercharts" style="position: fixed; top: 5.5rem; width: 66vw; height: 40vh;">
+                <canvas id="pChart1" style="display: block; width: 66vw; height: inherit;"></canvas>
+                <div id="pChart2" style="display: none; width: 65.5vw; height: inherit;"></div>
+                <canvas id="pChart3" style="display: none; width: 66vw; height: inherit;"></canvas>
+                <canvas id="pChart4" style="display: none; width: 66vw; height: inherit;"></canvas>
+            </div>
+            <div id="Bucketcharts" style="display: none; position: fixed; top: 5.5rem;">
+                <canvas id="beChart1"></canvas>
+                <canvas id="beChart2" style="display: none;"></canvas>
+                <canvas id="beChart3" style="display: none;"></canvas>
+                <canvas id="beChart4" style="display: none;"></canvas>
+            </div>
+            <div id="Truckcharts" style="display: none; position: fixed; top: 5.5rem;">
+                <canvas id="tlChart1"></canvas>
+                <canvas id="tlChart2" style="display: none;"></canvas>
+                <canvas id="tlChart3" style="display: none;"></canvas>
+                <canvas id="tlChart4" style="display: none;"></canvas>
+            </div>
+            <!-- Overview Table -->
+            <section class="Overviewtable__body" id="overviewTable"
+                style="background: #fff; border-radius: 5px; position: fixed; top: 26rem; width: 65vw; height: 45vh; overflow: auto; margin: 10px;">
+                <!-- Rows and Overall OEE -->
+                <div class="row"
+                    style="width: auto; padding: 5px; cursor: pointer; justify-content: space-between; position: sticky; top: 0; background: #fff;">
+                    <div class="form-group row" style="width: auto;">
+                        <span style="width: auto; margin-top: auto; margin-bottom: auto;">Show </span>
+                        <select class="form-control mx-1" name="state" id="maxRows"
+                            style="width: auto; padding: 2px; text-align: center;">
+                            <option value="5000" selected> All</option>
+                            <option value="5">5</option>
+                            <option value="10">10</option>
+                            <option value="15">15</option>
+                            <option value="20">20</option>
+                            <option value="50">50</option>
+                            <option value="70">70</option>
+                            <option value="100">100</option>
+                        </select>
+                        <span style="width: auto; margin-top: auto; margin-bottom: auto;">Rows</span>
+                    </div>
+                    <div class="row" style="-float: right; width: auto;">
+                        <div id="OeeStatus" class="row" style="float: right; width: auto;">
+                            <span class="mt-2 mx-0" id="gdot"
+                                style="display: none; height: 7px; width: 7px; background-color: green; border-radius: 50%;"></span>
+                            <span class="my-auto mx-1" id="rdot"
+                                style=" display: none; height: 7px; width: 7px; background-color: red; border-radius: 50%;"></span>
+                            <span class="my-auto" id="todaysOEE" style="width: auto;"></span>
+                            <i class="bi-arrow-up my-auto cup" style="display: none;"></i>
+                            <i class="bi-arrow-down my-auto cdown" style="display: none;"></i>
+                        </div>
+                        <!-- Removing All Filters -->
+                        <div class="nofilter my-auto"
+                            style="text-align: center; width: auto; background: transparent; cursor: pointer;">
+                            <label for="reload" class="bi-arrow-clockwise py-1" style="font-size: medium;"></label>
+                        </div>
+                    </div>
+                </div>
+                <!-- Table Starts -->
+                <table class="table">
+                    <thead id="OverviewdataTableHead" style="position: sticky; top: 40px;">
+                        <tr>
+                            <th class="text-center">Per Hour <i class="bi bi-arrow-up"></i></th>
+                            <th class="text-center">Availability <i class="bi bi-arrow-up"></i></th>
+                            <th class="text-center">Performance <i class="bi bi-arrow-up"></i></th>
+                            <th class="text-center">Quality <i class="bi bi-arrow-up"></i></th>
+                            <th class="text-center">Overall Equipment Efficiency <i class="bi bi-arrow-up"></i></th>
+                        </tr>
+                    </thead>
+                    <tbody id="OverviewdataTableBody">
+                        <!-- Dynamically Row's are adding -->
+                    </tbody>
+                </table>
+                <!-- Pagination -->
+                <div class="row col-md-12" id="table-bottom"
+                    style="width: 100%; height: auto; padding: 0 5px; position: sticky; bottom: 0; background: #fff;">
+                    <div class="col-md-6 my-auto py-0" id="Overview-data-Info"></div>
+                    <div class="col-md-6 row pagination-container p-0" id="t-pagination"
+                        style="width: auto; margin: auto; margin-top: 5px; margin-bottom: 5px; margin-right: 5px;">
+                        <nav aria-label="...">
+                            <ul class="pagination tp my-0">
+                                <!-- Pagination through Js -->
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </section>
+            <!-- Timeline Table -->
+            <section class="Timelinetable__body m-1" id="timelineTable"
+                style="display: none; background: #fff; border-radius: 5px; position: fixed; top: 26rem; width: 65vw; height: 45vh; overflow: auto; margin: 10px;">
+                <!-- Rows and Overall OEE -->
+                <div class="row" style="width: auto; padding: 5px; cursor: pointer; justify-content: space-between;">
+                    <div class="form-group row" style="width: auto;">
+                        <span style="width: auto; margin-top: auto; margin-bottom: auto;">Show </span>
+                        <select class="form-control mx-1" name="state" id="maxRows"
+                            style="width: auto; padding: 2px; text-align: center;">
+                            <option value="5000" selected> All</option>
+                            <option value="5">5</option>
+                            <option value="10">10</option>
+                            <option value="15">15</option>
+                            <option value="20">20</option>
+                            <option value="50">50</option>
+                            <option value="70">70</option>
+                            <option value="100">100</option>
+                        </select>
+                        <span style="width: auto; margin-top: auto; margin-bottom: auto;">Rows</span>
+                    </div>
+                    <div class="row" style="float: right; width: auto;">
+                        <div id="OeeStatus" class="row" style="float: right; width: auto;">
+                            <span class="mt-2 mx-0" id="gdot"
+                                style="display: none; height: 7px; width: 7px; background-color: green; border-radius: 50%;"></span>
+                            <span class="my-auto mx-1" id="rdot"
+                                style=" display: none; height: 7px; width: 7px; background-color: red; border-radius: 50%;"></span>
+                            <span class="my-auto" id="todaysOEE" style="width: auto;"></span>
+                            <i class="bi-arrow-up my-auto cup" style="display: none;"></i>
+                            <i class="bi-arrow-down my-auto cdown" style="display: none;"></i>
+                        </div>
+                        <!-- Removing All Filters -->
+                        <div class="nofilter my-auto"
+                            style="text-align: center; width: auto; background: transparent; cursor: pointer;">
+                            <label for="reload" class="bi-arrow-clockwise py-1" style="font-size: medium;"></label>
+                        </div>
+                    </div>
+                </div>
+                <!-- Table Starts -->
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th class="text-center">Per Hour <i class="bi bi-arrow-up"></i></th>
+                            <th class="text-center">Availability <i class="bi bi-arrow-up"></i></th>
+                            <th class="text-center">Performance <i class="bi bi-arrow-up"></i></th>
+                            <th class="text-center">Quality <i class="bi bi-arrow-up"></i></th>
+                            <th class="text-center">Overall Equipment Efficiency <i class="bi bi-arrow-up"></i></th>
+                        </tr>
+                    </thead>
+                    <tbody id="TimelinedataTableBody">
+                        <!-- Dynamically Row's are adding -->
+                    </tbody>
+                </table>
+                <!-- Pagination -->
+                <div class="row col-md-12" id="table-bottom2"
+                    style="width: 100%; height: auto; padding: 0 5px; position: sticky; bottom: 0; background: #fff;">
+                    <div class="col-md-6 my-auto py-0" id="Timeline-data-Info"></div>
+                    <div class="col-md-6 row pagination-container p-0" id="t-pagination"
+                        style="width: auto; margin: auto; margin-top: 5px; margin-bottom: 5px; margin-right: 5px;">
+                        <nav aria-label="...">
+                            <ul class="pagination tp my-0">
+                                <!-- Pagination through Js -->
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </section>
+            <!-- Statistics Table -->
+            <section class="Statisticstable__body m-1 mt-2" id="statisticsTable"
+                style="display: none; background: #fff; border-radius: 5px; position: fixed; top: 26rem; width: 65vw; height: 45vh; overflow: auto; margin: 10px;">
+                <!-- Rows and Overall OEE -->
+                <div class="row"
+                    style="width: auto; padding: 5px; cursor: pointer; justify-content: space-between; position: sticky; top: 0; background: #fff;">
+                    <div class="form-group row" style="width: auto;">
+                        <span style="width: auto; margin-top: auto; margin-bottom: auto;">Show </span>
+                        <select class="form-control mx-1" name="state" id="maxRows"
+                            style="width: auto; padding: 2px; text-align: center;">
+                            <option value="5000" selected> All</option>
+                            <option value="5">5</option>
+                            <option value="10">10</option>
+                            <option value="15">15</option>
+                            <option value="20">20</option>
+                            <option value="50">50</option>
+                            <option value="70">70</option>
+                            <option value="100">100</option>
+                        </select>
+                        <span style="width: auto; margin-top: auto; margin-bottom: auto;">Rows</span>
+                    </div>
+                    <div class="row" style="float: right; width: auto;">
+                        <div id="OeeStatus" class="row" style="float: right; width: auto;">
+                            <span class="mt-2 mx-0" id="gdot"
+                                style="display: none; height: 7px; width: 7px; background-color: green; border-radius: 50%;"></span>
+                            <span class="my-auto mx-1" id="rdot"
+                                style=" display: none; height: 7px; width: 7px; background-color: red; border-radius: 50%;"></span>
+                            <span class="my-auto" id="todaysOEE" style="width: auto;"></span>
+                            <i class="bi-arrow-up my-auto cup" style="display: none;"></i>
+                            <i class="bi-arrow-down my-auto cdown" style="display: none;"></i>
+                        </div>
+                        <!-- Removing All Filters -->
+                        <div class="nofilter my-auto"
+                            style="text-align: center; width: auto; background: transparent; cursor: pointer;">
+                            <label for="reload" class="bi-arrow-clockwise py-1" style="font-size: medium;"></label>
+                        </div>
+                    </div>
+                </div>
+                <!-- Table Starts -->
+                <table class="table">
+                    <thead style="position: sticky; top: 40;">
+                        <tr>
+                            <th class="text-center">Per Hour <i class="bi bi-arrow-up"></i></th>
+                            <th class="text-center">max Weight <i class="bi bi-arrow-up"></i></th>
+                            <th class="text-center">min Weight <i class="bi bi-arrow-up"></i></th>
+                            <th class="text-center">avg Weight <i class="bi bi-arrow-up"></i></th>
+                            <th class="text-center">Recipe <i class="bi bi-arrow-up"></i></th>
+                        </tr>
+                    </thead>
+                    <tbody id="StatisticsdataTableBody">
+                        <tr style="position: sticky; top: 77;">
+                            <td></td>
+                            <td id="maxW">max_weight</td>
+                            <td id="minW">min_weight</td>
+                            <td id="avgW">avg_weight</td>
+                            <td id="mostRecipe">recipe</td>
+                        </tr>
+                        <!-- Dynamically Row's are adding -->
+                    </tbody>
+                </table>
+                <!-- Pagination -->
+                <div class="row col-md-12" id="table-bottom3"
+                    style="width: 100%; height: auto; padding: 0 5px; position: sticky; bottom: 0; background: #fff;">
+                    <div class="col-md-6 my-auto py-0" id="Statistics-data-Info"></div>
+                    <div class="col-md-6 row pagination-container p-0" id="t-pagination"
+                        style="width: auto; margin: auto; margin-top: 5px; margin-bottom: 5px; margin-right: 5px;">
+                        <nav aria-label="...">
+                            <ul class="pagination tp my-0">
+                                <!-- Pagination through Js -->
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+    <!-- <footer id="footer" style=" width: 100vw; height: 3vh;"></footer> -->
+</body>
+<!-- <script>
+    $(function () {
+        $("#footer").load("footer.html");
+    })
+</script> -->
+
+<script src="/public/JavaScripts/chart.umd.js"></script>
+
+<!-- Search Bar Script -->
+<script>
+    const search = document.querySelector('#searchBar');
+    const machineContainers = document.querySelectorAll('[id^="m"]');
+
+    search.addEventListener('input', searchMachines);
+
+    function searchMachines() {
+        const searchValue = search.value.trim().toLowerCase();
+        console.log("Search Value:", searchValue);
+
+        machineContainers.forEach((machineContainer) => {
+            const machine1Element = machineContainer.querySelector('[id^="pMachine"]');
+            const machine2Element = machineContainer.querySelector('[id^="beMachine"]');
+            const machine3Element = machineContainer.querySelector('[id^="tlMachine"]');
+            const machineSpan1Element = machineContainer.querySelector('[id^="pSpan"]');
+            const machineSpan2Element = machineContainer.querySelector('[id^="beSpan"]');
+            const machineSpan3Element = machineContainer.querySelector('[id^="tlSpan"]');
+
+            const machine1 = machine1Element ? machineSpan1Element.innerText.trim().toLowerCase() : '';
+            const machine2 = machine2Element ? machineSpan2Element.innerText.trim().toLowerCase() : '';
+            const machine3 = machine3Element ? machineSpan3Element.innerText.trim().toLowerCase() : '';
+
+            console.log("Machine Names:", machine1, machine2, machine3);
+
+            machineContainer.style.display = "none"; // Hide all machines initially
+
+            if (searchValue === "") {
+                machineContainer.style.display = "block"; // Show all machines if search is empty
+                if (machine1Element) machine1Element.style.display = "block";
+                if (machine2Element) machine2Element.style.display = "block";
+                if (machine3Element) machine3Element.style.display = "block";
+
+            } else {
+                if (machine1.includes(searchValue) && machine1Element) {
+                    console.log(`Matched machine in packer loop with search value ${searchValue}`);
+                    machineContainer.style.display = "block";
+                    if (machineSpan1Element) machine1Element.style.display = "block";
+                    console.log(`${machineSpan1Element, machine2Element, machineSpan3Element}`);
+                    if (machineSpan2Element) machine2Element.style.display = "none";
+                    if (machineSpan3Element) machine3Element.style.display = "none";
+                } else if (machine3.includes(searchValue) && machine3Element) {
+                    console.log(`Entered truck loop with search value ${searchValue}`);
+                    machineContainer.style.display = "block";
+                    if (machineSpan1Element) machine1Element.style.display = "none";
+                    if (machineSpan2Element) machine2Element.style.display = "none";
+                    if (machineSpan3Element) machine3Element.style.display = "block";
+                    console.log(`${machineSpan1Element, machine2Element, machineSpan3Element}`);
+                } else if (machine2.includes(searchValue) && machine2Element) {
+                    console.log(`Matched machine in bucket loop with search value ${searchValue}`);
+                    machineContainer.style.display = "block";
+                    if (machineSpan1Element) machine1Element.style.display = "none";
+                    if (machineSpan2Element) machine2Element.style.display = "block";
+                    console.log(`${machineSpan1Element, machine2Element, machineSpan3Element}`);
+                    if (machineSpan3Element) machine3Element.style.display = "none";
+                }
+            }
+        });
+    }
+</script>
+
+<!-- Script for Overview Chart's -->
+<script>
+    // Get the current date and time
+    var currentDate = new Date();
+    var currentDateData = new Date();
+    currentDate.setHours(6, 0, 0, 0); // Set time to 6:00 AM
+
+    // Create an array for labels starting from the current hour
+    var labels = [];
+    for (var i = 0; i < 24; i++) {
+        var labelTime = new Date(currentDate.getTime() + i * 60 * 60 * 1000);
+        var labelHour = labelTime.getHours();
+        var label = labelHour + ':00';
+        labels.push(label);
+    }
+
+    // Generate random data values based on the current hour
+    var randomDataAvailability = [];
+    var randomDataPerformance = [];
+    var randomDataQuality = [];
+    var randomMaxWeights = [];
+    var randomMinWeights = [];
+    var randomAvgWeights = [];
+    var randomRecipe = [];
+
+    var labelHourData = currentDateData.getHours();
+    var labelHourDatalength = labelHourData - 6;
+    // console.log('labelHour: ', labelHourDatalength);
+
+    for (var i = 0; i <= labelHourDatalength; i++) {
+        // console.log('labelHour: ', labelHourDatalength)
+        var availabilityValue = Math.floor(Math.random() * 100) + 1; // Adjust range as needed
+        var performanceValue = Math.floor(Math.random() * 100) + 1;
+        var qualityValue = Math.floor(Math.random() * 100) + 1;
+        var maxweightsValue = Math.floor(Math.random() * (50 - 2 + 1)) + 2;
+        var minweightsValue = Math.floor(Math.random() * (50 - 2 + 1)) + 2;
+        var avgweightsValue = (maxweightsValue + minweightsValue) / 2;
+        var recipeValue = [1, 2, 192][Math.floor(Math.random() * 3)];
+
+        randomDataAvailability.push(availabilityValue);
+        randomDataPerformance.push(performanceValue);
+        randomDataQuality.push(qualityValue);
+        randomMaxWeights.push(maxweightsValue);
+        randomMinWeights.push(minweightsValue);
+        randomAvgWeights.push(avgweightsValue);
+        randomRecipe.push(recipeValue);
+    }
+
+    // Calculate OEE (Overall Equipment Effectiveness)
+    var oeeData = [];
+    for (var i = 0; i < labelHourData; i++) {
+        var oeeValue = (randomDataAvailability[i] + randomDataPerformance[i] + randomDataQuality[i]) / 3;
+        oeeData.push(parseFloat(oeeValue.toFixed(2)));
+    }
+
+    var ctx1 = document.getElementById("pChart1").getContext('2d');
+    var pc1 = new Chart(ctx1, {
+        type: 'line',
+        data: {
+            labels: labels,
+            datasets: [{
+                label: 'Individual OEE',
+                data: oeeData,
+                borderColor: 'red',
+                borderWidth: 2,
+                borderDash: [2, 2],
+                borderCapStyle: 'round',
+                borderJoinStyle: 'round'
+            }]
+        },
+        options: {
+            indexAxis: 'x',
+            scales: {
+                y: {
+                    beginAtZero: true
+                },
+                x: {
+                    // offset: true
+                }
+            },
+            plugins: {
+                tooltip: {
+                    enabled: true,
+                    callbacks: {
+                        label: function (tooltipItems, data) {
+                            var multistringText = [];
+                            // console.log('OEEVal : ', tooltipItems);
+                            var oee = tooltipItems.raw;
+                            var availability = randomDataAvailability[tooltipItems.dataIndex].toFixed(2);
+                            var performance = randomDataPerformance[tooltipItems.dataIndex].toFixed(2);
+                            var quality = randomDataQuality[tooltipItems.dataIndex].toFixed(2);
+
+                            multistringText.push('Overall OEE: ' + oee + '%');
+                            multistringText.push('Availability: ' + availability + '%');
+                            multistringText.push('Performance: ' + performance + '%');
+                            multistringText.push('Quality: ' + quality + '%');
+
+                            return multistringText;
+                        }
+                    },
+                    backgroundColor: "#9cbba1",
+                    titleColor: "#042a0b",
+                    bodyColor: "#042a0b",
+                    titleFont: { weight: 'bold' },
+                    padding: 10,
+                    cornerRadius: 10,
+                    borderColor: "#042a0b",
+                    borderWidth: "2",
+                },
+            }
+        }
+    });
+    // pChart2
+    if (currentDateData.getHours() >= 6 && currentDateData.getHours() < 14) {
+        generateChartData(6, currentDateData.getHours());
+    } else if (currentDateData.getHours() >= 14 && currentDateData.getHours() < 22) {
+        generateChartData(14, currentDateData.getHours());
+    } else if (currentDateData.getHours() >= 22 || currentDateData.getHours() <= 5) {
+        generateChartData(22, currentDateData.getHours()); // Assuming the day changes at 6 AM, so consider up to 5 AM of the next day
+    }
+
+    function generateChartData(startHour, endHour) {
+        var dataPoints = [];
+        var previousDataPoint = null;
+
+        for (var i = startHour; i <= endHour; i++) {
+            for (var j = 0; j < 60; j++) {
+                var dataPointTime = new Date(currentDateData.getFullYear(), currentDateData.getMonth(), currentDateData.getDate(), i, j, 0);
+                var dataPoint = {
+                    x: dataPointTime,
+                    y: [Math.random() * 50 + 10, Math.random() * 30 + 15, Math.random() * 40 + 30, Math.random() * 30 + 35],
+                    color: null
+                };
+
+                if (previousDataPoint) {
+                    if (dataPoint.y[3] > previousDataPoint.y[3]) {
+                        dataPoint.color = "green";
+                        // greenCount++;
+                    } else if (dataPoint.y[3] < previousDataPoint.y[3]) {
+                        dataPoint.color = "red";
+                        // redCount++;
+                    }
+                }
+
+                dataPoints.push(dataPoint);
+                previousDataPoint = dataPoint;
+            }
+        }
+
+        var chart = new CanvasJS.Chart("pChart2", {
+            animationEnabled: true,
+            exportEnabled: true,
+            zoomEnabled: true,
+            tooltip: true,
+            exportFileName: "Planned-Production-Time",
+            title: {
+                text: "Planned Production Time",
+                fontFamily: 'Times New Roman',
+                fontSize: 18,
+                fontWeight: "bold",
+                fontColor: "#1E90FF",
+                dockInsidePlotArea: false
+            },
+            axisX: {
+                valueFormatString: "hh:mm tt",
+                intervalType: "hour",
+                interval: 1
+            },
+            axisY: {
+                beginAtZero: true,
+                maximum: 100
+            },
+            style: {
+                borderRadius: 10
+            },
+            data: [{
+                type: "candlestick",
+                yValueFormatString: "$###0.00",
+                xValueFormatString: "HH:MM",
+                toolTipContent: "Time: {x}",
+                dataPoints: dataPoints
+            }]
+        });
+        chart.render();
+
+        // Convert minutes to hours and minutes
+        // var greenHours = Math.floor(greenCount / 60);
+        // var greenMinutes = greenCount % 60;
+        // var redHours = Math.floor(redCount / 60);
+        // var redMinutes = redCount % 60;
+
+        // Update counters
+        // document.getElementById("greenCount").innerText = greenHours + ":" + (greenMinutes < 10 ? '0' : '') + greenMinutes;
+        // document.getElementById("redCount").innerText = redHours + ":" + (redMinutes < 10 ? '0' : '') + redMinutes;
+    }
+
+    var ctx3 = document.getElementById("pChart3").getContext('2d');
+    var pc3 = new Chart(ctx3, {
+        type: 'bar',
+        data: {
+            labels: labels,
+            datasets: [
+                {
+                    label: 'Max Weights',
+                    data: randomMaxWeights,
+                    borderColor: 'green',
+                    borderWidth: 2,
+                    borderDash: [2, 2],
+                    borderCapStyle: 'round',
+                    borderJoinStyle: 'round'
+                },
+                {
+                    label: 'Min Weights',
+                    data: randomMinWeights,
+                    borderColor: 'blue',
+                    borderWidth: 2,
+                    borderDash: [2, 2],
+                    borderCapStyle: 'round',
+                    borderJoinStyle: 'round'
+                },
+                {
+                    label: 'Avg Weights',
+                    data: randomAvgWeights,
+                    borderColor: 'red',
+                    borderWidth: 2,
+                    borderDash: [2, 2],
+                    borderCapStyle: 'round',
+                    borderJoinStyle: 'round'
+                },
+                {
+                    label: 'Recipe',
+                    data: randomRecipe,
+                    borderColor: 'purple',
+                    borderWidth: 2,
+                    borderDash: [2, 2],
+                    borderCapStyle: 'round',
+                    borderJoinStyle: 'round'
+                }
+            ]
+        },
+        options: {
+            scales: {
+                y: {
+                    ticks: {
+                        format: {
+                            style: 'percent'
+                        }
+                    }
+                }
+            },
+            indexAxis: 'x',
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    stacked: true
+                },
+                x: {
+                    // offset: true
+                    stacked: true
+                }
+            },
+            plugins: {
+                tooltip: {
+                    enabled: true,
+                    callbacks: {
+                        label: function (tooltipItems, data) {
+                            var multistringText = [];
+                            // console.log('OEEVal : ', tooltipItems);
+                            var maxWeight = randomMaxWeights[tooltipItems.dataIndex].toFixed(2);
+                            var minWeight = randomMinWeights[tooltipItems.dataIndex].toFixed(2);
+                            var avgWeight = randomAvgWeights[tooltipItems.dataIndex].toFixed(2);
+                            var Recipe = randomRecipe[tooltipItems.dataIndex];
+
+                            multistringText.push('Max Weight: ' + maxWeight + ' Kg');
+                            multistringText.push('Min Weight: ' + minWeight + ' Kg');
+                            multistringText.push('Avg Weight: ' + avgWeight + ' Kg');
+                            multistringText.push('Recipe: ' + Recipe);
+
+                            return multistringText;
+                        }
+                    },
+                    backgroundColor: "#9cbba1",
+                    titleColor: "#042a0b",
+                    bodyColor: "#042a0b",
+                    titleFont: { weight: 'bold' },
+                    padding: 10,
+                    cornerRadius: 10,
+                    borderColor: "#042a0b",
+                    borderWidth: "2",
+                }
+            }
+        }
+    })
+    var ctx4 = document.getElementById("pChart4").getContext('2d');
+    var pc4 = new Chart(ctx4, {
+        type: 'line',
+        data: {
+            labels: ['6:00 AM', '10:00 AM', '2:00 PM', '6:00 PM', '10:00 PM'],
+            datasets: [{
+                label: 'Some label',
+                data: ['12', '85', '45', null, null],
+                borderColor: 'lightblue',
+                borderWidth: 2,
+                borderDash: [2, 2],
+                borderCapStyle: 'round',
+                borderJoinStyle: 'round'
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    ticks: {
+                        format: {
+                            style: 'percent'
+                        }
+                    }
+                }
+            },
+            indexAxis: 'x',
+            scales: {
+                y: {
+                    beginAtZero: true
+                },
+                x: {
+                    offset: true
+                }
+            }
+        }
+    })
+</script>
+
+<!-- Handling event listener's for each and every Machine -->
+<script>
+    const pm1 = document.getElementById("pMachine1");
+    const bem1 = document.getElementById("beMachine1");
+    const tlm1 = document.getElementById("tlMachine1");
+    const pm2 = document.getElementById("pMachine2");
+    const bem2 = document.getElementById("beMachine2");
+    const tlm2 = document.getElementById("tlMachine2");
+    const pm3 = document.getElementById("pMachine3");
+    const bem3 = document.getElementById("beMachine3");
+    const tlm3 = document.getElementById("tlMachine3");
+    const pm4 = document.getElementById("pMachine4");
+    const bem4 = document.getElementById("beMachine4");
+    const tlm4 = document.getElementById("tlMachine4");
+    var pm = document.getElementById("pm");
+    const pSpan1 = document.getElementById("pSpan1");
+    const beSpan1 = document.getElementById("beSpan1");
+    const tlSpan1 = document.getElementById("tlSpan1");
+    const pSpan2 = document.getElementById("pSpan2");
+    const beSpan2 = document.getElementById("beSpan2");
+    const tlSpan2 = document.getElementById("tlSpan2");
+    const pSpan3 = document.getElementById("pSpan3");
+    const beSpan3 = document.getElementById("beSpan3");
+    const tlSpan3 = document.getElementById("tlSpan3");
+    const pSpan4 = document.getElementById("pSpan4");
+    const beSpan4 = document.getElementById("beSpan4");
+    const tlSpan4 = document.getElementById("tlSpan4");
+    const ps = document.getElementById("ps");
+    const pn = document.getElementById("PageNumber");
+    const rg = document.getElementById("rorg");
+    const At = document.getElementById("ActiveTime");
+    const info = document.querySelectorAll("#info");
+    const pChart1 = document.getElementById("pChart1");
+    const pChart2 = document.getElementById("pChart2");
+    const pChart3 = document.getElementById("pChart3");
+    const pChart4 = document.getElementById("pChart4");
+    // Packers
+    pm1.addEventListener('click', () => {
+        pm1.setAttribute('style', 'background-color: lightblue; border-right: 2px solid red; margin-left: 0 !important;');
+        pm2.setAttribute('style', '');
+        pm3.setAttribute('style', '');
+        pm4.setAttribute('style', '');
+        bem1.setAttribute('style', '');
+        bem2.setAttribute('style', '');
+        bem3.setAttribute('style', '');
+        bem4.setAttribute('style', '');
+        tlm1.setAttribute('style', '');
+        tlm2.setAttribute('style', '');
+        tlm3.setAttribute('style', '');
+        tlm4.setAttribute('style', '');
+        pm.style.width = '12vw';
+        pm.textContent = pSpan1.textContent;
+        pn.textContent = 1;
+        ohr.setAttribute('style', 'display: block; margin: 0; margin-left: 21px; border-top: 5px solid blue; opacity: 0.5;');
+        thr.style.display = "none";
+        dhr.style.display = "none";
+        rg.style.display = "inline-block";
+        At.style.display = "inline-block";
+        info.forEach(element => {
+            element.style.display = "block";
+        })
+        ps.setAttribute('style', 'display: block; width: 46.8vw; float: right;');
+        pChart1.style.display = "block";
+        pChart2.style.display = "none";
+        pChart3.style.display = "none";
+        pChart4.style.display = "none";
+    });
+    pm2.addEventListener('click', () => {
+        pn.textContent = 2;
+        pm1.setAttribute('style', '');
+        pm2.setAttribute('style', 'background-color: lightblue; border-right: 2px solid red; margin-left: 0 !important;');
+        pm3.setAttribute('style', '');
+        pm4.setAttribute('style', '');
+        bem1.setAttribute('style', '');
+        bem2.setAttribute('style', '');
+        bem3.setAttribute('style', '');
+        bem4.setAttribute('style', '');
+        tlm1.setAttribute('style', '');
+        tlm2.setAttribute('style', '');
+        tlm3.setAttribute('style', '');
+        tlm4.setAttribute('style', '');
+        pm.style.width = '12vw';
+        pm.textContent = pSpan2.textContent;
+        pn.textContent = 2;
+        ohr.setAttribute('style', 'display: block; margin: 0; margin-left: 21px; border-top: 5px solid blue; opacity: 0.5;');
+        thr.style.display = "none";
+        dhr.style.display = "none";
+        rg.style.display = "inline-block";
+        At.style.display = "inline-block";
+        info.forEach(element => {
+            element.style.display = "block";
+        })
+        ps.setAttribute('style', 'display: block; width: 46.8vw; float: right;');
+        pChart1.style.display = "block";
+        pChart2.style.display = "none";
+        pChart3.style.display = "none";
+        pChart4.style.display = "none";
+    });
+    pm3.addEventListener('click', () => {
+        pm1.setAttribute('style', '');
+        pm2.setAttribute('style', '');
+        pm3.setAttribute('style', 'background-color: lightblue; border-right: 2px solid red; margin-left: 0 !important;');
+        pm4.setAttribute('style', '');
+        bem1.setAttribute('style', '');
+        bem2.setAttribute('style', '');
+        bem3.setAttribute('style', '');
+        bem4.setAttribute('style', '');
+        tlm1.setAttribute('style', '');
+        tlm2.setAttribute('style', '');
+        tlm3.setAttribute('style', '');
+        tlm4.setAttribute('style', '');
+        pm.style.width = '12vw';
+        pm.textContent = pSpan3.textContent;
+        pn.textContent = 3;
+        ohr.setAttribute('style', 'display: block; margin: 0; margin-left: 21px; border-top: 5px solid blue; opacity: 0.5;');
+        thr.style.display = "none";
+        dhr.style.display = "none";
+        rg.style.display = "inline-block";
+        At.style.display = "inline-block";
+        info.forEach(element => {
+            element.style.display = "block";
+        })
+        ps.setAttribute('style', 'display: block; width: 46.8vw; float: right;');
+        pChart1.style.display = "block";
+        pChart2.style.display = "none";
+        pChart3.style.display = "none";
+        pChart4.style.display = "none";
+    });
+    pm4.addEventListener('click', () => {
+        pm1.setAttribute('style', '');
+        pm2.setAttribute('style', '');
+        pm3.setAttribute('style', '');
+        pm4.setAttribute('style', 'background-color: lightblue; border-right: 2px solid red; margin-left: 0 !important;');
+        bem1.setAttribute('style', '');
+        bem2.setAttribute('style', '');
+        bem3.setAttribute('style', '');
+        bem4.setAttribute('style', '');
+        tlm1.setAttribute('style', '');
+        tlm2.setAttribute('style', '');
+        tlm3.setAttribute('style', '');
+        tlm4.setAttribute('style', '');
+        pm.style.width = '12vw';
+        pm.textContent = pSpan4.textContent;
+        pn.textContent = 4;
+        ohr.setAttribute('style', 'display: block; margin: 0; margin-left: 21px; border-top: 5px solid blue; opacity: 0.5;');
+        thr.style.display = "none";
+        dhr.style.display = "none";
+        rg.style.display = "inline-block";
+        At.style.display = "inline-block";
+        info.forEach(element => {
+            element.style.display = "block";
+        })
+        ps.setAttribute('style', 'display: block; width: 46.8vw; float: right;');
+        pChart1.style.display = "block";
+        pChart2.style.display = "none";
+        pChart3.style.display = "none";
+        pChart4.style.display = "none";
+    });
+    // Bucket Elevators
+    bem1.addEventListener('click', () => {
+        bem1.setAttribute('style', 'background-color: lightblue; border-right: 2px solid red; margin-left: 0 !important;');
+        bem2.setAttribute('style', '');
+        bem3.setAttribute('style', '');
+        bem4.setAttribute('style', '');
+        pm1.setAttribute('style', '');
+        pm2.setAttribute('style', '');
+        pm3.setAttribute('style', '');
+        pm4.setAttribute('style', '');
+        tlm1.setAttribute('style', '');
+        tlm2.setAttribute('style', '');
+        tlm3.setAttribute('style', '');
+        tlm4.setAttribute('style', '');
+        pm.style.width = '20vw';
+        pm.textContent = beSpan1.textContent;
+        pn.textContent = 1;
+        ohr.setAttribute('style', 'display: block; margin: 0; margin-left: 21px; border-top: 5px solid blue; opacity: 0.5;');
+        thr.style.display = "none";
+        dhr.style.display = "none";
+        rg.style.display = "inline-block";
+        At.style.display = "inline-block";
+        info.forEach(element => {
+            element.style.display = "block";
+        })
+        ps.setAttribute('style', 'display: block; width: 38.3vw; float: right;');
+        pChart1.style.display = "block";
+        pChart2.style.display = "none";
+        pChart3.style.display = "none";
+        pChart4.style.display = "none";
+    });
+    bem2.addEventListener('click', () => {
+        pn.textContent = 2;
+        bem1.setAttribute('style', '');
+        bem2.setAttribute('style', 'background-color: lightblue; border-right: 2px solid red; margin-left: 0 !important;');
+        bem3.setAttribute('style', '');
+        bem4.setAttribute('style', '');
+        pm1.setAttribute('style', '');
+        pm2.setAttribute('style', '');
+        pm3.setAttribute('style', '');
+        pm4.setAttribute('style', '');
+        tlm1.setAttribute('style', '');
+        tlm2.setAttribute('style', '');
+        tlm3.setAttribute('style', '');
+        tlm4.setAttribute('style', '');
+        pm.style.width = '20vw';
+        pm.textContent = beSpan2.textContent;
+        pn.textContent = 2;
+        ohr.setAttribute('style', 'display: block; margin: 0; margin-left: 21px; border-top: 5px solid blue; opacity: 0.5;');
+        thr.style.display = "none";
+        dhr.style.display = "none";
+        rg.style.display = "inline-block";
+        At.style.display = "inline-block";
+        info.forEach(element => {
+            element.style.display = "block";
+        })
+        ps.setAttribute('style', 'display: block; width: 38.3vw; float: right;');
+        pChart1.style.display = "block";
+        pChart2.style.display = "none";
+        pChart3.style.display = "none";
+        pChart4.style.display = "none";
+    });
+    bem3.addEventListener('click', () => {
+        bem1.setAttribute('style', '');
+        bem2.setAttribute('style', '');
+        bem3.setAttribute('style', 'background-color: lightblue; border-right: 2px solid red; margin-left: 0 !important;');
+        bem4.setAttribute('style', '');
+        pm1.setAttribute('style', '');
+        pm2.setAttribute('style', '');
+        pm3.setAttribute('style', '');
+        pm4.setAttribute('style', '');
+        tlm1.setAttribute('style', '');
+        tlm2.setAttribute('style', '');
+        tlm3.setAttribute('style', '');
+        tlm4.setAttribute('style', '');
+        pm.style.width = '20vw';
+        pm.textContent = beSpan3.textContent;
+        pn.textContent = 3;
+        ohr.setAttribute('style', 'display: block; margin: 0; margin-left: 21px; border-top: 5px solid blue; opacity: 0.5;');
+        thr.style.display = "none";
+        dhr.style.display = "none";
+        rg.style.display = "inline-block";
+        At.style.display = "inline-block";
+        info.forEach(element => {
+            element.style.display = "block";
+        })
+        ps.setAttribute('style', 'display: block; width: 38.3vw; float: right;');
+        pChart1.style.display = "block";
+        pChart2.style.display = "none";
+        pChart3.style.display = "none";
+        pChart4.style.display = "none";
+    });
+    bem4.addEventListener('click', () => {
+        bem1.setAttribute('style', '');
+        bem2.setAttribute('style', '');
+        bem3.setAttribute('style', '');
+        bem4.setAttribute('style', 'background-color: lightblue; border-right: 2px solid red; margin-left: 0 !important;');
+        pm1.setAttribute('style', '');
+        pm2.setAttribute('style', '');
+        pm3.setAttribute('style', '');
+        pm4.setAttribute('style', '');
+        tlm1.setAttribute('style', '');
+        tlm2.setAttribute('style', '');
+        tlm3.setAttribute('style', '');
+        tlm4.setAttribute('style', '');
+        pm.style.width = '20vw';
+        pm.textContent = beSpan4.textContent;
+        pn.textContent = 4;
+        ohr.setAttribute('style', 'display: block; margin: 0; margin-left: 21px; border-top: 5px solid blue; opacity: 0.5;');
+        thr.style.display = "none";
+        dhr.style.display = "none";
+        rg.style.display = "inline-block";
+        At.style.display = "inline-block";
+        info.forEach(element => {
+            element.style.display = "block";
+        })
+        ps.setAttribute('style', 'display: block; width: 38.3vw; float: right;');
+        pChart1.style.display = "block";
+        pChart2.style.display = "none";
+        pChart3.style.display = "none";
+        pChart4.style.display = "none";
+    });
+    // Truck Loaders
+    tlm1.addEventListener('click', () => {
+        tlm1.setAttribute('style', 'background-color: lightblue; border-right: 2px solid red; margin-left: 0 !important;');
+        tlm2.setAttribute('style', '');
+        tlm3.setAttribute('style', '');
+        tlm4.setAttribute('style', '');
+        pm1.setAttribute('style', '');
+        pm2.setAttribute('style', '');
+        pm3.setAttribute('style', '');
+        pm4.setAttribute('style', '');
+        bem1.setAttribute('style', '');
+        bem2.setAttribute('style', '');
+        bem3.setAttribute('style', '');
+        bem4.setAttribute('style', '');
+        pm.style.width = '18vw';
+        pm.textContent = tlSpan1.textContent;
+        pn.textContent = 1;
+        ohr.setAttribute('style', 'display: block; margin: 0; margin-left: 21px; border-top: 5px solid blue; opacity: 0.5;');
+        thr.style.display = "none";
+        dhr.style.display = "none";
+        rg.style.display = "inline-block";
+        At.style.display = "inline-block";
+        info.forEach(element => {
+            element.style.display = "block";
+        })
+        ps.setAttribute('style', 'display: block; width: 40.8vw; float: right;');
+        pChart1.style.display = "block";
+        pChart2.style.display = "none";
+        pChart3.style.display = "none";
+        pChart4.style.display = "none";
+    });
+    tlm2.addEventListener('click', () => {
+        pn.textContent = 2;
+        tlm1.setAttribute('style', '');
+        tlm2.setAttribute('style', 'background-color: lightblue; border-right: 2px solid red; margin-left: 0 !important;');
+        tlm3.setAttribute('style', '');
+        tlm4.setAttribute('style', '');
+        pm1.setAttribute('style', '');
+        pm2.setAttribute('style', '');
+        pm3.setAttribute('style', '');
+        pm4.setAttribute('style', '');
+        bem1.setAttribute('style', '');
+        bem2.setAttribute('style', '');
+        bem3.setAttribute('style', '');
+        bem4.setAttribute('style', '');
+        pm.style.width = '18vw';
+        pm.textContent = tlSpan2.textContent;
+        pn.textContent = 2;
+        ohr.setAttribute('style', 'display: block; margin: 0; margin-left: 21px; border-top: 5px solid blue; opacity: 0.5;');
+        thr.style.display = "none";
+        dhr.style.display = "none";
+        rg.style.display = "inline-block";
+        At.style.display = "inline-block";
+        info.forEach(element => {
+            element.style.display = "block";
+        })
+        ps.setAttribute('style', 'display: block; width: 40.8vw; float: right;');
+        pChart1.style.display = "block";
+        pChart2.style.display = "none";
+        pChart3.style.display = "none";
+        pChart4.style.display = "none";
+    });
+    tlm3.addEventListener('click', () => {
+        tlm1.setAttribute('style', '');
+        tlm2.setAttribute('style', '');
+        tlm3.setAttribute('style', 'background-color: lightblue; border-right: 2px solid red; margin-left: 0 !important;');
+        tlm4.setAttribute('style', '');
+        pm1.setAttribute('style', '');
+        pm2.setAttribute('style', '');
+        pm3.setAttribute('style', '');
+        pm4.setAttribute('style', '');
+        bem1.setAttribute('style', '');
+        bem2.setAttribute('style', '');
+        bem3.setAttribute('style', '');
+        bem4.setAttribute('style', '');
+        pm.style.width = '18vw';
+        pm.textContent = tlSpan3.textContent;
+        pn.textContent = 3;
+        ohr.setAttribute('style', 'display: block; margin: 0; margin-left: 21px; border-top: 5px solid blue; opacity: 0.5;');
+        thr.style.display = "none";
+        dhr.style.display = "none";
+        rg.style.display = "inline-block";
+        At.style.display = "inline-block";
+        info.forEach(element => {
+            element.style.display = "block";
+        })
+        ps.setAttribute('style', 'display: block; width: 40.8vw; float: right;');
+        pChart1.style.display = "block";
+        pChart2.style.display = "none";
+        pChart3.style.display = "none";
+        pChart4.style.display = "none";
+    });
+    tlm4.addEventListener('click', () => {
+        tlm1.setAttribute('style', '');
+        tlm2.setAttribute('style', '');
+        tlm3.setAttribute('style', '');
+        tlm4.setAttribute('style', 'background-color: lightblue; border-right: 2px solid red; margin-left: 0 !important;');
+        pm1.setAttribute('style', '');
+        pm2.setAttribute('style', '');
+        pm3.setAttribute('style', '');
+        pm4.setAttribute('style', '');
+        bem1.setAttribute('style', '');
+        bem2.setAttribute('style', '');
+        bem3.setAttribute('style', '');
+        bem4.setAttribute('style', '');
+        pm.style.width = '18vw';
+        pm.textContent = tlSpan4.textContent;
+        pn.textContent = 4;
+        ohr.setAttribute('style', 'display: block; margin: 0; margin-left: 21px; border-top: 5px solid blue; opacity: 0.5;');
+        thr.style.display = "none";
+        dhr.style.display = "none";
+        rg.style.display = "inline-block";
+        At.style.display = "inline-block";
+        info.forEach(element => {
+            element.style.display = "block";
+        })
+        ps.setAttribute('style', 'display: block; width: 40.8vw; float: right;');
+        pChart1.style.display = "block";
+        pChart2.style.display = "none";
+        pChart3.style.display = "none";
+        pChart4.style.display = "none";
+    });
+</script>
+
+<!-- Handling AllPackers, AllBucketElevators and AllTruckLoaders -->
+<script>
+    const PO = document.querySelectorAll('#Poptions');
+    const BEO = document.querySelectorAll('#BEoptions');
+    const TLO = document.querySelectorAll('#TLoptions');
+    const APO = document.getElementById('APoption');
+    const ABEO = document.getElementById('ABEoption');
+    const ATLO = document.getElementById('ATLoption');
+    const ambc = document.getElementById('ambc');
+    const pbc = document.getElementById('pbc');
+    const bebc = document.getElementById('bebc');
+    const tlbc = document.getElementById('tlbc');
+
+    // Function to toggle visibility of optgroups
+    function toggleOptgroups(selectedOption) {
+        // Function to show P options and hide others
+        function showPO() {
+            PO.forEach(option => option.style.display = 'block');
+            BEO.forEach(option => option.style.display = 'none');
+            TLO.forEach(option => option.style.display = 'none');
+        }
+
+        // Function to show BE options and hide others
+        function showBEO() {
+            PO.forEach(option => option.style.display = 'none');
+            BEO.forEach(option => option.style.display = 'block');
+            TLO.forEach(option => option.style.display = 'none');
+        }
+
+        // Function to show TL options and hide others
+        function showTLO() {
+            PO.forEach(option => option.style.display = 'none');
+            BEO.forEach(option => option.style.display = 'none');
+            TLO.forEach(option => option.style.display = 'block');
+        }
+
+        // Check the selected option and toggle optgroup visibility accordingly
+        switch (AllMachines.value) {
+            case 'AllPackers':
+                // console.log(AllMachines.value);
+                showPO();
+                ambc.style.display = "none";
+                pbc.style.display = "block";
+                bebc.style.display = "none";
+                tlbc.style.display = "none";
+                pn.textContent = 1;
+                pm.style.width = "12vw";
+                ps.style.width = "46.8vw"
+                pm1.setAttribute('style', 'display: block; background-color: lightblue; border-right: 2px solid red; margin-left: 0 !important;")');
+                pm2.style.display = "block";
+                pm3.style.display = "block";
+                pm4.style.display = "block";
+                bem1.style.display = "none";
+                bem2.style.display = "none";
+                bem3.style.display = "none";
+                bem4.style.display = "none";
+                tlm1.style.display = "none";
+                tlm2.style.display = "none";
+                tlm3.style.display = "none";
+                tlm4.style.display = "none";
+                pm1.addEventListener('click', () => {
+                    bem1.style.display = "none";
+                    bem2.style.display = "none";
+                    bem3.style.display = "none";
+                    bem4.style.display = "none";
+                    tlm1.style.display = "none";
+                    tlm2.style.display = "none";
+                    tlm3.style.display = "none";
+                    tlm4.style.display = "none";
+                });
+                pm2.addEventListener('click', () => {
+                    bem1.style.display = "none";
+                    bem2.style.display = "none";
+                    bem3.style.display = "none";
+                    bem4.style.display = "none";
+                    tlm1.style.display = "none";
+                    tlm2.style.display = "none";
+                    tlm3.style.display = "none";
+                    tlm4.style.display = "none";
+                });
+                pm3.addEventListener('click', () => {
+                    bem1.style.display = "none";
+                    bem2.style.display = "none";
+                    bem3.style.display = "none";
+                    bem4.style.display = "none";
+                    tlm1.style.display = "none";
+                    tlm2.style.display = "none";
+                    tlm3.style.display = "none";
+                    tlm4.style.display = "none";
+                });
+                pm4.addEventListener('click', () => {
+                    bem1.style.display = "none";
+                    bem2.style.display = "none";
+                    bem3.style.display = "none";
+                    bem4.style.display = "none";
+                    tlm1.style.display = "none";
+                    tlm2.style.display = "none";
+                    tlm3.style.display = "none";
+                    tlm4.style.display = "none";
+                });
+                break;
+            case 'AllBucketElevators':
+                // console.log(AllMachines.value);
+                showBEO();
+                ambc.style.display = "none";
+                pbc.style.display = "none";
+                bebc.style.display = "block";
+                tlbc.style.display = "none";
+                pn.textContent = 1;
+                pm1.style.display = "none";
+                pm2.style.display = "none";
+                pm3.style.display = "none";
+                pm4.style.display = "none";
+                pm.style.width = "20vw";
+                ps.style.width = "38.3vw";
+                bem1.setAttribute('style', 'display: block; background-color: lightblue; border-right: 2px solid red; margin-left: 0 !important;")');
+                bem2.style.display = "block";
+                bem3.style.display = "block";
+                bem4.style.display = "block";
+                tlm1.style.display = "none";
+                tlm2.style.display = "none";
+                tlm3.style.display = "none";
+                tlm4.style.display = "none";
+                bem1.addEventListener('click', () => {
+                    pm1.style.display = "none";
+                    pm2.style.display = "none";
+                    pm3.style.display = "none";
+                    pm4.style.display = "none";
+                    tlm1.style.display = "none";
+                    tlm2.style.display = "none";
+                    tlm3.style.display = "none";
+                    tlm4.style.display = "none";
+                });
+                bem2.addEventListener('click', () => {
+                    pm1.style.display = "none";
+                    pm2.style.display = "none";
+                    pm3.style.display = "none";
+                    pm4.style.display = "none";
+                    tlm1.style.display = "none";
+                    tlm2.style.display = "none";
+                    tlm3.style.display = "none";
+                    tlm4.style.display = "none";
+                });
+                bem3.addEventListener('click', () => {
+                    pm1.style.display = "none";
+                    pm2.style.display = "none";
+                    pm3.style.display = "none";
+                    pm4.style.display = "none";
+                    tlm1.style.display = "none";
+                    tlm2.style.display = "none";
+                    tlm3.style.display = "none";
+                    tlm4.style.display = "none";
+                });
+                bem4.addEventListener('click', () => {
+                    pm1.style.display = "none";
+                    pm2.style.display = "none";
+                    pm3.style.display = "none";
+                    pm4.style.display = "none";
+                    tlm1.style.display = "none";
+                    tlm2.style.display = "none";
+                    tlm3.style.display = "none";
+                    tlm4.style.display = "none";
+                });
+                break;
+            case 'AllTruckLoaders':
+                // console.log(AllMachines.value);
+                showTLO();
+                ambc.style.display = "none";
+                pbc.style.display = "none";
+                bebc.style.display = "none";
+                tlbc.style.display = "block";
+                pn.textContent = 1;
+                pm1.style.display = "none";
+                pm2.style.display = "none";
+                pm3.style.display = "none";
+                pm4.style.display = "none";
+                bem1.style.display = "none";
+                bem2.style.display = "none";
+                bem3.style.display = "none";
+                bem4.style.display = "none";
+                pm.style.width = "18vw";
+                ps.style.width = "40.8vw";
+                tlm1.setAttribute('style', 'display: block; background-color: lightblue; border-right: 2px solid red; margin-left: 0')
+                tlm2.style.display = "block";
+                tlm3.style.display = "block";
+                tlm4.style.display = "block";
+                tlm1.addEventListener('click', () => {
+                    pm1.style.display = "none";
+                    pm2.style.display = "none";
+                    pm3.style.display = "none";
+                    pm4.style.display = "none";
+                    bem1.style.display = "none";
+                    bem2.style.display = "none";
+                    bem3.style.display = "none";
+                    bem4.style.display = "none";
+                });
+                tlm2.addEventListener('click', () => {
+                    pm1.style.display = "none";
+                    pm2.style.display = "none";
+                    pm3.style.display = "none";
+                    pm4.style.display = "none";
+                    bem1.style.display = "none";
+                    bem2.style.display = "none";
+                    bem3.style.display = "none";
+                    bem4.style.display = "none";
+                });
+                tlm3.addEventListener('click', () => {
+                    pm1.style.display = "none";
+                    pm2.style.display = "none";
+                    pm3.style.display = "none";
+                    pm4.style.display = "none";
+                    bem1.style.display = "none";
+                    bem2.style.display = "none";
+                    bem3.style.display = "none";
+                    bem4.style.display = "none";
+                });
+                tlm4.addEventListener('click', () => {
+                    pm1.style.display = "none";
+                    pm2.style.display = "none";
+                    pm3.style.display = "none";
+                    pm4.style.display = "none";
+                    bem1.style.display = "none";
+                    bem2.style.display = "none";
+                    bem3.style.display = "none";
+                    bem4.style.display = "none";
+                });
+                break;
+            case 'AllMachines':
+                // showPO();
+                // showBEO();
+                // showTLO();
+                // pn.textContent = 1;
+                ambc.style.display = "block";
+                pbc.style.display = "none";
+                bebc.style.display = "none";
+                tlbc.style.display = "none";
+                pm1.style.display = "block";
+                pm2.style.display = "block";
+                pm3.style.display = "block";
+                pm4.style.display = "block";
+                bem1.style.display = "block";
+                bem2.style.display = "block";
+                bem3.style.display = "block";
+                bem4.style.display = "block";
+                tlm1.style.display = "block";
+                tlm2.style.display = "block";
+                tlm3.style.display = "block";
+                tlm4.style.display = "block";
+                break;
+            default:
+            // pass        
+        }
+    }
+
+    // Retrieve the selected option and sub-option from the query parameters
+    const urlParams = new URLSearchParams(window.location.search);
+    const selectedOption = urlParams.get('selectedOption');
+    const selectedSubOption = urlParams.get('selectedSubOption');
+
+    // Set the selected option in the dropdown
+    if (selectedOption) {
+        const selectElement = document.getElementById('AllMachines');
+
+        // Check the selected option and set the value accordingly
+        switch (selectedOption) {
+            case 'Packer':
+                document.title = "Packers";
+                pm.textContent = "Packer-01";
+                ambc.style.display = "none";
+                pbc.style.display = "block";
+                bebc.style.display = "none";
+                tlbc.style.display = "none";
+                selectElement.value = selectedSubOption || 'AllPackers';
+                break;
+            case 'BucketElevator':
+                document.title = "Bucket Elevators";
+                pm.textContent = "BucketElevator-01";
+                ambc.style.display = "none";
+                pbc.style.display = "none";
+                bebc.style.display = "block";
+                tlbc.style.display = "none";
+                selectElement.value = selectedSubOption || 'AllBucketElevator';
+                break;
+            case 'TruckLoader':
+                document.title = "Truck Loaders";
+                pm.textContent = "TruckLoader-01";
+                ambc.style.display = "none";
+                pbc.style.display = "none";
+                bebc.style.display = "none";
+                tlbc.style.display = "block";
+                selectElement.value = selectedSubOption || 'AllTruckLoader';
+                break;
+            default:
+                document.title = "All Machines";
+                pm.textContent = 'selectedSubOption.textContent';
+                ambc.style.display = "block";
+                pbc.style.display = "none";
+                bebc.style.display = "none";
+                tlbc.style.display = "none";
+                selectElement.value = 'AllMachines';
+        }
+
+        // Toggle optgroup visibility based on the selected option
+        toggleOptgroups(selectElement.value);
+    }
+
+    // Add event listener to the select element to handle changes
+    AllMachines.addEventListener('change', function () {
+        // Check the selected value and toggle visibility accordingly
+        if (this.value === 'AllPackers' || this.value === 'AllBucketElevators' || this.value === 'AllTruckLoaders') {
+
+            pm.textContent = this.value.replace('All', '').replace('s', '') + '-01';
+
+            toggleOptgroups(this.value);
+
+            // Update document title based on the selected value
+            document.title = this.value.replace('All', '').replace(/([a-z])([A-Z])/g, '$1 $2'); // Remove 'All' prefix
+        }
+        else {
+            pm1.style.display = "block";
+            pm2.style.display = "block";
+            pm3.style.display = "block";
+            pm4.style.display = "block";
+            bem1.style.display = "block";
+            bem2.style.display = "block";
+            bem3.style.display = "block";
+            bem4.style.display = "block";
+            tlm1.style.display = "block";
+            tlm2.style.display = "block";
+            tlm3.style.display = "block";
+            tlm4.style.display = "block";
+
+            document.title = 'All Machines';
+        }
+    });
+
+</script>
+
+<!-- Individual Packer Data -->
+<script>
+    const pc = document.getElementById("Packercharts");
+    const bc = document.getElementById("Bucketcharts");
+    const tc = document.getElementById("Truckcharts");
+    const oh = document.getElementById("overviewHeading");
+    const ohr = document.getElementById("overviewHr");
+    const ot = document.getElementById("overviewTable");
+    const th = document.getElementById("timelineHeading");
+    const thr = document.getElementById("timelineHr");
+    const tt = document.getElementById("timelineTable");
+    const dh = document.getElementById("statisticsHeading");
+    const dhr = document.getElementById("statisticsHr");
+    const dtt = document.getElementById("statisticsTable");
+    oh.addEventListener('click', () => {
+        ohr.setAttribute('style', 'display: block; margin: 0; margin-left: 21px; border-top: 5px solid blue; opacity: 0.5;');
+        thr.style.display = "none";
+        dhr.style.display = "none";
+        pChart1.style.display = "block";
+        pChart2.style.display = "none";
+        pChart3.style.display = "none";
+        // Table display
+        ot.style.display = "block";
+        tt.style.display = "none";
+        dtt.style.display = "none";
+    })
+    th.addEventListener('click', () => {
+        ohr.style.display = "none";
+        thr.setAttribute('style', 'display: block; margin: 0; margin-left: 21px; border-top: 5px solid blue; opacity: 0.5;');
+        dhr.style.display = "none";
+        pChart1.style.display = "none";
+        pChart2.style.display = "block";
+        pChart3.style.display = "none";
+        // Table display
+        ot.style.display = "none";
+        tt.style.display = "block";
+        dtt.style.display = "none";
+    })
+    dh.addEventListener('click', () => {
+        ohr.style.display = "none";
+        thr.style.display = "none";
+        dhr.setAttribute('style', 'display: block; margin: 0; margin-left: 21px; border-top: 5px solid blue; opacity: 0.5;');
+        pChart1.style.display = "none";
+        pChart2.style.display = "none";
+        pChart3.style.display = "block";
+        // Table display
+        ot.style.display = "none";
+        tt.style.display = "none";
+        dtt.style.display = "block";
+    })
+
+</script>
+
+<!-- Script for All Machines Select Tag -->
+<script>
+    const AllMachines = document.getElementById("AllMachines");
+    const onselecting = document.getElementById("onselecting");
+    const Machines = document.getElementById("Machines");
+
+    AllMachines.addEventListener('change', () => {
+        switch (AllMachines.value) {
+            case "P-01":
+                console.log(AllMachines.value);
+                pm1.style.display = "block";  // Show pm1
+                pm1.setAttribute('style', 'background-color: lightblue; border-right: 2px solid red; margin-left: 0 !important;');
+                pm2.style.display = "none";
+                pm3.style.display = "none";
+                pm4.style.display = "none";
+                bem1.style.display = "none";
+                bem2.style.display = "none";
+                bem3.style.display = "none";
+                bem4.style.display = "none";
+                tlm1.style.display = "none";
+                tlm2.style.display = "none";
+                tlm3.style.display = "none";
+                tlm4.style.display = "none";
+                // top-mid
+                pm.style.width = '12vw';
+                pm.textContent = pSpan1.textContent;
+                pn.textContent = 1;
+                ps.style.width = "46.8vw";
+                // pChart1.style.display = "block";
+                // pChart2.style.display = "none";
+                // pChart3.style.display = "none";
+                // pChart4.style.display = "none";
+                break;
+            case "P-02":
+                pm1.style.display = "none";
+                pm2.style.display = "block";
+                pm2.setAttribute('style', 'background-color: lightblue; border-right: 2px solid red; margin-left: 0 !important;');
+                pm3.style.display = "none";
+                pm4.style.display = "none";
+                bem1.style.display = "none";
+                bem2.style.display = "none";
+                bem3.style.display = "none";
+                bem4.style.display = "none";
+                tlm1.style.display = "none";
+                tlm2.style.display = "none";
+                tlm3.style.display = "none";
+                tlm4.style.display = "none";
+                // top-mid
+                pm.style.width = '12vw';
+                pm.textContent = pSpan2.textContent;
+                pn.textContent = 2;
+                ps.style.width = "46.8vw";
+                // pChart1.style.display = "none";
+                // pChart2.style.display = "block";
+                // pChart3.style.display = "none";
+                // pChart4.style.display = "none";
+                break;
+            case "P-03":
+                pm1.style.display = "none";
+                pm2.style.display = "none";
+                pm3.style.display = "block";
+                pm3.setAttribute('style', 'background-color: lightblue; border-right: 2px solid red; margin-left: 0 !important;');
+                pm4.style.display = "none";
+                bem1.style.display = "none";
+                bem2.style.display = "none";
+                bem3.style.display = "none";
+                bem4.style.display = "none";
+                tlm1.style.display = "none";
+                tlm2.style.display = "none";
+                tlm3.style.display = "none";
+                tlm4.style.display = "none";
+                // top-mid
+                pm.style.width = '12vw';
+                pm.textContent = pSpan3.textContent;
+                pn.textContent = 3;
+                ps.style.width = "46.8vw";
+                // pChart1.style.display = "none";
+                // pChart2.style.display = "none";
+                // pChart3.style.display = "block";
+                // pChart4.style.display = "none";
+                break;
+            case "P-04":
+                pm1.style.display = "none";
+                pm2.style.display = "none";
+                pm3.style.display = "none";
+                pm4.style.display = "block";
+                pm4.setAttribute('style', 'background-color: lightblue; border-right: 2px solid red; margin-left: 0 !important;');
+                bem1.style.display = "none";
+                bem2.style.display = "none";
+                bem3.style.display = "none";
+                bem4.style.display = "none";
+                tlm1.style.display = "none";
+                tlm2.style.display = "none";
+                tlm3.style.display = "none";
+                tlm4.style.display = "none";
+                // top-mid
+                pm.style.width = '12vw';
+                pm.textContent = pSpan4.textContent;
+                pn.textContent = 4;
+                ps.style.width = "46.8vw";
+                // pChart1.style.display = "none";
+                // pChart2.style.display = "none";
+                // pChart3.style.display = "none";
+                // pChart4.style.display = "block";
+                break;
+            case "BE-01":
+                pm1.style.display = "none";
+                pm2.style.display = "none";
+                pm3.style.display = "none";
+                pm4.style.display = "none";
+                bem1.style.display = "block";
+                bem1.setAttribute('style', 'background-color: lightblue; border-right: 2px solid red; margin-left: 0 !important;');
+                bem2.style.display = "none";
+                bem3.style.display = "none";
+                bem4.style.display = "none";
+                tlm1.style.display = "none";
+                tlm2.style.display = "none";
+                tlm3.style.display = "none";
+                tlm4.style.display = "none";
+                // top-mid
+                pm.style.width = '20vw';
+                pm.textContent = beSpan1.textContent;
+                pn.textContent = 1;
+                ps.style.width = "38.3vw";
+                // pChart1.style.display = "block";
+                // pChart2.style.display = "none";
+                // pChart3.style.display = "none";
+                // pChart4.style.display = "none";
+                break;
+            case "BE-02":
+                pm1.style.display = "none";
+                pm2.style.display = "none";
+                pm3.style.display = "none";
+                pm4.style.display = "none";
+                bem1.style.display = "none";
+                bem2.style.display = "block";
+                bem2.setAttribute('style', 'background-color: lightblue; border-right: 2px solid red; margin-left: 0 !important;');
+                bem3.style.display = "none";
+                bem4.style.display = "none";
+                tlm1.style.display = "none";
+                tlm2.style.display = "none";
+                tlm3.style.display = "none";
+                tlm4.style.display = "none";
+                // top-mid
+                pm.style.width = '20vw';
+                pm.textContent = beSpan2.textContent;
+                pn.textContent = 2;
+                ps.style.width = "38.3vw";
+                // pChart1.style.display = "none";
+                // pChart2.style.display = "block";
+                // pChart3.style.display = "none";
+                // pChart4.style.display = "none";
+                break;
+            case "BE-03":
+                pm1.style.display = "none";
+                pm2.style.display = "none";
+                pm3.style.display = "none";
+                pm4.style.display = "none";
+                bem1.style.display = "none";
+                bem2.style.display = "none";
+                bem3.style.display = "block";
+                bem3.setAttribute('style', 'background-color: lightblue; border-right: 2px solid red; margin-left: 0 !important;');
+                bem4.style.display = "none";
+                tlm1.style.display = "none";
+                tlm2.style.display = "none";
+                tlm3.style.display = "none";
+                tlm4.style.display = "none";
+                // top-mid
+                pm.style.width = '20vw';
+                pm.textContent = beSpan3.textContent;
+                pn.textContent = 3;
+                ps.style.width = "38.3vw";
+                // pChart1.style.display = "none";
+                // pChart2.style.display = "none";
+                // pChart3.style.display = "block";
+                // pChart4.style.display = "none";
+                break;
+            case "BE-04":
+                pm1.style.display = "none";
+                pm2.style.display = "none";
+                pm3.style.display = "none";
+                pm4.style.display = "none";
+                bem1.style.display = "none";
+                bem2.style.display = "none";
+                bem3.style.display = "none";
+                bem4.style.display = "block";
+                bem4.setAttribute('style', 'background-color: lightblue; border-right: 2px solid red; margin-left: 0 !important;');
+                tlm1.style.display = "none";
+                tlm2.style.display = "none";
+                tlm3.style.display = "none";
+                tlm4.style.display = "none";
+                // top-mid
+                pm.style.width = '20vw';
+                pm.textContent = beSpan4.textContent;
+                pn.textContent = 4;
+                ps.style.width = "38.3vw";
+                // pChart1.style.display = "none";
+                // pChart2.style.display = "none";
+                // pChart3.style.display = "none";
+                // pChart4.style.display = "block";
+                break;
+            case "TL-01":
+                pm1.style.display = "none";
+                pm2.style.display = "none";
+                pm3.style.display = "none";
+                pm4.style.display = "none";
+                bem1.style.display = "none";
+                bem2.style.display = "none";
+                bem3.style.display = "none";
+                bem4.style.display = "none";
+                tlm1.style.display = "block";
+                tlm1.setAttribute('style', 'background-color: lightblue; border-right: 2px solid red; margin-left: 0 !important;');
+                tlm2.style.display = "none";
+                tlm3.style.display = "none";
+                tlm4.style.display = "none";
+                // top-mid
+                pm.style.width = '18vw';
+                pm.textContent = tlSpan1.textContent;
+                pn.textContent = 1;
+                ps.style.width = "40.8vw";
+                // pChart1.style.display = "block";
+                // pChart2.style.display = "none";
+                // pChart3.style.display = "none";
+                // pChart4.style.display = "none";
+                break;
+            case "TL-02":
+                pm1.style.display = "none";
+                pm2.style.display = "none";
+                pm3.style.display = "none";
+                pm4.style.display = "none";
+                bem1.style.display = "none";
+                bem2.style.display = "none";
+                bem3.style.display = "none";
+                bem4.style.display = "none";
+                tlm1.style.display = "none";
+                tlm2.setAttribute('style', 'background-color: lightblue; border-right: 2px solid red; margin-left: 0 !important;');
+                tlm2.style.display = "block";
+                tlm3.style.display = "none";
+                tlm4.style.display = "none";
+                // top-mid
+                pm.style.width = '18vw';
+                pm.textContent = tlSpan2.textContent;
+                pn.textContent = 2;
+                ps.style.width = "40.8vw";
+                // pChart1.style.display = "none";
+                // pChart2.style.display = "block";
+                // pChart3.style.display = "none";
+                // pChart4.style.display = "none";
+                break;
+            case "TL-03":
+                pm1.style.display = "none";
+                pm2.style.display = "none";
+                pm3.style.display = "none";
+                pm4.style.display = "none";
+                bem1.style.display = "none";
+                bem2.style.display = "none";
+                bem3.style.display = "none";
+                bem4.style.display = "none";
+                tlm1.style.display = "none";
+                tlm2.style.display = "none";
+                tlm3.style.display = "block";
+                tlm3.setAttribute('style', 'background-color: lightblue; border-right: 2px solid red; margin-left: 0 !important;');
+                tlm4.style.display = "none";
+                // top-mid
+                pm.style.width = '18vw';
+                pm.textContent = tlSpan3.textContent;
+                pn.textContent = 3;
+                ps.style.width = "40.8vw";
+                // pChart1.style.display = "none";
+                // pChart2.style.display = "none";
+                // pChart3.style.display = "block";
+                // pChart4.style.display = "none";
+                break;
+            case "TL-04":
+                pm1.style.display = "none";
+                pm2.style.display = "none";
+                pm3.style.display = "none";
+                pm4.style.display = "none";
+                bem1.style.display = "none";
+                bem2.style.display = "none";
+                bem3.style.display = "none";
+                bem4.style.display = "none";
+                tlm1.style.display = "none";
+                tlm2.style.display = "none";
+                tlm3.style.display = "none";
+                tlm4.style.display = "block";
+                tlm4.setAttribute('style', 'background-color: lightblue; border-right: 2px solid red; margin-left: 0 !important;');
+                // top-mid
+                pm.style.width = '18vw';
+                pm.textContent = tlSpan4.textContent;
+                pn.textContent = 4;
+                ps.style.width = "40.8vw";
+                // pChart1.style.display = "none";
+                // pChart2.style.display = "none";
+                // pChart3.style.display = "none";
+                // pChart4.style.display = "block";
+                break;
+        }
+    })
+</script>
+
+<!-- Script for Pagination -->
+<script>
+    const lsaquo = document.getElementById("lsaquo");
+    const rsaquo = document.getElementById("rsaquo");
+
+    rsaquo.addEventListener('click', () => {
+        if (AllMachines.value === "AllPackers") {
+            if (pn.textContent === "1") {
+                pn.textContent = 2;
+                pm1.setAttribute('style', '');
+                pm2.setAttribute('style', 'background-color: lightblue; border-right: 2px solid red; margin-left: 0 !important;');
+                pm.textContent = pSpan2.textContent;
+            }
+            else if (pn.textContent === "2") {
+                pn.textContent = 3;
+                pm2.setAttribute('style', '');
+                pm3.setAttribute('style', 'background-color: lightblue; border-right: 2px solid red; margin-left: 0 !important;');
+                pm.textContent = pSpan3.textContent;
+            }
+            else {
+                pn.textContent = 4;
+                pm3.setAttribute('style', '');
+                pm4.setAttribute('style', 'background-color: lightblue; border-right: 2px solid red; margin-left: 0 !important;');
+                pm.textContent = pSpan4.textContent;
+            }
+        }
+        else if (AllMachines.value === "AllBucketElevators") {
+            if (pn.textContent === "1") {
+                pn.textContent = 2;
+                bem1.setAttribute('style', '');
+                bem2.setAttribute('style', 'background-color: lightblue; border-right: 2px solid red; margin-left: 0 !important;');
+                pm.textContent = beSpan2.textContent;
+            }
+            else if (pn.textContent === "2") {
+                pn.textContent = 3;
+                bem2.setAttribute('style', '');
+                bem3.setAttribute('style', 'background-color: lightblue; border-right: 2px solid red; margin-left: 0 !important;');
+                pm.textContent = beSpan3.textContent;
+            }
+            else {
+                pn.textContent = 4;
+                bem3.setAttribute('style', '');
+                bem4.setAttribute('style', 'background-color: lightblue; border-right: 2px solid red; margin-left: 0 !important;');
+                pm.textContent = beSpan4.textContent;
+            }
+        }
+        else if (AllMachines.value === "AllTruckLoaders") {
+            if (pn.textContent === "1") {
+                pn.textContent = 2;
+                tlm1.setAttribute('style', '');
+                tlm2.setAttribute('style', 'background-color: lightblue; border-right: 2px solid red; margin-left: 0 !important;');
+                pm.textContent = tlSpan2.textContent;
+            }
+            else if (pn.textContent === "2") {
+                pn.textContent = 3;
+                tlm2.setAttribute('style', '');
+                tlm3.setAttribute('style', 'background-color: lightblue; border-right: 2px solid red; margin-left: 0 !important;');
+                pm.textContent = tlSpan3.textContent;
+            }
+            else {
+                pn.textContent = 4;
+                tlm3.setAttribute('style', '');
+                tlm4.setAttribute('style', 'background-color: lightblue; border-right: 2px solid red; margin-left: 0 !important;');
+                pm.textContent = tlSpan4.textContent;
+            }
+        }
+    })
+
+    lsaquo.addEventListener('click', () => {
+        if (AllMachines.value === "AllPackers") {
+            if (pn.textContent === "4") {
+                pn.textContent = 3;
+                pm4.setAttribute('style', '');
+                pm3.setAttribute('style', 'background-color: lightblue; border-right: 2px solid red; margin-left: 0 !important;');
+                pm.textContent = pSpan3.textContent;
+            }
+            else if (pn.textContent === "3") {
+                pn.textContent = 2;
+                pm3.setAttribute('style', '');
+                pm2.setAttribute('style', 'background-color: lightblue; border-right: 2px solid red; margin-left: 0 !important;');
+                pm.textContent = pSpan2.textContent;
+            }
+            else {
+                pn.textContent = 1;
+                pm2.setAttribute('style', '');
+                pm1.setAttribute('style', 'background-color: lightblue; border-right: 2px solid red; margin-left: 0 !important;');
+                pm.textContent = pSpan1.textContent;
+            }
+        }
+        else if (AllMachines.value === "AllBucketElevators") {
+            if (pn.textContent === "4") {
+                pn.textContent = 3;
+                bem4.setAttribute('style', '');
+                bem3.setAttribute('style', 'background-color: lightblue; border-right: 2px solid red; margin-left: 0 !important;');
+                pm.textContent = beSpan3.textContent;
+            }
+            else if (pn.textContent === "3") {
+                pn.textContent = 2;
+                bem3.setAttribute('style', '');
+                bem2.setAttribute('style', 'background-color: lightblue; border-right: 2px solid red; margin-left: 0 !important;');
+                pm.textContent = beSpan2.textContent;
+            }
+            else {
+                pn.textContent = 1;
+                bem2.setAttribute('style', '');
+                bem1.setAttribute('style', 'background-color: lightblue; border-right: 2px solid red; margin-left: 0 !important;');
+                pm.textContent = beSpan1.textContent;
+            }
+        }
+        else if (AllMachines.value === "AllTruckLoaders") {
+            if (pn.textContent === "4") {
+                pn.textContent = 3;
+                tlm4.setAttribute('style', '');
+                tlm3.setAttribute('style', 'background-color: lightblue; border-right: 2px solid red; margin-left: 0 !important;');
+                pm.textContent = tlSpan3.textContent;
+            }
+            else if (pn.textContent === "3") {
+                pn.textContent = 2;
+                tlm3.setAttribute('style', '');
+                tlm2.setAttribute('style', 'background-color: lightblue; border-right: 2px solid red; margin-left: 0 !important;');
+                pm.textContent = tlSpan2.textContent;
+            }
+            else {
+                pn.textContent = 1;
+                tlm2.setAttribute('style', '');
+                tlm1.setAttribute('style', 'background-color: lightblue; border-right: 2px solid red; margin-left: 0 !important;');
+                pm.textContent = tlSpan1.textContent;
+            }
+        }
+    })
+</script>
+
+<!-- Script for All Machines Select Tag coming from dashboard Page -->
+<script>
+    // Get the machine value from the URL parameter
+    const urlParamsMachines = new URLSearchParams(window.location.search);
+    const selectedMachine = urlParamsMachines.get('selectedSubOption');
+
+    // Set the selected option in the dropdown
+    const selectElementMachine = document.getElementById('AllMachines');
+    // console.log("Select Tag Val: ", selectElementMachine);
+    // console.log(selectElementMachine.value);
+    if (selectElementMachine) {
+        const options = selectElementMachine.options;
+        for (let i = 0; i < options.length; i++) {
+            if (options[i].value === selectedMachine) {
+                options[i].selected = true;
+                break;
+            }
+        }
+
+        if (selectedMachine) {
+            // Add a check to ensure selectedMachine is not null before using match
+            const machineNumberMatch = selectedMachine.match(/[1-9]\d*$/);
+
+            if (machineNumberMatch) {
+                const machineNumber = machineNumberMatch[0];
+                console.log("Machine Number: ", machineNumber);
+
+                // Hide all machine divs initially
+                const pmachineDivs = document.querySelectorAll('[id^="pMachine"]');
+                pmachineDivs.forEach(div => {
+                    div.style.display = 'none';
+                });
+                const bemachineDivs = document.querySelectorAll('[id^="beMachine"]');
+                bemachineDivs.forEach(div => {
+                    div.style.display = 'none';
+                });
+                const tlmachineDivs = document.querySelectorAll('[id^="tlMachine"]');
+                tlmachineDivs.forEach(div => {
+                    div.style.display = 'none';
+                });
+
+                // Determine the machine type and show only the selected machine div
+                let selectedMachineDiv;
+                if (selectedMachine.startsWith('P-')) {
+
+                    selectedMachineDiv = document.getElementById(`pMachine${machineNumber}`);
+                    selectedMachineDiv.style.background = "lightblue";
+                    selectedMachineDiv.style.borderRight = "2px solid red";
+                    ambc.style.display = "none";
+                    pbc.style.display = "block";
+                    bebc.style.display = "none";
+                    tlbc.style.display = "none";
+                    pm.textContent = `Packer-0${machineNumber}`;
+                } else if (selectedMachine.startsWith('BE-')) {
+                    document.title = "Bucket Elevators";
+                    selectedMachineDiv = document.getElementById(`beMachine${machineNumber}`);
+                    selectedMachineDiv.style.background = "lightblue";
+                    selectedMachineDiv.style.borderRight = "2px solid red";
+                    pm.textContent = `BucketElevator-0${machineNumber}`;
+                    pm.style.width = '20vw';
+                    ambc.style.display = "none";
+                    pbc.style.display = "none";
+                    bebc.style.display = "block";
+                    tlbc.style.display = "none";
+                    ps.style.width = '38.8vw';
+                } else if (selectedMachine.startsWith('TL-')) {
+                    document.title = 'Truck Loaders';
+                    selectedMachineDiv = document.getElementById(`tlMachine${machineNumber}`);
+                    selectedMachineDiv.style.background = "lightblue";
+                    selectedMachineDiv.style.borderRight = "2px solid red";
+                    pm.textContent = `TruckLoader-0${machineNumber}`;
+                    ambc.style.display = "none";
+                    pbc.style.display = "none";
+                    bebc.style.display = "none";
+                    tlbc.style.display = "block";
+                    pm.style.width = '18vw';
+                    ps.style.width = '40.8vw';
+                }
+
+                console.log('selectedMachine ', selectedMachine);
+                console.log('selectedMachineDiv ', selectedMachineDiv);
+                if (selectedMachineDiv) {
+                    selectedMachineDiv.style.display = 'block';
+                }
+
+                console.log("Initially Selected Option: ", selectElementMachine.options[selectElementMachine.selectedIndex].text);
+                console.log(selectElementMachine.value);
+            } else {
+                console.error("Unable to extract machine number from selectedMachine:", selectedMachine);
+            }
+        }
+    }
+</script>
+
+<!-- All Table Script -->
+<script>
+    // Function to get the formatted date and time
+    function getFormattedDateTime(dateTime) {
+        const options = { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit', hour12: false };
+        return new Date(dateTime).toLocaleString('en-IN', options);
+    }
+
+    let totalOEE = 0;
+    // Function to add a new row to the table
+    // Overview
+    function addTableRow(index, dateTime) {
+        const tableBody = document.getElementById('OverviewdataTableBody');
+        const todaysOEE = document.getElementById('todaysOEE');
+        const newRow = tableBody.insertRow();
+        const timeCell = newRow.insertCell(0);
+        const availabilityCell = newRow.insertCell(1);
+        const performanceCell = newRow.insertCell(2);
+        const qualityCell = newRow.insertCell(3);
+        const oeeCell = newRow.insertCell(4);
+
+        timeCell.setAttribute('style', 'text-align: center;');
+        availabilityCell.setAttribute('style', 'text-align: center;');
+        performanceCell.setAttribute('style', 'text-align: center;');
+        qualityCell.setAttribute('style', 'text-align: center;');
+        oeeCell.setAttribute('style', 'text-align: center;');
+
+        timeCell.id = 'time_' + index;
+        availabilityCell.id = 'overviewAvailability_' + index;
+        performanceCell.id = 'overviewperformance_' + index;
+        qualityCell.id = 'overviewquality_' + index;
+        oeeCell.id = 'overviewoee_' + index;
+
+        // Format the date and time
+        const formattedDateTime = getFormattedDateTime(dateTime);
+        timeCell.textContent = formattedDateTime;
+
+        // Find the corresponding time in Chart12 data
+        // console.log('index: ', index);
+        const timeIndex = index - 1;
+        // console.log('timeIndex: ', timeIndex);
+        if (timeIndex !== -1) {
+            // console.log("oeeData[timeIndex]: ", oeeData[timeIndex])
+            const availabilityValue = randomDataAvailability[timeIndex];
+            const performanceValue = randomDataPerformance[timeIndex];
+            const qualityValue = randomDataQuality[timeIndex];
+            const OEEValue = oeeData[timeIndex].toFixed(2);
+            availabilityCell.textContent = availabilityValue.toFixed(2) + '%';
+            performanceCell.textContent = performanceValue.toFixed(2) + '%';
+            qualityCell.textContent = qualityValue.toFixed(2) + '%';
+            oeeCell.textContent = OEEValue + '%';
+
+            totalOEE += parseFloat(OEEValue);
+
+            // Calculate the number of oeeCell elements
+            const oeeCellElements = document.querySelectorAll('[id^="overviewoee_"]');
+            const oeeCellCount = oeeCellElements.length;
+
+            // Ensure oeeCellCount is not 0 to avoid division by zero
+            const scaledTotalOEE = oeeCellCount > 0 ? (totalOEE / oeeCellCount) : 0;
+
+            todaysOEE.innerHTML = "Today's Total OEE: " + scaledTotalOEE.toFixed(2) + '%';
+        } else {
+            availabilityCell.textContent = 'N/A'; // Handle if data is not available for the specific time
+            performanceCell.textContent = 'N/A'; // Handle if data is not available for the specific time
+            qualityCell.textContent = 'N/A'; // Handle if data is not available for the specific time
+            oeeCell.textContent = 'N/A'; // Handle if data is not available for the specific time
+        }
+
+        // Add your logic to fill in the rest of the cells based on the time
+
+        // Update the time for the next row
+        const nextDateTime = new Date(dateTime);
+        nextDateTime.setHours(nextDateTime.getHours() + 1);
+
+        if (nextDateTime <= new Date()) {
+            addTableRow(index + 1, nextDateTime);
+        }
+    }
+
+    // for Statistics Table Recipe
+    // Function to find the most common element in an array
+    function findMostCommonElement(array) {
+        if (array.length === 0) {
+            return null; // Return null if the array is empty
+        }
+
+        let counts = {};
+        let mostCommonElement = array[0];
+        let maxCount = 1;
+
+        for (let i = 0; i < array.length; i++) {
+            let element = array[i];
+            counts[element] = (counts[element] || 0) + 1;
+
+            if (counts[element] > maxCount) {
+                mostCommonElement = element;
+                maxCount = counts[element];
+            }
+        }
+
+        return mostCommonElement;
+    }
+
+    // Function to add a new row to the Statistics table
+    function StatisticsaddTableRow(index, dateTime) {
+        const tableBody = document.getElementById('StatisticsdataTableBody');
+        const newRow = tableBody.insertRow();
+        const timeCell = newRow.insertCell(0);
+        const maxWCell = newRow.insertCell(1);
+        const minWCell = newRow.insertCell(2);
+        const avgWCell = newRow.insertCell(3);
+        const recipeCell = newRow.insertCell(4);
+
+        timeCell.setAttribute('style', 'text-align: center;');
+        maxWCell.setAttribute('style', 'text-align: center;');
+        minWCell.setAttribute('style', 'text-align: center;');
+        avgWCell.setAttribute('style', 'text-align: center;');
+        recipeCell.setAttribute('style', 'text-align: center;');
+
+        timeCell.id = 'time_' + index;
+        maxWCell.id = 'statisticsmaxW_' + index;
+        minWCell.id = 'statisticsminW_' + index;
+        avgWCell.id = 'statisticsavgW_' + index;
+        recipeCell.id = 'statisticsrecipe_' + index;
+
+        maxWCell.textContent = 'MaxW_' + index;
+        minWCell.textContent = 'MinW_' + index;
+        avgWCell.textContent = 'avgW_' + index;
+        recipeCell.textContent = 'recipe_' + index;
+
+        // Format the date and time
+        const formattedDateTime = getFormattedDateTime(dateTime);
+        timeCell.textContent = formattedDateTime;
+
+        // Add your logic to fill in the rest of the cells based on the time
+        const timeIndex = index - 1;
+        // console.log('timeIndex: ', timeIndex);
+        if (timeIndex !== -1) {
+            // console.log("oeeData[timeIndex]: ", oeeData[timeIndex])
+            const maxWValue = randomMaxWeights[timeIndex];
+            const minWValue = randomMinWeights[timeIndex];
+            const avgWValue = randomAvgWeights[timeIndex];
+            const recipeValue = randomRecipe[timeIndex];
+            maxWCell.textContent = maxWValue.toFixed(2) + 'Kg';
+            minWCell.textContent = minWValue.toFixed(2) + 'Kg';
+            avgWCell.textContent = avgWValue.toFixed(2) + 'Kg';
+            recipeCell.textContent = recipeValue;
+        } else {
+            maxWCell.textContent = 'N/A'; // Handle if data is not available for the specific time
+            minWCell.textContent = 'N/A'; // Handle if data is not available for the specific time
+            avgWCell.textContent = 'N/A'; // Handle if data is not available for the specific time
+            recipeCell.textContent = 'N/A'; // Handle if data is not available for the specific time
+        }
+
+        // Find the maximum value from randomMaxWeights
+        const maxWeightMax = Math.max(...randomMaxWeights);
+        const minWeightMin = Math.min(...randomMinWeights);
+        const avgWeightMax = Math.max(...randomAvgWeights);
+        // Find the most common recipe
+        const mostCommonRecipe = findMostCommonElement(randomRecipe);
+
+        // Update the FixedCells with the there values
+        document.getElementById('maxW').textContent = 'Max: ' + maxWeightMax.toFixed(2) + ' Kg';
+        document.getElementById('minW').textContent = 'Min: ' + minWeightMin.toFixed(2) + 'Kg';
+        document.getElementById('avgW').textContent = 'Avg: ' + avgWeightMax.toFixed(2) + 'Kg';
+        document.getElementById('mostRecipe').textContent = 'Recipe: ' + mostCommonRecipe;
+
+        // Update the time for the next row
+        const nextDateTime = new Date(dateTime);
+        nextDateTime.setHours(nextDateTime.getHours() + 1);
+
+        if (nextDateTime <= new Date()) {
+            StatisticsaddTableRow(index + 1, nextDateTime);
+        }
+    }
+
+    // Get the current date and time
+    const currentDatefortable = new Date();
+    currentDatefortable.setHours(6, 0, 0, 0); // Set the time to 06:00 AM
+
+    // Call the function to add the first row
+    addTableRow(1, currentDatefortable);
+    StatisticsaddTableRow(1, currentDatefortable);
+</script>
+
+<!-- Table Rows & Pagination -->
+<script>
+    var currentPage = 1;
+    var entriesPerPage = parseInt($('#maxRows').val());
+
+    $('#maxRows').change(function () {
+        entriesPerPage = parseInt($(this).val());
+        currentPage = 1;
+        updateTable(entriesPerPage);
+    });
+
+    updateTable(entriesPerPage);
+
+    function updateTable(entriesPerPage) {
+        $('#OverviewdataTableBody tr').hide();
+
+        if (isNaN(entriesPerPage) || entriesPerPage <= 0) {
+            entriesPerPage = 5;
+        }
+
+        var startIndex = (currentPage - 1) * entriesPerPage;
+        var endIndex = startIndex + entriesPerPage;
+
+        $('#OverviewdataTableBody tr').slice(startIndex, endIndex).show();
+
+        updatePagination();
+
+        var OverviewtotalRows = $('#OverviewdataTableBody tr').length;
+        var TimelinetotalRows = $('#TimelinedataTableBody tr').length;
+        var StatisticstotalRows = $('#StatisticsdataTableBody tr').length;
+        var OverviewshowingFrom = Math.min(startIndex + 1, OverviewtotalRows);
+        var OverviewshowingTo = Math.min(endIndex, OverviewtotalRows);
+        var TimelineshowingFrom = Math.min(startIndex + 1, TimelinetotalRows);
+        var TimelineshowingTo = Math.min(endIndex, TimelinetotalRows);
+        var StatisticsshowingFrom = Math.min(startIndex + 1, StatisticstotalRows);
+        var StatisticsshowingTo = Math.min(endIndex, StatisticstotalRows);
+
+        $('#Overview-data-Info').text('Showing ' + OverviewshowingFrom + ' to ' + OverviewshowingTo + ' of ' + OverviewtotalRows + ' entries');
+        $('#Timeline-data-Info').text('Showing ' + TimelineshowingFrom + ' to ' + TimelineshowingTo + ' of ' + TimelinetotalRows + ' entries');
+        $('#Statistics-data-Info').text('Showing ' + StatisticsshowingFrom + ' to ' + StatisticsshowingTo + ' of ' + StatisticstotalRows + ' entries');
+    }
+
+    function updatePagination() {
+        var totalRows = $('#OverviewdataTableBody tr').length;
+        var totalPages = Math.ceil(totalRows / entriesPerPage);
+
+        var paginationHtml = '';
+
+        if (totalPages > 1) {
+            paginationHtml += '<li class="page-item' + (currentPage > 1 ? '' : ' disabled') + '" id="prev"><span class="page-link bi-chevron-left" style="padding: 10px;"></span></li>';
+        }
+
+        for (var i = 1; i <= totalPages; i++) {
+            paginationHtml += '<li class="page-item' + (i === currentPage ? ' active' : '') + '" data-page="' + i + '"><span class="page-link">' + i + '</span></li>';
+        }
+
+        if (totalPages > 1) {
+            paginationHtml += '<li class="page-item' + (currentPage < totalPages ? '' : ' disabled') + '" id="next"><span class="page-link bi-chevron-right" style="padding: 10px;"></span></li>';
+        }
+
+        $('.tp').html(paginationHtml);
+
+        // Updated click event handlers for pagination links
+        $('.tp li[id="prev"]').click(function () {
+            if (currentPage > 1) {
+                currentPage--;
+                updateTable(entriesPerPage);
+            }
+        });
+
+        $('.tp li[id="next"]').click(function () {
+            if (currentPage < totalPages) {
+                currentPage++;
+                updateTable(entriesPerPage);
+            }
+        });
+
+        $('.tp li[data-page]').click(function () {
+            currentPage = parseInt($(this).attr('data-page'));
+            updateTable(entriesPerPage);
+        });
+    }
+
+    const table_rows = document.querySelectorAll('#OverviewdataTableBody tr'),
+        table_headings = document.querySelectorAll('#OverviewdataTableHead th');
+
+    table_headings.forEach((head, i) => {
+        let sort_asc = true;
+        head.onclick = () => {
+            console.log(head);
+            table_headings.forEach(head => head.classList.remove('active'));
+            head.classList.add('active');
+
+            document.querySelectorAll('td').forEach(td => td.classList.remove('active'));
+            table_rows.forEach(row => {
+                row.querySelectorAll('td')[i].classList.remove('active');
+                row.querySelectorAll('td')[i].classList.add('active');
+            })
+
+            head.classList.toggle('asc', sort_asc);
+            sort_asc = head.classList.contains('asc') ? false : true;
+
+            sortOverviewTable(i, sort_asc);
+        }
+    })
+
+    function sortOverviewTable(column, sort_asc) {
+        console.log('Sorting:', column, sort_asc);
+
+        const oldTbody = document.getElementById('OverviewdataTableBody');
+
+        if (oldTbody) {
+            // Clear existing rows
+            oldTbody.innerHTML = '';
+
+            const sortedRows = [...table_rows].sort((a, b) => {
+                let first_row = a.querySelectorAll('td')[column].textContent.toLowerCase(),
+                    second_row = b.querySelectorAll('td')[column].textContent.toLowerCase();
+                console.log(first_row, second_row);
+                return sort_asc ? (first_row < second_row ? 1 : -1) : (first_row < second_row ? -1 : 1);
+            });
+
+            // Append sorted rows
+            sortedRows.forEach(sorted_row => oldTbody.appendChild(sorted_row));
+        } else {
+            console.error('tbody not found');
+        }
+    }
+
+</script>
+
+<!-- Script for Machine Order Filtering -->
+<script>
+    // Add an event listener to the radio buttons
+    $('input[name="orderType"]').change(function () {
+        // Save the default order of machines when the page loads
+        const defaultOrder = $('#Machines').clone();
+        var machinesContainer = $('#Machines');
+        var machines = machinesContainer.children('a').clone().toArray();
+        console.log(machines);
+
+        // Check if the "Top Performing" radio button is selected
+        if ($(this).val() === 'defaultOrder') {
+            console.log("Default Machine's Order Radio button clicked");
+            // Reset the order of machines to the default order
+            // machinesContainer.replaceWith(defaultOrder.clone());
+            machines.sort(function (a, b) {
+                var machineNameA = $(a).find('h4').text().toLowerCase();
+                var machineNameB = $(b).find('h4').text().toLowerCase();
+                return machineNameA.localeCompare(machineNameB);
+            });
+        } else if ($(this).val() === 'topPerforming') {
+            console.log("TopPerforming Radio button clicked");
+            // Sort the machines based on their OEE Rate in descending order
+            machines.sort(function (a, b) {
+                // Extract OEE Rates from the machine elements
+                var oeeRateA = parseFloat($(a).find('h3').text());
+                var oeeRateB = parseFloat($(b).find('h3').text());
+
+                // Compare OEE Rates in descending order
+                return oeeRateB - oeeRateA;
+            });
+        } else if ($(this).val() === 'lowestPerforming') {
+            console.log("LowestPerforming Radio button clicked");
+            // Sort the machines based on their OEE Rate in descending order
+            machines.sort(function (a, b) {
+                // Extract OEE Rates from the machine elements
+                var oeeRateA = parseFloat($(a).find('h3').text());
+                var oeeRateB = parseFloat($(b).find('h3').text());
+
+                // Compare OEE Rates in descending order
+                return oeeRateA - oeeRateB;
+            });
+        } else if ($(this).val() === 'machineNamesAZ') {
+            console.log("A to Z Radio button clicked");
+            // Sort the machines based on their names in ascending order
+            machines.sort(function (a, b) {
+                var machineNameA = $(a).find('h4').text().toLowerCase();
+                var machineNameB = $(b).find('h4').text().toLowerCase();
+                return machineNameA.localeCompare(machineNameB);
+            });
+        } else if ($(this).val() === 'machineNamesZA') {
+            console.log("Z to A Radio button clicked");
+            // Sort the machines based on their names in descending order
+            machines.sort(function (a, b) {
+                var machineNameA = $(a).find('h4').text().toLowerCase();
+                var machineNameB = $(b).find('h4').text().toLowerCase();
+                console.log(machineNameA);
+                console.log(machineNameB);
+                return machineNameB.localeCompare(machineNameA);
+            });
+        }
+
+        // Append the sorted machines back to the container
+        machinesContainer.empty().append(machines);
+    });
+</script>

@@ -1,0 +1,1289 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Header</title>
+    <link rel="stylesheet" href="/public/CSS/bootstrap/bootstrap-icons.css">
+    <link rel="stylesheet" href="/public/CSS/bootstrap/bootstrap-timepicker.css">
+    <link rel="stylesheet" href="/public/CSS/bootstrap/bootstrap.css">
+    <link rel="stylesheet" href="/public/CSS/bootstrap/bootstrap.min.css">
+    <link rel="stylesheet" href="/public/CSS/header.css">
+</head>
+
+<style>
+    #datatablehead {
+        background-color: #f8f9fa;
+        /* Light gray background color */
+        font-weight: bold;
+        text-align: center;
+    }
+
+    #datatablehead th {
+        padding: 12px;
+        /* Adjust padding for better spacing */
+    }
+
+    #datatablehead th i {
+        margin-left: 5px;
+        /* Add space between text and arrow icon */
+    }
+
+    #datatablehead th:hover {
+        background-color: #e9ecef;
+        /* Lighter gray on hover */
+    }
+
+    #datatablehead th.border-right {
+        border-right: 2px solid lightgray;
+    }
+
+    .bootstrap-timepicker-widget {
+        width: auto;
+    }
+
+    .bootstrap-timepicker-widget.timepicker-orient-left:before {
+        left: 4.5vw !important;
+    }
+
+    .bootstrap-timepicker-widget.timepicker-orient-left:after {
+        left: 4.5vw !important;
+    }
+
+    .bootstrap-timepicker-widget table td input {
+        width: 30px;
+    }
+
+    .popover {
+        width: auto;
+        height: auto;
+    }
+
+    .popover {
+        width: 15vw;
+        height: 18vh;
+    }
+
+    #spoutsDropdownMenu {
+        display: block;
+        border: none;
+    }
+
+    .ShiftsearchBar {
+        width: 65%;
+        height: 100%;
+        background-color: #fff;
+        padding: 0 .8rem;
+        border-radius: 2rem;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        transition: .2s;
+        border: 1px solid;
+    }
+
+    .ShiftsearchBar:hover {
+        /* width: 45%; */
+        background-color: #fff;
+        box-shadow: 0 .1rem .4rem rgba(0, 0, 0, 0.2);
+    }
+
+    .ShiftsearchBar i {
+        width: 1.2rem;
+        height: 1.2rem;
+    }
+
+    .ShiftsearchBar input {
+        width: 100%;
+        padding: 0 .5rem 0 .3rem;
+        background-color: transparent;
+        border: none;
+        outline: none;
+    }
+
+    .shiftexport__file {
+        position: relative;
+    }
+
+    .shiftexport__file .bi-box-arrow-right {
+        display: inline-block;
+        width: 2rem;
+        height: 2rem;
+        border-radius: 50%;
+        transition: .2s ease-in-out;
+    }
+
+    .bi-arrow-clockwise:hover {
+        transform: scale(1.15);
+    }
+
+    .shiftexport__file .bi-box-arrow-right:hover {
+        /* background-color: #fff; */
+        transform: scale(1.15);
+    }
+
+    .shiftexport__file input {
+        display: none;
+    }
+
+    .shiftexport__file .shiftexport__file-options {
+        position: absolute;
+        right: 0;
+        width: 12rem;
+        border-radius: .5rem;
+        overflow: hidden;
+        text-align: center;
+        opacity: 0;
+        transform: scale(.8);
+        transform-origin: top right;
+        box-shadow: 0 .2rem .5rem #0004;
+        transition: .2s;
+    }
+
+    .shiftexport__file input:checked+.shiftexport__file-options {
+        opacity: 1;
+        transform: scale(1);
+        z-index: 100;
+    }
+
+    .shiftexport__file .shiftexport__file-options label {
+        display: block;
+        width: 100%;
+        padding: .6rem 0;
+        background-color: #f2f2f2;
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        transition: .2s ease-in-out;
+    }
+
+    .shiftexport__file .shiftexport__file-options label:first-of-type {
+        padding: 1rem 0;
+        background-color: #86e49d !important;
+    }
+
+    .shiftexport__file .shiftexport__file-options label:hover {
+        transform: scale(1.05);
+        background-color: #fff;
+        cursor: pointer;
+    }
+
+    tbody tr:nth-child(even) {
+        background-color: #0000000b;
+    }
+
+    tbody tr {
+        --delay: .1s;
+        transition: .5s ease-in-out var(--delay), background-color 0s;
+    }
+
+    tbody tr.hide {
+        opacity: 0;
+        transform: translateX(100%);
+    }
+
+    tbody tr:hover {
+        background-color: #fff6 !important;
+    }
+
+    tbody tr td,
+    tbody tr td p,
+    tbody tr td i {
+        transition: .2s ease-in-out;
+    }
+
+    tbody tr.hide td,
+    tbody tr.hide td p {
+        padding: 0;
+        font: 0 / 0 sans-serif;
+        transition: .2s ease-in-out .5s;
+    }
+
+    tbody tr.hide td i {
+        width: 0;
+        height: 0;
+        transition: .2s ease-in-out .5s;
+    }
+
+    thead th:hover i.bi-arrow-up {
+        border: 1.4px solid #6c00bd;
+    }
+
+    thead th:hover {
+        color: #6c00bd;
+    }
+
+    thead th.active i.bi-arrow-up {
+        background-color: #6c00bd;
+        color: #fff;
+    }
+
+    thead th.asc i.bi-arrow-up {
+        transform: rotate(180deg);
+    }
+
+    thead th.active,
+    tbody td.active {
+        color: #6c00bd;
+    }
+
+    #filter:hover {
+        transform: scale(1.05);
+        /* background-color: #fff; */
+        cursor: pointer;
+        border-radius: 50%;
+    }
+
+    .shiftexport__file .shiftexport__file-options i {
+        width: 2rem;
+        height: auto;
+    }
+
+    .rounded-lg {
+        border-radius: 1rem;
+    }
+
+    .nav-pills .nav-link {
+        color: #555;
+    }
+
+    .nav-pills .nav-link.active {
+        color: #fff;
+    }
+
+    .edited-row {
+        background-color: #e6f7ff;
+        /* Light blue color for edited rows */
+        transition: background-color 0.5s ease-in-out;
+        /* Add a smooth transition effect */
+    }
+</style>
+
+<body>
+    <div class="overlay"></div>
+    <nav class="sidebar">
+        <header class="d-flex row">
+            <div class="left" style="background-color: darkslateblue;">
+                <div class="image text-center">
+                    <img src="/public/Images/BG.jpg" alt="BG" class="i1 d-none" style="width: 9vw;">
+                    <img src="/public/Images/BGL.png" alt="mBGL" class="i2 d-inline" style="width: 2vw;">
+                </div>
+                <a><i class="icon bi-chevron-right toggle"></i></a>
+                <div class="sidebar-offcanvas-body" id="sidebarExample" data-bs-toggle="sidebar">
+                    <div class="navi column text-center flex-nowrap">
+                        <div class="m-0">
+                            <ul class="mx-2 mb-0 p-0" style="list-style: none;">
+                                <a href="/templates/views/dashboard.html"
+                                    style="text-decoration: none; color: whitesmoke;" data-bs-toggle="tooltip"
+                                    data-bs-placement="right" title="Dashboard">
+                                    <li class="dashboard_button m-auto p-2" id="ahb">
+                                        <i class="bi-house"></i>
+                                        <span class="ms-1 d-none" id="span1">Dashboard</span>
+                                    </li>
+                                </a>
+                                <a onclick="showModel()" style="color: whitesmoke; margin-top: 5px;"
+                                    data-bs-toggle="tooltip" data-bs-placement="right" title="Shift Input">
+                                    <li class="si_button m-auto p-2" id="ahb">
+                                        <i class="bi-wrench-adjustable"></i>
+                                        <span class="ms-1 d-none" id="span2" style="cursor: pointer;">Shift Input</span>
+                                    </li>
+                                </a>
+                            </ul>
+                        </div>
+                        <div class="position-fixed bottom-0 text-center m-2 mb-0">
+                            <ul class="mx-2 mb-0 p-0" style="list-style: none;">
+                                <li class="profile_button m-auto p-1" id="ahb">
+                                    <div class="btn-group dropup">
+                                        <a class="btn" type="button" href="/templates/views/Profile.html" role="button"
+                                            id="triggerId" aria-haspopup="true" aria-expanded="false"
+                                            style="color: whitesmoke; border: none;" data-bs-toggle="tooltip"
+                                            data-bs-placement="right" title="Users">
+                                            <!-- <button type="button" class="btn users_btn btn-outline-none"
+                                            onclick="ActionModel()" id="ActionButton" aria-expanded="false"
+                                            style="text-decoration: none; color: whitesmoke;" data-bs-toggle="tooltip"
+                                            data-bs-placement="right" title="Users"> -->
+                                            <i class="bi-person"></i>
+                                            <span class="ms-1 d-none" id="span3">Users</span>
+                                            <!-- </button> -->
+                                        </a>
+                                        <!-- <div class="dropdown-menu" aria-labelledby="triggerId">
+                                            <button class="dropdown-item" id="ActionButton"
+                                                >Action</button>
+                                            <button class="dropdown-item" href="#">Profile</button>
+                                        </div> -->
+                                    </div>
+                                </li>
+                                <a class="btn span4 p-2 mb-1" id="ahb" href="/templates/views/frontpage.html"
+                                    style="color: whitesmoke;" data-bs-toggle="tooltip" data-bs-placement="right"
+                                    title="LogOut">
+                                    <li class="m-auto p-2">
+                                        <i class="bi-box-arrow-right"></i>
+                                        <span class="ms-1 d-none" id="span4">LogOut</span>
+                                    </li>
+                                </a>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+    </nav>
+
+    <!-- Shift Input Form -->
+    <div class="si">
+        <span id="si_close">&times;</span>
+        <div class="container m-0" style="max-width: none;">
+            <div class="row justify-content-between">
+                <div class="col-md-2 my-auto w-auto">
+                    <h1 class="display-6">Shift Details</h1>
+                </div>
+                <div class="machine_details col-md-10 row justify-content-end w-auto">
+                    <div class="col-md-3 my-auto w-auto">
+                        <div class="card shadow" style="background: #007BFF; color: #fff;">
+                            <div class="card-header d-flex justify-content-between">
+                                <h5 class="card-title" style="margin: auto;"><i class="bi bi-box"></i> Packers</h5>
+                                <span class="badge bg-white" id="packers_count"
+                                    style="width: auto; margin: auto; margin-left: 5px; color: #000;">3</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 my-auto w-auto">
+                        <div class="card shadow" id="spoutsCard"
+                            style="cursor: pointer; color: #fff; background: #007BFF;">
+                            <div class="card-header d-flex justify-content-between">
+                                <h6 class="card-title" style="margin: auto;"><i class="bi bi-pip"></i> Spouts</h6>
+                                <span class="badge bg-white" id="spouts_count"
+                                    style="width: auto; margin: auto; margin-left: 5px; color: #000;">48</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 my-auto w-auto">
+                        <div class="card shadow" style="background: #007BFF; color: #fff;">
+                            <div class="card-header d-flex justify-content-between">
+                                <h5 class="card-title" style="margin: auto;"><i class="bi bi-truck"></i> Truck Loaders
+                                </h5>
+                                <span class="badge bg-white" id="truckloaders_count"
+                                    style="width: auto; margin: auto; margin-left: 5px; color: #000;">12</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 my-auto w-auto">
+                        <div class="card shadow" style="background: #007BFF; color: #fff;">
+                            <div class="card-header d-flex justify-content-between">
+                                <h5 class="card-title" style="margin: auto;"><i class="bi bi-archive-fill"></i> Bucket
+                                    Elevators</h5>
+                                <span class="badge bg-white" id="bucketelevators_count"
+                                    style="width: auto; margin: auto; margin-left: 5px; color: #000;">3</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <hr class="mt-1">
+        </div>
+        <form action="">
+            <div class="entries col-md-12 mx-auto bg-white rounded-lg shadow p-2"
+                style="--bs-gutter-x: 0; height: auto;">
+                <div class="row justify-content-between" style="--bs-gutter-x: 0;">
+                    <div class="row mb-2" style="--bs-gutter-x: 0; width: auto; justify-content: space-between;">
+                        <label for="length" class="form-label my-auto">Shift Length (Hours):</label>
+                        <select class="form-select ms-2" id="length" style="width: auto;">
+                            <option value="">Select</option>
+                            <option value="8" id="option-8">8</option>
+                            <option value="16" id="option-16">16</option>
+                            <option value="24" id="option-24">24</option>
+                        </select>
+                    </div>
+                    <div class="row mb-2" style="--bs-gutter-x: 0; width: auto; justify-content: space-between;">
+                        <label for="ns" class="form-label my-auto me-1">Number of Shift(s):</label>
+                        <input class="form-control ns" type="number" placeholder="" value="" style="width: auto;"
+                            disabled>
+                    </div>
+                </div>
+
+                <!-- Card form tabs -->
+                <ul role="tablist" class="nav bg-light nav-pills rounded-pill nav-fill mb-2">
+                    <li class="nav-item">
+                        <a data-bs-toggle="pill" href="#nav-tab-ProductionData" class="nav-link active rounded-pill">
+                            <i class="bi-gear-fill"></i>
+                            Production Data
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a data-bs-toggle="pill" href="#nav-tab-ShiftData" class="nav-link rounded-pill">
+                            <i class="bi-clock-fill"></i>
+                            Shift Data
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a data-bs-toggle="pill" href="#nav-tab-MaintenanceData" class="nav-link rounded-pill">
+                            <i class="bi-tools"></i>
+                            Maintenance Data
+                        </a>
+                    </li>
+                </ul>
+                <!-- End -->
+
+                <div class="row" style="--bs-gutter-x: 0;">
+                    <!-- Production Data form content -->
+                    <div class="tab-content col-md-9">
+                        <!-- Production Data info-->
+                        <div id="nav-tab-ProductionData" class="tab-pane fade show active" style="width: max-content;">
+                            <div class="row m-2 my-1">
+                                <label for="machineCapacity" class="form-label my-auto">Machine
+                                    Capacity (Bags/Hour):</label>
+                                <input type="number" class="form-control me-0" id="machineCapacity"
+                                    name="machineCapacity" style="width: auto; background: #fff;" disabled>
+                            </div>
+                            <div class="row m-2 my-1 justify-content-between">
+                                <label for="totalBags" class="form-label my-auto">Total
+                                    Bags Produced per Shift:</label>
+                                <input type="number" class="form-control me-0" id="totalBags" name="totalBags"
+                                    style="width: auto; background: #fff;" disabled>
+                            </div>
+                            <div class="row m-2 my-1 mb-0">
+                                <label for="rejectedBags" class="form-label my-auto">Rejected
+                                    Bags per Shift:</label>
+                                <input type="number" class="form-control me-0" id="rejectedBags" name="rejectedBags"
+                                    style="width: auto; height: auto; margin: auto;" required>
+                            </div>
+                        </div>
+                        <!-- End -->
+
+                        <!-- Shift Data info -->
+                        <div id="nav-tab-ShiftData" class="tab-pane fade" style="width: max-content;">
+                            <div class="row m-2 my-1">
+                                <label for="sbs" style="margin: auto; padding-right: 0; margin-left: 0;">Short
+                                    Breaks per Shift (Mins):</label>
+                                <div class="input-group date time-Picker"
+                                    style="width: 18vw;margin: auto; margin-right: 0;">
+                                    <input type="text" class="form-control timePicker1" name="sbs" required>
+                                    <span class="input-group-text clockClick"><i class="bi-clock"
+                                            aria-hidden="true"></i></span>
+                                </div>
+                            </div>
+                            <div class="row m-2 my-1">
+                                <label for="mbs" style="margin: auto; padding-right: 0; margin-left: 0;">Meal Breaks
+                                    per Shift (Mins):</label>
+                                <div class="input-group date time-Picker"
+                                    style="width: 18vw; margin: auto; margin-right: 0;">
+                                    <input type="text" class="form-control timePicker1" name="mbs" required>
+                                    <span class="input-group-text clockClick"><i class="bi-clock"
+                                            aria-hidden="true"></i></span>
+                                </div>
+                            </div>
+                            <div class="row m-2 my-1 mb-0">
+                                <label for="its" style="margin: auto; padding-right: 0; margin-left: 0;">Idle Time
+                                    per Shift (Mins):</label>
+                                <div class="input-group date time-Picker"
+                                    style="width: 18vw; margin: auto; margin-right: 0;">
+                                    <input type="text" class="form-control timePicker1" name="its" required>
+                                    <span class="input-group-text clockClick"><i class="bi-clock"
+                                            aria-hidden="true"></i></span>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- End -->
+
+                        <!-- Maintenance Data info -->
+                        <div id="nav-tab-MaintenanceData" class="tab-pane fade" style="width: max-content;">
+                            <div class="row m-2 my-1">
+                                <label for="dts" style="margin: auto; padding-right: 0; margin-left: 0;">Down Time
+                                    per Shift (Mins):</label>
+                                <div class="input-group date time-Picker"
+                                    style="width: 18vw; margin: auto; margin-right: 0;">
+                                    <input type="text" class="form-control timePicker2" name="dts" required>
+                                    <span class="input-group-text clockClick"><i class="bi-clock"
+                                            aria-hidden="true"></i></span>
+                                </div>
+                            </div>
+                            <div class="row m-2 my-1">
+                                <label for="Reason" style="margin: auto; padding-right: 0; margin-left: 0;">Reason
+                                    for Down Time :</label>
+                                <div class="input-group" style="width: 18vw; margin: auto; margin-right: 0;">
+                                    <select class="form-control" name="Reason" required>
+                                        <option value="Select Reason" selected hidden>Select Reason: </option>
+                                        <option value="Logistic Issue/Material Issue">Logistic Issue/Material Issue
+                                        </option>
+                                        <option value="Tool Change">Tool Change</option>
+                                        <option value="Inspection | In process">Inspection | In process</option>
+                                        <option value="Uncategorized">Uncategorized</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="row m-2 my-1 mb-0">
+                                <label for="ppt" style="margin: auto; padding-right: 0; margin-left: 0;">Planned
+                                    Maintenance Time per Shift (Mins):</label>
+                                <div class="input-group date time-Picker"
+                                    style="width: 18vw; margin: auto; margin-right: 0;">
+                                    <input type="text" class="form-control timePicker2" name="ppt" required>
+                                    <span class="input-group-text clockClick"><i class="bi-clock"
+                                            aria-hidden="true"></i></span>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- End -->
+                    </div>
+                    <!-- End -->
+
+                    <!-- <button type="button" class="btn btn-outline-success">Submit</button> -->
+                    <div class="col-md-3 mt-auto ms-auto" style="text-align: right;">
+                        <button id="si_submit" type="submit" class="btn btn-primary" style="font-size: 18px;">Save Shift
+                            Data</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+        <div class="my-2" id="SITable"
+            style="width: 92.25vw; overflow: auto; height: 47vh; border: 2px solid lightgray; border-radius: 5px;">
+            <div class="col-md-6 my-auto sticky-top" id="searchbar"
+                style="--bs-gutter-x: 0; width: auto; height: 35px; background: whitesmoke;">
+                <!-- Export in PDF, CSV & Excel -->
+                <div class="shiftexport__file my-auto"
+                    style="text-align: center; width: max-content; background: transparent; float: right;">
+                    <label for="shiftexport-file" class="bi bi-box-arrow-right py-1" title="Export File"
+                        style="font-size: x-large;" onclick="exportClick()"></label>
+                    <input type="checkbox" id="shiftexport-file">
+                    <div class="shiftexport__file-options" id="exportOptions" style="display: none;">
+                        <label>Export As &nbsp; &#10140;</label>
+                        <label for="shiftexport-file" id="toPDF" onclick="exportPageTo_Pdf('Page')">PDF <i
+                                class="bi-file-pdf"></i></label>
+                        <!-- <label for="shiftexport-file" id="toJSON">JSON <i class="bi-filetype-json"></i></label> -->
+                        <label for="shiftexport-file" id="toCSV"
+                            onclick="exportTableTo_Csv('ShiftTable', '.shiftTable')">CSV <i
+                                class="bi-filetype-csv"></i></label>
+                        <label for="shiftexport-file" id="toEXCEL"
+                            onclick="exportTableTo_Excel('ShiftTable', '.shiftTable')">EXCEL <i
+                                class="bi-file-earmark-excel"></i></label>
+                    </div>
+                </div>
+                <!-- Search Bar -->
+                <div class="input-group ShiftsearchBar"
+                    style="width: auto; height: auto; float: right; background-color: #fff; margin-top: 5px; margin-bottom: 5px;">
+                    <input type="search" class="form-control" placeholder="Search Data..." style="width: auto;">
+                    <i class="bi bi-search p-0" style="width: auto; height: auto;"></i>
+                </div>
+            </div>
+            <table class="table table-bordered table-hover shiftTable" style="border-top: 2px solid lightgray;">
+                <thead id="datatablehead" class="sticky-top" style="top: 30px !important;">
+                    <tr>
+                        <th class="fs-6 border-right" style="top: 0; background: whitesmoke; font-weight: 500;">Per Hour
+                            <i class="bi bi-arrow-up"></i></th>
+                        <th class="fs-6 border-right" style="top: 0; background: whitesmoke; font-weight: 500;">Shift
+                            Length <i class="bi bi-arrow-up"></i>
+                        </th>
+                        <th class="fs-6 border-right" style="top: 0; background: whitesmoke; font-weight: 500;">Number
+                            of Shifts <i class="bi bi-arrow-up"></i></th>
+                        <th class="fs-6 border-right" style="top: 0; background: whitesmoke; font-weight: 500;">Machine
+                            Capacity (Bags/Hour)
+                            <i class="bi bi-arrow-up"></i>
+                        </th>
+                        <th class="fs-6 border-right" style="top: 0; background: whitesmoke; font-weight: 500;">Total
+                            Bags Produced per
+                            Shift <i class="bi bi-arrow-up"></i></th>
+                        <th class="fs-6 border-right" style="top: 0; background: whitesmoke; font-weight: 500;">Rejected
+                            Bags per Shift <i class="bi bi-arrow-up"></i></th>
+                        <th class="fs-6 border-right" style="top: 0; background: whitesmoke; font-weight: 500;">Short
+                            Breaks per Shift
+                            (Mins) <i class="bi bi-arrow-up"></i></th>
+                        <th class="fs-6 border-right" style="top: 0; background: whitesmoke; font-weight: 500;">Meal
+                            Breaks per Shift (Mins)
+                            <i class="bi bi-arrow-up"></i>
+                        </th>
+                        <th class="fs-6 border-right" style="top: 0; background: whitesmoke; font-weight: 500;">Idle
+                            Time per Shift (Mins)
+                            <i class="bi bi-arrow-up"></i>
+                        </th>
+                        <th class="fs-6 border-right" style="top: 0; background: whitesmoke; font-weight: 500;">Down
+                            Time per Shift (Mins)
+                            <i class="bi bi-arrow-up"></i>
+                        </th>
+                        <th class="fs-6 border-right" style="top: 0; background: whitesmoke; font-weight: 500;">Planned
+                            Maintenance Time per
+                            Shift
+                            (Mins) <i class="bi bi-arrow-up"></i></th>
+                        <th class="fs-6" style="top: 0; background: whitesmoke; font-weight: 500;">Action</th>
+                    </tr>
+                </thead>
+                <tbody id="ShiftdataTableBody"></tbody>
+            </table>
+        </div>
+    </div>
+</body>
+<script src="/public/JavaScripts/jquery-3.7.1.js"></script>
+<!-- <script src="/public/JavaScripts/moment.js"></script> -->
+<script src="/public/JavaScripts/bootstrap/bootstrap.min.js"></script>
+<script src="/public/JavaScripts/bootstrap/bootstrap.bundle.min.js"></script>
+<script src="/public/JavaScripts/bootstrap/bootstrap-timepicker.js"></script>
+
+<!-- Limiting timePicker1 and 2 based on Shift Length -->
+<script>
+    function getFormattedValue(value) {
+        return value > 9 ? value : "0" + value;
+    }
+
+    function updateTime() {
+        var timeElements = [];
+
+        for (let i = 1; i <= 3; i++) {
+            var timepicker = document.getElementById("timepicker" + i);
+            // console.log('timepicker: ', timepicker)
+            timeElements[i - 1] = "";
+            timepicker.addEventListener("input", function () {
+                var hour = document.getElementById("hour" + i).value;
+                var minute = document.getElementById("minute" + i).value || 0;
+
+                var time = getFormattedValue(hour) + ":" + getFormattedValue(minute);
+                timeElements[i - 1] = time;
+
+                if (timeElements.every(Boolean)) {
+                    console.log("Times: " + timeElements.join(", "));
+                }
+            });
+        }
+    }
+
+    function configureTimePicker($picker, leftOffset, shiftLength) {
+        var format = "HH:mm";
+        var startRestriction = "00:00";
+        var endRestriction = "23:59";
+
+        // console.log(shiftLength.val)
+        if (shiftLength === "8") {
+            // console.log('entered shift: ', shiftLength)
+            // If the shift length is 8, restrict the time range from 00:00 to 08:00
+            endRestriction = "08:00";
+            // updateTime();
+            // document.getElementsByClassName('.bootstrap-timepicker-hour').prop('max', endRestriction);
+            // console.log(document.getElementsByClassName('.bootstrap-timepicker-hour').prop('max', endRestriction));
+        } else if (shiftLength === "16") {
+            // console.log('entered shift: ', shiftLength)
+            // If the shift length is 16, restrict the time range from 00:00 to 16:00
+            endRestriction = "16:00";
+        } else if (shiftLength === "24") {
+            // console.log('entered shift: ', shiftLength)
+            // If the shift length is 24, restrict the time range from 00:00 to 23:59
+            endRestriction = "23:59";
+        }
+        // console.log('end: ', endRestriction)
+        $picker.timepicker({
+            useCurrent: false,
+            format: format,
+            showMeridian: false, // Hide AM/PM
+            minTime: startRestriction,
+            maxTime: endRestriction
+        }).on('dp.show', function () {
+            var time = moment().startOf('day');
+            $(this).data('DateTimePicker').date(time);
+            $('.bootstrap-timepicker-widget').css('left', leftOffset);
+
+            // Dynamically limit the bootstrap-timepicker-hour input
+            var maxHour = parseInt(endRestriction.split(":")[0], 10);
+            // console.log(maxHour);
+            $('.bootstrap-timepicker-hour').on('input', function () {
+                // console.log("entered bth");
+                var currentHour = parseInt($(this).val(), 10);
+                if (currentHour > maxHour) {
+                    $(this).val(maxHour);
+                }
+            });
+        }).on('dp.change', function (e) {
+            // Update maxTime dynamically after the time picker is shown
+            $picker.timepicker('option', 'maxTime', endRestriction);
+            // console.log("$picker.timepicker('option', 'maxTime', endRestriction): ", $picker.timepicker('option', 'maxTime', endRestriction));
+        });
+        return $picker;
+    }
+
+    $('.time-Picker').each(function () {
+        var defaultTime = $(this).data('default-time');
+        // console.log('defaultTime', defaultTime)
+        var firstOpen = true;
+        // console.log('firstopen', firstOpen)
+        var time;
+
+        configureTimePicker($(this).find('.timePicker1'), '56vw', $("#length").val());
+        configureTimePicker($(this).find('.timePicker2'), '86.5vw', $("#length").val());
+    });
+
+    $("#length").change(function () {
+        var selectedShiftLength = $(this).val();
+        console.log(selectedShiftLength);
+
+        $('.time-Picker').each(function () {
+            configureTimePicker($(this).find('.timePicker1'), '56vw', selectedShiftLength);
+            // console.log('timepicker1: ', configureTimePicker($(this).find('.timePicker1'), '56vw', selectedShiftLength));
+            configureTimePicker($(this).find('.timePicker2'), '86.5vw', selectedShiftLength);
+            // console.log('timepicker2: ', configureTimePicker($(this).find('.timePicker2'), '86.5vw', selectedShiftLength));
+        });
+    });
+
+    // Event listener for tab links
+    $('.nav-pills .nav-link').on('click', function (e) {
+        e.preventDefault();
+
+        // Remove active class from all tab links
+        $('.nav-pills .nav-link').removeClass('active');
+
+        // Add active class to the clicked tab link
+        $(this).addClass('active');
+
+        // Get the target tab id
+        var targetTabId = $(this).attr('href');
+
+        // Hide all tab content
+        $('.tab-content .tab-pane').removeClass('show active');
+
+        // Show the target tab content
+        $(targetTabId).addClass('show active');
+    });
+
+    // Event listener for form submission
+    // $('form').on('submit', function (e) {
+    //     // Check for empty input fields
+    //     var emptyInputs = $('.tab-pane.active input:visible').filter(function () {
+    //         return $(this).val().trim() === '';
+    //     });
+
+    //     // If there are empty inputs, prevent form submission and switch to the tab
+    //     if (emptyInputs.length > 0) {
+    //         e.preventDefault();
+
+    //         // Get the closest tab pane containing the empty input
+    //         var emptyTabPane = emptyInputs.closest('.tab-pane');
+
+    //         // Get the ID of the empty tab pane
+    //         var emptyTabId = emptyTabPane.attr('id');
+
+    //         // Remove active class from all tab links
+    //         $('.nav-pills .nav-link').removeClass('active');
+
+    //         // Find the corresponding tab link and add active class
+    //         $('.nav-pills .nav-link[href="#' + emptyTabId + '"]').addClass('active');
+
+    //         // Hide all tab content
+    //         $('.tab-content .tab-pane').removeClass('show active');
+
+    //         // Show the target tab content
+    //         emptyTabPane.addClass('show active');
+    //     }
+    // });
+
+</script>
+
+<script>
+    document.querySelector('.si_button').addEventListener('click', function () {
+        // console.log("SI Clicked");
+        if ($(this).hasClass('shift_input_active')) {
+            // console.log("no Active class");
+            $(this).removeClass('shift_input_active')
+        } else {
+            // console.log("Active Class present");
+            $(this).addClass('shift_input_active')
+        }
+    });
+    // document.querySelector('.users_btn').addEventListener('click', function () {
+    //     // console.log("SI Clicked");
+    //     if ($(this).hasClass('users_active')) {
+    //         // console.log("no Active class");
+    //         $(this).removeClass('users_active')
+    //     } else {
+    //         // console.log("Active Class present");
+    //         $(this).addClass('users_active')
+    //     }
+    // });
+
+    $('.timePicker1').on('click', () => {
+        document.querySelectorAll('span.glyphicon.glyphicon-chevron-up').forEach(function (span) {
+            span.classList.remove('glyphicon', 'glyphicon-chevron-up');
+            span.classList.add('bi-chevron-up');
+        });
+        document.querySelectorAll('span.glyphicon.glyphicon-chevron-down').forEach(function (span) {
+            span.classList.remove('glyphicon', 'glyphicon-chevron-down');
+            span.classList.add('bi-chevron-down');
+        });
+    })
+    $('.timePicker2').on('click', () => {
+        document.querySelectorAll('span.glyphicon.glyphicon-chevron-up').forEach(function (span) {
+            span.classList.remove('glyphicon', 'glyphicon-chevron-up');
+            span.classList.add('bi-chevron-up');
+        });
+        document.querySelectorAll('span.glyphicon.glyphicon-chevron-down').forEach(function (span) {
+            span.classList.remove('glyphicon', 'glyphicon-chevron-down');
+            span.classList.add('bi-chevron-down');
+        });
+    })
+
+    document.querySelector('#span1').addEventListener('click', () => {
+        console.log('setting alert display block');
+        var alerts = document.querySelectorAll("#alert");
+
+        alerts.forEach(alert => {
+            alert.style.display = "block";
+        });
+        setTimeout(() => {
+            alerts.forEach(alert => {
+                alert.style.display = "none";
+            });
+        }, 10000);
+    })
+</script>
+
+<!-- Getting number of spouts available in each Packer -->
+<script>
+    var spoutsCard = document.getElementById("spoutsCard");
+
+    // Add an onclick event listener to the "Spouts" card
+    spoutsCard.addEventListener("click", function () {
+        // Get the packers count
+        var packersCount = parseInt(document.getElementById("packers_count").innerText);
+
+        // Calculate spout count per packer
+        var spoutCountPerPacker = Math.floor(parseInt(document.getElementById("spouts_count").innerText) / packersCount);
+
+        // Create a dropdown content string
+        var dropdownContent = "<div class='dropdown'><button class='btn btn-secondary dropdown-toggle' type='button' id='spoutsDropdown' data-bs-toggle='dropdown' aria-expanded='false'>Spout Distribution</button><ul class='dropdown-menu' aria-labelledby='spoutsDropdown' id='spoutsDropdownMenu' style='border: none;'>";
+
+        // Populate the dropdown with spout count for each packer
+        for (var i = 1; i <= packersCount; i++) {
+            dropdownContent += "<li><a class='dropdown-item' href='#'>Packer " + i + ": " + spoutCountPerPacker + " Spouts</a></li>";
+        }
+
+        // Close the dropdown
+        dropdownContent += "</ul></div>";
+
+        // Destroy the existing popover instance if it exists
+        if (spoutsCard._popover) {
+            spoutsCard._popover.dispose();
+        }
+
+        // Initialize a new Bootstrap Popover
+        var popover = new bootstrap.Popover(spoutsCard, {
+            container: 'body',
+            content: dropdownContent,
+            html: true,
+            trigger: 'manual'
+        });
+
+        // Save the popover instance to the card element
+        spoutsCard._popover = popover;
+
+        // Show the popover
+        popover.show();
+    });
+
+    // Add an event listener to close the popover on Escape key
+    document.addEventListener("keydown", function (event) {
+        if (event.key === "Escape") {
+            if (spoutsCard._popover) {
+                spoutsCard._popover.hide();
+            }
+        }
+    });
+
+    // Add an event listener to close the popover on clicking anywhere on the screen
+    document.addEventListener("click", function (event) {
+        if (!spoutsCard.contains(event.target) && spoutsCard._popover) {
+            spoutsCard._popover.hide();
+        }
+    });
+</script>
+
+<!-- Table Row's adding dynamically and per hour is added -->
+<script>
+    // Function to add a new row to the table
+    function addTableRowShift(index, dateTime) {
+        const tableBody = document.getElementById('ShiftdataTableBody');
+        const newRow = tableBody.insertRow();
+        const timeCell = newRow.insertCell(0);
+        const SLCell = newRow.insertCell(1);    // Shift Length
+        const NSCell = newRow.insertCell(2);    // Number Of Shifts
+        const MCCell = newRow.insertCell(3);    // Machine Capacity (Bags/Hour)
+        const TBPCell = newRow.insertCell(4);   // Total Bags Produced Per Shift
+        const RBCell = newRow.insertCell(5);    // Rejected Bags Per Shift
+        const SBCell = newRow.insertCell(6);    // Short Breaks Per Shift (Mins)
+        const MBCell = newRow.insertCell(7);    // Meal Breaks Per Shift (Mins)
+        const IDTCell = newRow.insertCell(8);   // Idle Time Per Shift (Mins)
+        const DTCell = newRow.insertCell(9);    // Down Time Per Shift (Mins)
+        const PPTCell = newRow.insertCell(10);  // Planned Maintenance Time Per Shift (Mins)
+
+        // Create and append buttons to the right side of the row
+        createButtons(newRow.insertCell(11), index);
+        // createDeleteButton(newRow.insertCell(12), index);
+
+        newRow.id = 'ShiftTablerow_' + index;
+        timeCell.id = 'time_' + index;
+        SLCell.id = 'SL_' + index;
+        NSCell.id = 'NS_' + index;
+        MCCell.id = 'MC_' + index;
+        TBPCell.id = 'TBP_' + index;
+        RBCell.id = 'RB_' + index;
+        SBCell.id = 'SB_' + index;
+        MBCell.id = 'MB_' + index;
+        IDTCell.id = 'IDT_' + index;
+        DTCell.id = 'DT_' + index;
+        PPTCell.id = 'PPT_' + index;
+
+        // Format the date and time
+        const formattedDateTime = getFormattedDateTime(dateTime);
+        timeCell.textContent = formattedDateTime;
+
+        SLCell.textContent = 'SLValue';
+        NSCell.textContent = 'NSValue';
+        MCCell.textContent = 'MCValue';
+        TBPCell.textContent = 'TBPValue';
+        RBCell.textContent = 'RBValue';
+        SBCell.textContent = 'SBValue';
+        MBCell.textContent = 'MBValue';
+        IDTCell.textContent = 'IDTValue';
+        DTCell.textContent = 'DTValue';
+        PPTCell.textContent = 'PPTValue';
+
+        timeCell.setAttribute('style', 'border-right: 2px solid lightgray;');
+        SLCell.setAttribute('style', 'border-right: 2px solid lightgray; cursor: pointer;');
+        SLCell.classList.add("py-3");
+        NSCell.setAttribute('style', 'border-right: 2px solid lightgray; cursor: pointer;');
+        NSCell.classList.add("py-3");
+        MCCell.setAttribute('style', 'border-right: 2px solid lightgray; cursor: pointer;');
+        MCCell.classList.add("py-3");
+        TBPCell.setAttribute('style', 'border-right: 2px solid lightgray; cursor: pointer;');
+        TBPCell.classList.add("py-3");
+        RBCell.setAttribute('style', 'border-right: 2px solid lightgray; cursor: pointer;');
+        RBCell.classList.add("py-3");
+        SBCell.setAttribute('style', 'border-right: 2px solid lightgray; cursor: pointer;');
+        SBCell.classList.add("py-3");
+        MBCell.setAttribute('style', 'border-right: 2px solid lightgray; cursor: pointer;');
+        MBCell.classList.add("py-3");
+        IDTCell.setAttribute('style', 'border-right: 2px solid lightgray; cursor: pointer;');
+        IDTCell.classList.add("py-3");
+        DTCell.setAttribute('style', 'border-right: 2px solid lightgray; cursor: pointer;');
+        DTCell.classList.add("py-3");
+        PPTCell.setAttribute('style', 'border-right: 2px solid lightgray; cursor: pointer;');
+        PPTCell.classList.add("py-3");
+
+        // Update the time for the next row
+        const nextDateTime = new Date(dateTime);
+        nextDateTime.setHours(nextDateTime.getHours() + 1);
+
+        if (nextDateTime <= new Date()) {
+            addTableRowShift(index + 1, nextDateTime);
+        }
+    }
+
+    // Get the current date and time
+    const currentDateforShifttable = new Date();
+    currentDateforShifttable.setHours(6, 0, 0, 0); // Set the time to 06:00 AM
+
+    // Call the function to add the first row
+    addTableRowShift(1, currentDateforShifttable);
+
+    // Function to get the formatted date and time
+    function getFormattedDateTime(dateTime) {
+        const options = { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit', hour12: false };
+        return new Date(dateTime).toLocaleString('en-IN', options);
+    }
+
+    // Edit button functionalities
+
+    // Function to create and append buttons to a table cell
+    function createButtons(parentCell, index) {
+        // Edit Button
+        const editButton = document.createElement('button');
+        editButton.textContent = 'Edit';
+        editButton.classList.add('btn', 'btn-outline-primary', 'btn-sm', 'm-1');
+        editButton.addEventListener('click', function () {
+            // Handle Edit button click (you can implement your logic here)
+            console.log('Edit button clicked for row ' + index);
+
+            replaceWithSaveButton(index);
+        });
+        editButton.id = 'edit_' + index;
+
+        // Delete Button
+        const deleteButton = document.createElement('button');
+        deleteButton.textContent = 'Delete';
+        deleteButton.classList.add('btn', 'btn-outline-danger', 'btn-sm', 'm-1');
+        deleteButton.addEventListener('click', function () {
+            // Handle Delete button click (you can implement your logic here)
+            console.log('Delete button clicked for row ' + index);
+            deleteRow(index);
+        });
+        deleteButton.id = 'delete_' + index;
+
+        // Create a container for the buttons and set flexbox properties
+        const buttonsContainer = document.createElement('div');
+        buttonsContainer.style.display = 'flex';
+        buttonsContainer.style.gap = '8px'; // Adjust the margin as needed
+
+        // Append buttons to the container
+        buttonsContainer.appendChild(editButton);
+        buttonsContainer.appendChild(deleteButton);
+
+        // Clear the cell content before appending the container
+        parentCell.innerHTML = '';
+        parentCell.appendChild(buttonsContainer);
+    }
+
+    function handleSaveClick(index) {
+        console.log('Save button clicked for row ' + index);
+    }
+
+    // Function to create and return a Save button
+    function createSaveButton(index) {
+        const saveButton = document.createElement('button');
+        saveButton.textContent = 'Save';
+        saveButton.classList.add('btn', 'btn-outline-success', 'btn-sm', 'm-1');
+        saveButton.addEventListener('click', function (event) {
+            // Handle Save button click
+            handleSaveClick(index);
+            event.stopPropagation(); // Stop event propagation
+
+            // Replace with Edit button
+            replaceWithEditButton(index);
+        });
+        saveButton.id = 'save_' + index;
+        return saveButton;
+    }
+
+    // Function to make all cells editable (except timeCell)
+    function makeCellsEditable(row) {
+        for (let i = 1; i < (row.cells.length - 1); i++) {
+            if (i !== 0) { // Skip timeCell
+                const cell = row.cells[i];
+                cell.contentEditable = true;
+                // Add any additional styling or logic as needed
+
+                cell.style.cursor = "cell";
+            }
+        }
+    }
+
+    // Function to make all cells non-editable
+    function makeCellsNonEditable(row) {
+        for (let i = 0; i < row.cells.length; i++) {
+            const cell = row.cells[i];
+            cell.contentEditable = false;
+            // Add any additional styling or logic as needed
+
+            cell.style.cursor = "pointer";
+        }
+    }
+
+    // Function to replace Edit button with Save button
+    function replaceWithSaveButton(index) {
+        const row = document.getElementById('ShiftTablerow_' + index); // Assuming each row has a unique ID
+        const editButton = row.querySelector('#edit_' + index);
+        const saveButton = createSaveButton(index);
+
+        // Add the 'edited-row' class to the row
+        row.classList.add('edited-row');
+
+        // Replace Edit button with Save button
+        editButton.parentNode.replaceChild(saveButton, editButton);
+
+        makeCellsEditable(row);
+    }
+
+    // Function to replace Save button with Edit button
+    function replaceWithEditButton(index) {
+        const row = document.getElementById('ShiftTablerow_' + index); // Assuming each row has a unique ID
+        const saveButton = row.querySelector('#save_' + index);
+        if (saveButton) {
+            const editButton = document.createElement('button');
+            editButton.textContent = 'Edit';
+            editButton.classList.add('btn', 'btn-outline-primary', 'btn-sm', 'm-1');
+            editButton.addEventListener('click', function () {
+                // Handle Edit button click (you can implement your logic here)
+                console.log('Edit button clicked for row ' + index);
+
+                replaceWithSaveButton(index);
+            });
+            editButton.id = 'edit_' + index;
+
+            // Remove the 'edited-row' class from the row
+            row.classList.remove('edited-row');
+
+            // Replace Save button with Edit button
+            saveButton.replaceWith(editButton);
+
+            makeCellsNonEditable(row);
+        }
+    }
+
+    // Delete Button Functionalities
+    // function createDeleteButton(parentCell, index) {
+    //     const deleteButton = document.createElement('button');
+    //     deleteButton.textContent = 'Delete';
+    //     deleteButton.classList.add('btn', 'btn-outline-danger', 'btn-sm', 'm-1');
+    //     deleteButton.addEventListener('click', function () {
+    //         // Handle Delete button click (you can implement your logic here)
+    //         console.log('Delete button clicked for row ' + index);
+    //         deleteRow(index);
+    //     });
+    //     deleteButton.id = 'delete_' + index;
+    //     parentCell.appendChild(deleteButton);
+    // }
+
+    function deleteRow(index) {
+        const row = document.getElementById('ShiftTablerow_' + index); // Assuming each row has a unique ID
+        if (row) {
+            row.remove();
+            console.log('Row deleted for index ' + index);
+        } else {
+            console.log('Row not found for index ' + index);
+        }
+    }
+</script>
+
+<!-- Search Bar and Export -->
+<script>
+    const ShiftTablesearch = document.querySelector('.ShiftsearchBar input'),
+        table__rows = document.querySelectorAll('.shiftTable tbody tr'),
+        table__headings = document.querySelectorAll('.shiftTable thead th');
+
+    // console.log('Number of Rows:', table__rows.length);
+    // console.log('Table Rows:', table__rows);
+    // 1. Searching for specific data of HTML table
+    ShiftTablesearch.addEventListener('input', searchShiftTable);
+
+    function searchShiftTable() {
+        table__rows.forEach((row, i) => {
+            let table__data = row.textContent.toLowerCase(),
+                search__data = ShiftTablesearch.value.toLowerCase();
+            console.log('Number of Rows:', table__rows.length);
+            console.log('Table Rows:', table__rows);
+            row.classList.toggle('hide', table__data.indexOf(search__data) < 0);
+            row.style.setProperty('--delay', i / 25 + 's');
+        })
+
+        document.querySelectorAll('.shiftTable tbody tr:not(.hide)').forEach((visible__row, i) => {
+            visible__row.style.backgroundColor = (i % 2 == 0) ? 'transparent' : '#0000000b';
+        });
+    }
+
+    // 2. Sorting | Ordering data of HTML table
+
+    table__headings.forEach((head, i) => {
+        let sort_asc = true;
+        head.onclick = () => {
+            console.log(head);
+            table__headings.forEach(head => head.classList.remove('active'));
+            head.classList.add('active');
+
+            document.querySelectorAll('td').forEach(td => td.classList.remove('active'));
+            table__rows.forEach(row => {
+                row.querySelectorAll('td')[i].classList.remove('active');
+                row.querySelectorAll('td')[i].classList.add('active');
+            })
+
+            head.classList.toggle('asc', sort_asc);
+            sort_asc = head.classList.contains('asc') ? false : true;
+
+            sortShiftTable(i, sort_asc);
+        }
+    })
+
+    function sortShiftTable(column, sort_asc) {
+        console.log('Sorting:', column, sort_asc);
+        const tbody = document.querySelector('#ShiftdataTableBody');
+        const sortedRows = [...table__rows].sort((a, b) => {
+            let first_row = a.querySelectorAll('td')[column].textContent.toLowerCase(),
+                second_row = b.querySelectorAll('td')[column].textContent.toLowerCase();
+            console.log(first_row, second_row);
+            return sort_asc ? (first_row < second_row ? 1 : -1) : (first_row < second_row ? -1 : 1);
+        });
+
+        // Clear the existing content in tbody
+        tbody.innerHTML = '';
+
+        // Append the sorted rows to tbody
+        sortedRows.forEach(sorted_row => tbody.appendChild(sorted_row));
+    }
+
+    function exportClick() {
+        const ExportBtn = document.getElementById('exportOptions');
+        ExportBtn.style.display = "block";
+    }
+
+    // 3. Converting HTML table to PDF
+    const pdf__btn = document.querySelector('#toPDF');
+
+    const exportPageTo_Pdf = (filename) => {
+        setTimeout(() => {
+            // Hide exportOptions after 0.5 seconds
+            setTimeout(() => {
+                document.getElementById('exportOptions').style.display = "none";
+            }, 500);
+
+            // Trigger the print window
+            window.print();
+        }, 100);
+    };
+
+    // 5. Converting HTML table to CSV File
+
+    const csv__btn = document.querySelector('#toCSV');
+
+    const exportTableTo_Csv = (filename, tableSelector) => {
+        const table = document.querySelector(tableSelector);
+        const csv = [];
+        const rows = table.rows;
+
+        for (let i = 0; i < rows.length; i++) {
+            const row = rows[i];
+            const rowData = [];
+
+            for (let j = 0; j < row.cells.length; j++) {
+                const cell = row.cells[j];
+                rowData.push(cell.innerText);
+            }
+
+            csv.push(rowData.join(','));
+        }
+
+        setTimeout(() => {
+            document.getElementById('exportOptions').style.display = "none";
+        }, 500);
+
+        const csvContent = "data:text/csv;charset=utf-8," + csv.join("\n");
+        const encodedUri = encodeURI(csvContent);
+        const link = document.createElement("a");
+        link.setAttribute("href", encodedUri);
+        link.setAttribute("download", filename + ".csv");
+        document.body.appendChild(link); // Required for FF
+        link.click(); // This will download the data file named "filename.csv"
+    };
+
+    // 6. Converting HTML table to EXCEL File
+
+    const excel__btn = document.querySelector('#toEXCEL');
+
+    function s2ab(s) {
+        const buf = new ArrayBuffer(s.length);
+        const view = new Uint8Array(buf);
+        for (let i = 0; i !== s.length; ++i) view[i] = s.charCodeAt(i) & 0xFF;
+        return buf;
+    }
+
+    const exportTableTo_Excel = (filename, tableSelector) => {
+        const table = document.querySelector(tableSelector);
+        const wb = XLSX.utils.table_to_book(table, { sheet: "Sheet1" });
+        const wbout = XLSX.write(wb, { bookType: "xlsx", type: "binary" });
+        const blob = new Blob([s2ab(wbout)], { type: "application/octet-stream" });
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement("a");
+
+        setTimeout(() => {
+            document.getElementById('exportOptions').style.display = "none";
+        }, 500);
+
+        a.href = url;
+        a.download = filename + ".xlsx";
+        document.body.appendChild(a);
+        a.click();
+    };
+
+</script>
+
+<script src="/public/JavaScripts/header.js"></script>

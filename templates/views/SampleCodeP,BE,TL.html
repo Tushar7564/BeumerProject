@@ -1,0 +1,310 @@
+<title>Bucket Elevator</title>
+<link rel="stylesheet" href="/public/CSS/base.css">
+<script src="/public/JavaScripts/jquery-3.7.1.js"></script>
+<script>
+    $(function () {
+        $("#header").load("header.html");
+    })
+</script>
+<style>
+    input::placeholder {
+        font-size: x-small;
+    }
+</style>
+
+<body class="row" style="background-color: rgb(237, 237, 237);">
+    <header id="header" style="width: 7vw;"></header>
+    <div class="right" style="width: 93vw;">
+        <div class="top-row" style="width: 92.5vw;">
+            <span style="font-size: 30px;">BEUMER Cement</span>
+            <div id="dates" style="float: right; margin-top: 7px;">
+                <div class="dropdown">
+                    <button class="btn btn-secondary dropdown-toggle dates" type="button" data-bs-toggle="dropdown"
+                        aria-expanded="false" style="background-color: whitesmoke; color: #000;">
+                        Today
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li><button class="dropdown-item" type="button">Yesterday</button></li>
+                        <li><button class="dropdown-item" type="button">Tomorrow</button></li>
+                    </ul>
+                </div>
+            </div>
+            <hr>
+        </div>
+        <div class="top-mid" style="width: 92.5vw;">
+            <div class="goBack btn btn-secondary" onclick="history.back()" style="height: 5vh;">&#8249; Go Back</div>
+            <div class="content-container mt-1" style="height: 80vh;">
+                <div class="main-top row ms-2 justify-content-between" style="width: 92vw; height: auto;">
+                    <div class="chart5"
+                        style="width: 30vw; border-radius: 5px; border-width: thin; border: 1px solid lightgrey; background-color: whitesmoke;">
+                        <div class="span m-2 mx-0">
+                            <span style="font-size: x-large;">Availability</span>
+                        </div>
+                        <div class="t1 m-2 mx-0" style="margin: auto; margin-top: 5px;">
+                            <table style="width: 90%; margin-bottom: 5px;">
+                                <tbody>
+                                    <!-- <tr>
+                                            <th class="px-1 py-1" style="font-size: x-small;">Down Time (mins)</th>
+                                            <th class="px-1 py-1" style="font-size: small;">PPT (mins)</th>
+                                            <th class="px-1" style="font-size: small;">CA</th>
+                                        </tr> -->
+                                    <tr>
+                                        <td class="px-1">
+                                            <input type="number" placeholder="Down Time(mins)" minlength="1"
+                                                maxlength=" 10"
+                                                style="width: 100%; border-width: thin; border: 0.5px solid lightgray; background-color: whitesmoke; outline: none; border-radius: 2px;">
+                                        </td>
+                                        <td class="px-1">
+                                            <input type="number" placeholder="Planned Production Time(mins)"
+                                                minlength="1" maxlength=" 10"
+                                                style="width: 100%; border-width: thin; border: 0.5px solid gray; background-color: whitesmoke; outline: none; border-radius: 2px;">
+                                        </td>
+                                        <td class="px-1">
+                                            <input type="number" placeholder="Calculated Availability" minlength="1"
+                                                maxlength=" 10" disabled
+                                                style="width: 100%; border-width: thin; border: 0.5px solid gray; background-color: whitesmoke; outline: none; border-radius: 2px;">
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <canvas id="Chart5" style="margin: auto;"></canvas>
+                    </div>
+                    <div class="chart6"
+                        style="width: 30vw; border-radius: 5px; border-width: thin; border: 1px solid lightgrey; background-color: whitesmoke;">
+                        <div class="span m-2 mx-0">
+                            <span style="font-size: x-large;">Performance</span>
+                        </div>
+                        <div class="t2 m-2 mx-0" style="margin: auto; margin-top: 5px;">
+                            <table style="width: 90%; margin-bottom: 5px;">
+                                <tbody>
+                                    <tr>
+                                        <td class="px-1">
+                                            <input type="number" placeholder="Planned Time" minlength="1" maxlength="10"
+                                                style="width: 100%; border-width: thin; border: 0.5px solid lightgray; background-color: whitesmoke; outline: none; border-radius: 2px;">
+                                        </td>
+                                        <td class="px-1">
+                                            <input type="number" placeholder="Down Time" minlength="1" maxlength="10"
+                                                style="width: 100%; border-width: thin; border: 0.5px solid lightgray; background-color: whitesmoke; outline: none; border-radius: 2px;">
+                                        </td>
+                                        <td class="px-1">
+                                            <input type="number" placeholder="" minlength="1" maxlength=" 10" disabled
+                                                style="width: 100%; border-width: thin; border: 0.5px solid lightgray; background-color: whitesmoke; outline: none; border-radius: 2px;">
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <canvas id="Chart6" style="margin: auto;"></canvas>
+                    </div>
+                    <div class="chart7"
+                        style="width: 30vw; border-radius: 5px; border-width: thin; border: 1px solid lightgrey; background-color: whitesmoke;">
+                        <div class="span m-2 mx-0">
+                            <span class="mt-3" style="font-size: x-large;">Quality</span>
+                        </div>
+                        <input type="number" placeholder="99%" disabled
+                            style="width: 10%; border-width: thin; border: 0.5px solid lightgray; background-color: whitesmoke; outline: none; border-radius: 2px;">
+                        <!-- <div class="t3" style="width: 23vw; margin: auto; margin-top: 5px;">
+                            <table style="width: 100%; margin-bottom: 5px;">
+                                <thead>
+                                    <tr>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <form action="#Quality">
+                                        <tr>
+                                            <td class="px-2 py-2">
+                                                
+                                            </td>
+                                        </tr>
+                                    </form>
+                                </tbody>
+                            </table>
+                        </div> -->
+                        <canvas id="Chart7" style="margin: auto;"></canvas>
+                    </div>
+                </div>
+                <div class="main-bottom row text-center ms-2 mt-3" style="width: 92vw; height: auto;">
+                    <div class="chart8"
+                        style="width: 92vw; height: auto; border-radius: 5px; border-width: thin; border: 1px solid lightgrey; background-color: whitesmoke;">
+                        <div class="span m-2 mx-0">
+                            <span style="font-size: x-large;">OEE</span>
+                        </div>
+                        <div class="subc8 row" style="width: 92vw;">
+                            <div class="canvac8" style="width: 77vw; height: auto; margin: auto;">
+                                <canvas id="Chart8" style="width: 70vw; height: auto; margin: auto;"></canvas>
+                            </div>
+                            <div class="t4oee m-2 mx-0" style="width: 15vw; margin: auto; margin-top: 5px;">
+                                <table style="height: 15vh; margin-top: 5px; margin-bottom: 5px;">
+                                    <tbody>
+                                        <tr class="mt-1 mb-1">
+                                            <th style="font-size: small;">Availability</th>
+                                            <td><input type="number" placeholder="Availability" minlength="1"
+                                                    maxlength="10" disabled
+                                                    style="width: 6vw; margin-left: 5px; margin-top: 0;"></td>
+                                        </tr>
+                                        <tr class="mt-1 mb-1">
+                                            <th style="font-size: small;">Performance</th>
+                                            <td><input type="number" placeholder="Performance" minlength="1"
+                                                    maxlength="10" disabled
+                                                    style="width: 6vw; margin-left: 5px; margin-top: 0;">
+                                            </td>
+                                        </tr>
+                                        <tr class="mt-1 mb-1">
+                                            <th style="font-size: small;">Quality</th>
+                                            <td><input type="number" placeholder="Quality" minlength="1" maxlength=" 10"
+                                                    disabled style="width: 6vw; margin-left: 5px; margin-top: 0;">
+                                            </td>
+                                        </tr>
+                                        <tr class="mt-1 mb-1">
+                                            <th style="font-size: small;">Overall</th>
+                                            <td><input type="number" placeholder="" minlength="1" maxlength=" 10"
+                                                    disabled style="width: 6vw; margin-left: 5px; margin-top: 0;">
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <footer id="footer" style=" width: 100vw; height: 2vw;"></footer>
+</body>
+<script>
+    $(function () {
+        $("#footer").load("footer.html");
+    })
+</script>
+<script src="/public/JavaScripts/chart.umd.js"></script>
+<script>
+    var ctx1 = document.getElementById("Chart5").getContext('2d');
+    var mybarChart = new Chart(ctx1, {
+        type: 'bar',
+        data: {
+            labels: ["Expected", "Actual"],
+            datasets: [
+                {
+                    label: 'Availability',
+                    data: [15, 31],
+                    backgroundColor: [
+                        'rgb(231, 58, 58, 0.4)',
+                        'rgba(227, 242, 20, 0.5)'
+                    ],
+                    borderColor: [
+                        'rgba(231, 58, 58)',
+                        'rgba(227, 242, 20)'
+                    ],
+                    borderWidth: 1
+                }]
+        },
+        options: {
+            scales: {
+                y: {
+                    ticks: {
+                        beginAtZero: true
+                    }
+                },
+            }
+        }
+    });
+
+    var ctx2 = document.getElementById("Chart6").getContext('2d');
+    var mybarChart = new Chart(ctx2, {
+        type: 'bar',
+        data: {
+            labels: ["Expected", "Actual"],
+            datasets: [{
+                label: 'Performance',
+                data: [13, 19],
+                backgroundColor: [
+                    'rgb(231, 58, 58, 0.4)',
+                    'rgba(227, 242, 20, 0.5)'
+                ],
+                borderColor: [
+                    'rgba(231, 58, 58)',
+                    'rgba(227, 242, 20)'
+                ],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    ticks: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        }
+    });
+
+    var ctx3 = document.getElementById("Chart7").getContext('2d');
+    var myBarChart = new Chart(ctx3, {
+        type: 'bar',
+        data: {
+            labels: ['Quality'],
+            datasets: [{
+                label: '',
+                data: [99],
+                backgroundColor: [
+                    'rgba(227, 242, 20, 0.5)'
+                ],
+                borderColor: [
+                    'rgba(227, 242, 20)'
+                ],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    ticks: {
+                        beginAtZero: true,
+                        steps: 10,
+                        stepValue: 5,
+                        max: 100
+                    }
+                }
+            }
+        }
+    });
+
+    var ctx4 = document.getElementById("Chart8").getContext('2d');
+    var myLineChart = new Chart(ctx4, {
+        type: 'line',
+        data: {
+            labels: ["Availability", "Performance", "Quality", "Overall"],
+            datasets: [{
+                label: 'OEE',
+                data: [51, 39, 99, 63],
+                backgroundColor: [
+                    'red',
+                    'blue',
+                    'yellow',
+                    'green',
+                ],
+                borderColor: [
+                    'red',
+                    'blue',
+                    'Yellow',
+                    'green',
+                ],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    ticks: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        }
+    });
+
+</script>

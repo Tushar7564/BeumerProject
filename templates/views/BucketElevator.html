@@ -1,0 +1,602 @@
+<title>Bucket Elevator</title>
+<link rel="stylesheet" href="/public/CSS/base.css">
+<script src="/public/JavaScripts/jquery-3.7.1.js"></script>
+<script>
+    $(function () {
+        $("#header").load("header.html");
+    })
+</script>
+<style>
+    input::placeholder {
+        font-size: x-small;
+    }
+
+    .row {
+        --bs-gutter-x: 0 !important;
+    }
+</style>
+
+<body class="row" style="background-color: rgb(237, 237, 237); --bs-gutter-x: 0;">
+    <header id="header" style="width: 6vw;"></header>
+    <div class="right row" style="width: 93.5vw; padding: 0; height: 100vh; overflow: auto;">
+        <div class="top-row"
+            style="width: 27.5vw; border-right: 1px solid #d3d3d3; background-color: white; padding: 0;">
+            <div class="row">
+                <select class="form-select m-2" id="AllMachines" aria-label="Default select example"
+                    style="width: 21.5vw;">
+                    <option value="AllMachines" selected>All Machines</option>
+                    <option value="BucketElevator">Bucket Elevator</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                </select>
+                <div id="dots"
+                    style="width: auto; height: auto; border: 1px solid lightgray; border-radius: 5px; margin: 0.5rem; padding: 10px; text-align: center;">
+                    <i class="bi-three-dots"></i>
+                </div>
+                <hr>
+                <div class="col-md-4 m-2 mt-0" id="iSearch" style="width: 21vw;">
+                    <input type="search"
+                        style="width: inherit; border: 1px solid lightgray; font-size: 17.5px; border-radius: 2px; outline: none;"
+                        placeholder="Search...">
+                </div>
+                <div class="col-md-4 mb-2 row justify-content-between"
+                    style="width: auto; text-align: center; height: auto;">
+                    <div id="filters"
+                        style="border: 1px solid lightgray; width: auto; font-size: 22px; border-radius: 5px; padding: 2px;">
+                        <i class="bi-filter"></i>
+                    </div>
+                    <div class="btn-group" style="padding-left:4px; padding-right:4px; width: auto;">
+                        <button type="button" class="btn" data-bs-toggle="dropdown" data-bs-display="static"
+                            aria-expanded="false" style="border: 1px solid lightgray; border-radius: 5px; width: inherit; padding: 4px;
+                            font-size: 17px;">
+                            <i class="bi-arrow-down-up"></i>
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-end" style="width: auto;">
+                            <li style="display: inline-flex; width: 17vw;">
+                                <input type="radio" name="orderType" id="defaultOrder"
+                                    style="margin: auto; margin-right: 5px; margin-left: 5px;">
+                                <label for="">Default Machine Order</label>
+                            </li>
+                            <li style="display: inline-flex; width: auto;">
+                                <input type="radio" name="orderType" id="topPerforming"
+                                    style="margin: auto; margin-right: 5px; margin-left: 5px;">
+                                <label for="">Top Performing Machines</label>
+                            </li>
+                            <li style="display: inline-flex; width: auto;">
+                                <input type="radio" name="orderType" id="lowestPerforming"
+                                    style="margin: auto; margin-right: 5px; margin-left: 5px;">
+                                <label for="">Lowest Performing Machines</label>
+                            </li>
+                            <li style="display: inline-flex; width: auto;">
+                                <input type="radio" name="orderType" id="machineNamesAZ"
+                                    style="margin: auto; margin-right: 5px; margin-left: 5px;">
+                                <label for="">Machine Names (A-Z)</label>
+                            </li>
+                            <li style="display: inline-flex; width: auto;">
+                                <input type="radio" name="orderType" id="machineNamesZA"
+                                    style="margin: auto; margin-right: 5px; margin-left: 5px;">
+                                <label for="">Machine Names (Z-A)</label>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <hr style="margin-bottom: 5px;">
+                <div class="row">
+                    <label class="ms-3" for="Live"
+                        style="border: 1px solid lightgray; border-radius: 30px; text-align: center; width: 50px; font-size: 12px; height: 20px;">LIVE</label>
+                    <h6 style="width: auto;">Compared to: Baseline</h6>
+                </div>
+                <hr style="margin-bottom: 5px;">
+                <div style="height: auto;">
+                    <a onclick="">
+                        <div id="m1"
+                            style="background-color: lightblue; border-right: 2px solid red; margin-left: 0 !important;">
+                            <div class="ms-3">
+                                <h4 id="pSpan1" style="margin-top: 0.5rem;">BE-01</h4>
+                                <span class="ms-2"
+                                    style="height: 7px; width: 7px; background-color: green; border-radius: 50%; display: inline-block;"></span>
+                                <span style="font-size: small;">Active: 5h 20m</span>
+                                <h6 style="margin-top: 10px;">OEE Rate</h6>
+                                <h3>93.7%</h3>
+                            </div>
+                            <hr>
+                        </div>
+                    </a>
+                    <a onclick="">
+                        <div id="m2">
+                            <div class="ms-3">
+                                <h4 id="pSpan2" style="margin-top: 0.5rem;">BE-02</h4>
+                                <span class="ms-2"
+                                    style="height: 7px; width: 7px; background-color: green; border-radius: 50%; display: inline-block;"></span>
+                                <span style="font-size: small;">Active: 5h 20m</span>
+                                <h6 style="margin-top: 10px;">OEE Rate</h6>
+                                <h3>96.9%</h3>
+                            </div>
+                            <hr>
+                        </div>
+                    </a>
+                    <a onclick="">
+                        <div id="m3">
+                            <div class="ms-3">
+                                <h4 id="pSpan3" style="margin-top: 0.5rem;">BE-03</h4>
+                                <span class="ms-2"
+                                    style="height: 7px; width: 7px; background-color: green; border-radius: 50%; display: inline-block;"></span>
+                                <span style="font-size: small;">Active: 5h 20m</span>
+                                <h6 style="margin-top: 10px;">OEE Rate</h6>
+                                <h3>95%</h3>
+                            </div>
+                            <hr>
+                        </div>
+                    </a>
+                    <a onclick="">
+                        <div id="m4">
+                            <div class="ms-3">
+                                <h4 id="pSpan4" style="margin-top: 0.5rem;">BE-04</h4>
+                                <span class="ms-2"
+                                    style="height: 7px; width: 7px; background-color: green; border-radius: 50%; display: inline-block;"></span>
+                                <span style="font-size: small; padding-top: 3px;">Active: 5h 20m</span>
+                                <h6 style="margin-top: 10px;">OEE Rate</h6>
+                                <h3>92%</h3>
+                            </div>
+                            <hr style="margin-bottom: 1px;">
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="top-mid" style="width: 66vw; padding: 0;">
+            <div class="row">
+                <h2 id="pm" style="padding-top: 10px; padding-left: 20px; width: 10vw;">BE-01</h2>
+                <span class="m-4 mx-0" id="rorg"
+                    style="height: 7px; width: 7px; background-color: green; border-radius: 50%; --bs-gutter-x: 0;"></span>
+                <span class="m-3 mx-0" id="ActiveTime"
+                    style="font-size: 13px; width: auto; padding-top: 1px; padding-left: 5px;">Active: 5h
+                    20m</span>
+                <nav class="mt-2" id="ps" aria-label="Page navigation example" style="width: 48.8vw; padding: 0;">
+                    <ul class="pagination justify-content-end" style="margin: inherit;">
+                        <li class="page-item" id="lsaquo">
+                            <a class="page-link"
+                                style="background-color: transparent; border: none; padding: 0; padding-right: 15px; height: auto; cursor: pointer;">&lsaquo;</a>
+                        </li>
+                        <li class="page-item">
+                            <a class="page-link disabled" href=""
+                                style="height: auto; border: none; padding: 0; background-color: transparent; color: #000;">
+                                <span id="PageNumber" style="padding-right: 5px;">1</span>
+                            </a>
+                        </li>
+                        <li class="page-item disabled"><a class="page-link" href=""
+                                style="height: auto; border: none; padding: 0; padding-right: 5px; background-color: transparent; color: #000;">of</a>
+                        </li>
+                        <li class="page-item disabled">
+                            <a class="page-link"
+                                style="height: auto; border: none; padding: 0; padding-right: 5px; background-color: transparent; color: #000;">4</a>
+                        </li>
+                        <li class="page-item" id="rsaquo">
+                            <a class="page-link"
+                                style="background-color: transparent; border: none; padding: 0; padding-left: 15px; height: auto; cursor: pointer;">&rsaquo;</a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+            <div class="row" id="details" style="width: auto;">
+                <a id="info" style="width: auto;">
+                    <h5 id="overviewHeading" style="padding-left: 20px; margin-bottom: 4px;">Overview</h5>
+                    <hr id="overviewHr" style="margin: 0; margin-left: 21px; border-top: 5px solid blue; opacity: 0.5;">
+                </a>
+                <a id="info" style="width: auto;">
+                    <h5 id="timelineHeading" style="padding-left: 20px; margin-bottom: 4px;">Timeline</h5>
+                    <hr id="timelineHr" style="display: none;">
+                </a>
+                <a id="info" style="width: auto;">
+                    <h5 id="diagnosticsHeading" style="padding-left: 20px; margin-bottom: 4px;">Diagnostics</h5>
+                    <hr id="diagnosticsHr" style="display: none;">
+                </a>
+            </div>
+            <hr id="info" style="margin-top: 0px;">
+            <div id="Packercharts">
+                <canvas id="pChart1"></canvas>
+                <canvas id="pChart2" style="display: none;"></canvas>
+                <canvas id="pChart3" style="display: none;"></canvas>
+                <canvas id="pChart4" style="display: none;"></canvas>
+            </div>
+        </div>
+    </div>
+    <!-- <footer id="footer" style=" width: 100vw; height: 3vh;"></footer> -->
+</body>
+<!-- <script>
+    $(function () {
+        $("#footer").load("footer.html");
+    })
+</script> -->
+<script src="/public/JavaScripts/chart.umd.js"></script>
+
+<script>
+    var ctx1 = document.getElementById("pChart1").getContext('2d');
+    var pc1 = new Chart(ctx1, {
+        type: 'line',
+        data: {
+            labels: ['6:00 AM', '10:00 AM', '2:00 PM', '6:00 PM', '10:00 PM'],
+            datasets: [{
+                label: 'Some label',
+                data: ['12', '85', '45', null, null],
+                borderColor: 'red',
+                borderWidth: 2,
+                borderDash: [2, 2],
+                borderCapStyle: 'round',
+                borderJoinStyle: 'round'
+            }]
+        },
+        options: {
+            indexAxis: 'x',
+            scales: {
+                y: {
+                    beginAtZero: true
+                },
+                x: {
+                    offset: true
+                }
+            }
+        }
+    })
+    var ctx2 = document.getElementById("pChart2").getContext('2d');
+    var pc2 = new Chart(ctx2, {
+        type: 'line',
+        data: {
+            labels: ['6:00 AM', '10:00 AM', '2:00 PM', '6:00 PM', '10:00 PM'],
+            datasets: [{
+                label: 'Some label',
+                data: ['12', '85', '45', null, null],
+                borderColor: 'grey',
+                borderWidth: 2,
+                borderDash: [2, 2],
+                borderCapStyle: 'round',
+                borderJoinStyle: 'round'
+            }]
+        },
+        options: {
+            indexAxis: 'x',
+            scales: {
+                y: {
+                    beginAtZero: true
+                },
+                x: {
+                    offset: true
+                }
+            }
+        }
+    })
+    var ctx3 = document.getElementById("pChart3").getContext('2d');
+    var pc3 = new Chart(ctx3, {
+        type: 'line',
+        data: {
+            labels: ['6:00 AM', '10:00 AM', '2:00 PM', '6:00 PM', '10:00 PM'],
+            datasets: [{
+                label: 'Some label',
+                data: ['12', '85', '45', null, null],
+                borderColor: 'green',
+                borderWidth: 2,
+                borderDash: [2, 2],
+                borderCapStyle: 'round',
+                borderJoinStyle: 'round'
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    ticks: {
+                        format: {
+                            style: 'percent'
+                        }
+                    }
+                }
+            },
+            indexAxis: 'x',
+            scales: {
+                y: {
+                    beginAtZero: true
+                },
+                x: {
+                    offset: true
+                }
+            }
+        }
+    })
+    var ctx4 = document.getElementById("pChart4").getContext('2d');
+    var pc4 = new Chart(ctx4, {
+        type: 'line',
+        data: {
+            labels: ['6:00 AM', '10:00 AM', '2:00 PM', '6:00 PM', '10:00 PM'],
+            datasets: [{
+                label: 'Some label',
+                data: ['12', '85', '45', null, null],
+                borderColor: 'lightblue',
+                borderWidth: 2,
+                borderDash: [2, 2],
+                borderCapStyle: 'round',
+                borderJoinStyle: 'round'
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    ticks: {
+                        format: {
+                            style: 'percent'
+                        }
+                    }
+                }
+            },
+            indexAxis: 'x',
+            scales: {
+                y: {
+                    beginAtZero: true
+                },
+                x: {
+                    offset: true
+                }
+            }
+        }
+    })
+</script>
+
+<script>
+    const pm1 = document.getElementById("m1");
+    const pm2 = document.getElementById("m2");
+    const pm3 = document.getElementById("m3");
+    const pm4 = document.getElementById("m4");
+    var pm = document.getElementById("pm");
+    const pSpan1 = document.getElementById("pSpan1");
+    const pSpan2 = document.getElementById("pSpan2");
+    const pSpan3 = document.getElementById("pSpan3");
+    const pSpan4 = document.getElementById("pSpan4");
+    const ps = document.getElementById("ps");
+    const pn = document.getElementById("PageNumber");
+    const rg = document.getElementById("rorg");
+    const At = document.getElementById("ActiveTime");
+    const info = document.querySelectorAll("#info");
+    const pChart1 = document.getElementById("pChart1");
+    const pChart2 = document.getElementById("pChart2");
+    const pChart3 = document.getElementById("pChart3");
+    const pChart4 = document.getElementById("pChart4");
+    pm1.addEventListener('click', () => {
+        pm1.setAttribute('style', 'background-color: lightblue; border-right: 2px solid red; margin-left: 0 !important;');
+        pm2.setAttribute('style', '');
+        pm3.setAttribute('style', '');
+        pm4.setAttribute('style', '');
+        pm.textContent = pSpan1.textContent;
+        pn.textContent = 1;
+        ohr.setAttribute('style', 'margin: 0; margin-left: 21px; border-top: 5px solid blue; opacity: 0.5;');
+        thr.style.display = "none";
+        dhr.style.display = "none";
+        rg.style.display = "inline-block";
+        At.style.display = "inline-block";
+        info.forEach(element => {
+            element.style.display = "block";
+        })
+        ps.setAttribute('style', 'display: block; width: 48.84vw; float: right;');
+        pChart1.style.display = "block";
+        pChart2.style.display = "none";
+        pChart3.style.display = "none";
+        pChart4.style.display = "none";
+    });
+    pm2.addEventListener('click', () => {
+        pm1.setAttribute('style', '');
+        pm2.setAttribute('style', 'background-color: lightblue; border-right: 2px solid red; margin-left: 0 !important;');
+        pm3.setAttribute('style', '');
+        pm4.setAttribute('style', '');
+        pm.textContent = pSpan2.textContent;
+        pn.textContent = 2;
+        ohr.setAttribute('style', 'margin: 0; margin-left: 21px; border-top: 5px solid blue; opacity: 0.5;');
+        thr.style.display = "none";
+        dhr.style.display = "none";
+        rg.style.display = "inline-block";
+        At.style.display = "inline-block";
+        info.forEach(element => {
+            element.style.display = "block";
+        })
+        ps.setAttribute('style', 'display: block; width: 48.84vw; float: right;');
+        pChart1.style.display = "none";
+        pChart2.style.display = "block";
+        pChart3.style.display = "none";
+        pChart4.style.display = "none";
+    });
+    pm3.addEventListener('click', () => {
+        pm1.setAttribute('style', '');
+        pm2.setAttribute('style', '');
+        pm3.setAttribute('style', 'background-color: lightblue; border-right: 2px solid red; margin-left: 0 !important;');
+        pm4.setAttribute('style', '');
+        pm.textContent = pSpan3.textContent;
+        pn.textContent = 3;
+        ohr.setAttribute('style', 'margin: 0; margin-left: 21px; border-top: 5px solid blue; opacity: 0.5;');
+        thr.style.display = "none";
+        dhr.style.display = "none";
+        rg.style.display = "inline-block";
+        At.style.display = "inline-block";
+        info.forEach(element => {
+            element.style.display = "block";
+        })
+        ps.setAttribute('style', 'display: block; width: 48.84vw; float: right;');
+        pChart1.style.display = "none";
+        pChart2.style.display = "none";
+        pChart3.style.display = "block";
+        pChart4.style.display = "none";
+    });
+    pm4.addEventListener('click', () => {
+        pm1.setAttribute('style', '');
+        pm2.setAttribute('style', '');
+        pm3.setAttribute('style', '');
+        pm4.setAttribute('style', 'background-color: lightblue; border-right: 2px solid red; margin-left: 0 !important;');
+        pm.textContent = pSpan4.textContent;
+        pn.textContent = 4;
+        ohr.setAttribute('style', 'margin: 0; margin-left: 21px; border-top: 5px solid blue; opacity: 0.5;');
+        thr.style.display = "none";
+        dhr.style.display = "none";
+        rg.style.display = "inline-block";
+        At.style.display = "inline-block";
+        info.forEach(element => {
+            element.style.display = "block";
+        })
+        ps.setAttribute('style', 'display: block; width: 48.84vw; float: right;');
+        pChart1.style.display = "none";
+        pChart2.style.display = "none";
+        pChart3.style.display = "none";
+        pChart4.style.display = "block";
+    });
+</script>
+
+<!-- Individual Packer Data -->
+<script>
+    const oh = document.getElementById("overviewHeading");
+    const ohr = document.getElementById("overviewHr");
+    const th = document.getElementById("timelineHeading");
+    const thr = document.getElementById("timelineHr");
+    const dh = document.getElementById("diagnosticsHeading");
+    const dhr = document.getElementById("diagnosticsHr");
+    oh.addEventListener('click', () => {
+        ohr.setAttribute('style', 'display: block; margin: 0; margin-left: 21px; border-top: 5px solid blue; opacity: 0.5;');
+        thr.style.display = "none";
+        dhr.style.display = "none";
+    })
+    th.addEventListener('click', () => {
+        ohr.style.display = "none";
+        thr.setAttribute('style', 'display: block; margin: 0; margin-left: 21px; border-top: 5px solid blue; opacity: 0.5;');
+        dhr.style.display = "none";
+    })
+    dh.addEventListener('click', () => {
+        ohr.style.display = "none";
+        thr.style.display = "none";
+        dhr.setAttribute('style', 'display: block; margin: 0; margin-left: 21px; border-top: 5px solid blue; opacity: 0.5;');
+    })
+
+</script>
+
+<script>
+    // Retrieve the selected option from the query parameter
+    const urlParams = new URLSearchParams(window.location.search);
+    const selectedOption = urlParams.get('selectedOption');
+
+    // Set the selected option in the dropdown
+    if (selectedOption) {
+        const selectElement = document.getElementById('AllMachines');
+        selectElement.value = selectedOption;
+    }
+</script>
+
+<!-- Script for All Machines Select Tag -->
+<script>
+    const AllMachines = document.getElementById("AllMachines");
+    const onselecting = document.getElementById("onselecting");
+    const Machines = document.getElementById("Machines");
+
+    AllMachines.addEventListener('change', () => {
+        if (AllMachines.value == "1") {
+            pm1.style.display = "block";
+            pm2.style.display = "none";
+            pm3.style.display = "none";
+            pm4.style.display = "none";
+            // top-mid
+            pm.textContent = pSpan1.textContent;
+            pn.textContent = 1;
+        }
+        else if (AllMachines.value == "2") {
+            pm1.style.display = "none";
+            pm2.style.display = "block";
+            pm2.setAttribute('style', 'background-color: lightblue; border-right: 2px solid red; margin-left: 0 !important;');
+            pm3.style.display = "none";
+            pm4.style.display = "none";
+            // top-mid
+            pm.textContent = pSpan2.textContent;
+            pn.textContent = 2;
+        }
+        else if (AllMachines.value == "3") {
+            pm1.style.display = "none";
+            pm2.style.display = "none";
+            pm3.style.display = "block";
+            pm3.setAttribute('style', 'background-color: lightblue; border-right: 2px solid red; margin-left: 0 !important;');
+            pm4.style.display = "none";
+            // top-mid
+            pm.textContent = pSpan3.textContent;
+            pn.textContent = 3;
+        }
+        else if (AllMachines.value == "4") {
+            pm1.style.display = "none";
+            pm2.style.display = "none";
+            pm3.style.display = "none";
+            pm4.style.display = "block";
+            pm4.setAttribute('style', 'background-color: lightblue; border-right: 2px solid red; margin-left: 0 !important;');
+            // top-mid
+            pm.textContent = pSpan4.textContent;
+            pn.textContent = 4;
+        }
+        else {
+            pm1.style.display = "block";
+            pm1.setAttribute('style', 'background-color: lightblue; border-right: 2px solid red; margin-left: 0 !important;');
+            pm2.style.display = "block";
+            pm2.setAttribute('style', '');
+            pm3.style.display = "block";
+            pm3.setAttribute('style', '');
+            pm4.style.display = "block";
+            pm4.setAttribute('style', '');
+            // top-mid
+            pm.textContent = pSpan1.textContent;
+            pn.textContent = 1;
+        }
+    })
+</script>
+
+<!-- Script for Filters -->
+<script>
+
+</script>
+
+<!-- Script for Pagination -->
+<script>
+    const lsaquo = document.getElementById("lsaquo");
+    const rsaquo = document.getElementById("rsaquo");
+    
+    rsaquo.addEventListener('click', () => {
+        if (AllMachines.value === "AllMachines") {
+            if (pn.textContent === "1") {
+                pn.textContent = 2;
+                pm1.setAttribute('style', '');
+                pm2.setAttribute('style', 'background-color: lightblue; border-right: 2px solid red; margin-left: 0 !important;');
+                pm.textContent = pSpan2.textContent;
+            }
+            else if (pn.textContent === "2") {
+                pn.textContent = 3;
+                pm2.setAttribute('style', '');
+                pm3.setAttribute('style', 'background-color: lightblue; border-right: 2px solid red; margin-left: 0 !important;');
+                pm.textContent = pSpan3.textContent;
+            }
+            else {
+                pn.textContent = 4;
+                pm3.setAttribute('style', '');
+                pm4.setAttribute('style', 'background-color: lightblue; border-right: 2px solid red; margin-left: 0 !important;');
+                pm.textContent = pSpan4.textContent;
+            }
+        }
+    })
+    lsaquo.addEventListener('click', () => {
+        if (AllMachines.value === "AllMachines") {
+            if (pn.textContent === "4") {
+                pn.textContent = 3;
+                pm4.setAttribute('style', '');
+                pm3.setAttribute('style', 'background-color: lightblue; border-right: 2px solid red; margin-left: 0 !important;');
+                pm.textContent = pSpan3.textContent;
+            }
+            else if (pn.textContent === "3") {
+                pn.textContent = 2;
+                pm3.setAttribute('style', '');
+                pm2.setAttribute('style', 'background-color: lightblue; border-right: 2px solid red; margin-left: 0 !important;');
+                pm.textContent = pSpan2.textContent;
+            }
+            else {
+                pn.textContent = 1;
+                pm2.setAttribute('style', '');
+                pm1.setAttribute('style', 'background-color: lightblue; border-right: 2px solid red; margin-left: 0 !important;');
+                pm.textContent = pSpan1.textContent;
+            }
+        }
+    })
+</script>

@@ -1,0 +1,74 @@
+.content-container {
+    display: flex;
+    flex-direction: column;
+    min-height: 90vh;
+}
+
+main {
+    flex-grow: 1;
+    margin: 0;
+}
+
+@media (max-width: 450px) {
+    body {
+        min-height: 100vh;
+        padding-bottom: 3.74rem;
+    }
+
+    img {
+        width: 30% !important;
+    }
+
+    .mid {
+        display: block !important;
+    }
+
+    .m-2 {
+        height: 25vh !important;
+    }
+
+    .left {
+        width: 100vw !important;
+        height: 45vh;
+        margin-bottom: 3rem !important;
+    }
+
+    .right {
+        width: 100vw !important;
+        height: 45vh;
+        margin-bottom: 3rem !important;
+    }
+
+    canvas {
+        width: auto !important;
+        height: 22vh !important;
+    }
+}
+
+@media (min-width: 1024px) {
+    .chart1 span {
+        font-size: 20px;
+    }
+
+    .chart2 span {
+        font-size: 20px;
+    }
+
+    .chart3 span {
+        font-size: 20px;
+    }
+
+    .chart4 span {
+        font-size: 20px;
+    }
+
+    /* canvas:hover {
+        transform: scale(0.7);
+    } */
+
+    canvas {
+        /* height: auto !important; */
+        /* width: 41vw !important; */
+        margin: auto;
+    }
+}

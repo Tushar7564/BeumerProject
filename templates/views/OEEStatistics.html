@@ -1,0 +1,2137 @@
+<style>
+    @media print {
+        @page {
+            size: 400mm 400mm;
+            margin: 0;
+            /* Reset the default margin */
+        }
+
+        body {
+            orientation: landscape;
+            -webkit-print-orientation: landscape;
+            /* Safari-specific property */
+        }
+    }
+
+    /* OEE Stats */
+    .OEEstat {
+        /* border: 2px solid red; */
+        display: none;
+        width: auto;
+        background-color: white;
+        opacity: 0.8;
+        padding: 30px 20px;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        z-index: 3;
+        /* Ensure the modal appears above the backdrop */
+        box-shadow: 0px 0px 15px 10px #ccc;
+    }
+
+    .showOEEStat {
+        display: block;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        -webkit-filter: blur(0);
+        filter: blur(0);
+        opacity: 1;
+        border-radius: 10px;
+        /*overflow: visible;*/
+        /*z-index: 1;*/
+    }
+
+    #OEEstat_close {
+        position: absolute;
+        right: 0px;
+        top: 0px;
+        width: 30px;
+        color: white;
+        line-height: 30px;
+        height: 30px;
+        background-color: darkcyan;
+        text-align: center;
+        cursor: pointer;
+        border-radius: 0 10px 0 0;
+    }
+
+    main.table {
+        width: inherit;
+        height: 83vh;
+        /* margin-top: 30px; */
+        background-color: transparent;
+        backdrop-filter: blur(7px);
+        /* box-shadow: 0 .4rem .8rem #0005; */
+        /* border-radius: .8rem; */
+        /* overflow: hidden; */
+    }
+
+    @media print {
+
+        .table,
+        .table__body {
+            overflow: visible;
+            height: auto !important;
+            width: auto !important;
+        }
+    }
+
+    .table__header {
+        width: 100%;
+        height: auto;
+        background-color: transparent;
+        padding: .8rem 1rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .StatsearchBar {
+        width: 65%;
+        height: 100%;
+        background-color: #fff5;
+        padding: 0 .8rem;
+        border-radius: 2rem;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        transition: .2s;
+        border: 1px solid;
+    }
+
+    .StatsearchBar:hover {
+        /* width: 45%; */
+        background-color: #fff8;
+        box-shadow: 0 .1rem .4rem #0002;
+    }
+
+    .StatsearchBar i {
+        width: 1.2rem;
+        height: 1.2rem;
+    }
+
+    .StatsearchBar input {
+        width: 100%;
+        padding: 0 .5rem 0 .3rem;
+        background-color: transparent;
+        border: none;
+        outline: none;
+    }
+
+    .table__body {
+        width: 100%;
+        height: 33vh;
+        background-color: #fffb;
+        margin: .8rem auto;
+        border-radius: .6rem;
+        overflow: scroll;
+    }
+
+    .table__body::-webkit-scrollbar {
+        width: 0.5rem;
+        height: 0.5rem;
+    }
+
+    .table__body::-webkit-scrollbar-thumb {
+        border-radius: .5rem;
+        background-color: #0004;
+        visibility: hidden;
+    }
+
+    .table__body:hover::-webkit-scrollbar-thumb {
+        visibility: visible;
+    }
+
+    table {
+        width: 100%;
+    }
+
+    td i {
+        width: 36px;
+        height: 36px;
+        margin-right: .5rem;
+        border-radius: 50%;
+        vertical-align: middle;
+    }
+
+    table,
+    th,
+    td {
+        border-collapse: collapse;
+        padding: 1rem;
+        text-align: center;
+    }
+
+    thead th {
+        position: sticky;
+        top: 55;
+        left: 0;
+        cursor: pointer;
+        text-transform: capitalize;
+    }
+
+    #table-bottom {
+        position: sticky;
+        bottom: 0;
+        left: 0;
+        cursor: pointer;
+        text-transform: capitalize;
+    }
+
+    tbody tr:nth-child(even) {
+        background-color: #0000000b;
+    }
+
+    tbody tr {
+        --delay: .1s;
+        transition: .5s ease-in-out var(--delay), background-color 0s;
+    }
+
+    tbody tr.hide {
+        opacity: 0;
+        transform: translateX(100%);
+    }
+
+    tbody tr:hover {
+        background-color: #fff6 !important;
+    }
+
+    tbody tr td,
+    tbody tr td p,
+    tbody tr td i {
+        transition: .2s ease-in-out;
+    }
+
+    tbody tr.hide td,
+    tbody tr.hide td p {
+        padding: 0;
+        font: 0 / 0 sans-serif;
+        transition: .2s ease-in-out .5s;
+    }
+
+    tbody tr.hide td i {
+        width: 0;
+        height: 0;
+        transition: .2s ease-in-out .5s;
+    }
+
+    .status {
+        padding: .4rem 0;
+        border-radius: 2rem;
+        text-align: center;
+    }
+
+    .status.delivered {
+        background-color: #86e49d;
+        color: #006b21;
+    }
+
+    .status.cancelled {
+        background-color: #d893a3;
+        color: #b30021;
+    }
+
+    .status.pending {
+        background-color: #ebc474;
+    }
+
+    .status.shipped {
+        background-color: #6fcaea;
+    }
+
+    @media (max-width: 1000px) {
+        td:not(:first-of-type) {
+            min-width: 12.1rem;
+        }
+    }
+
+    thead th i.bi-arrow-up {
+        display: inline-block;
+        width: 1.3rem;
+        height: 1.3rem;
+        color: #6c00bd;
+        border: 1.4px solid transparent;
+        border-radius: 50%;
+        text-align: center;
+        font-size: 1rem;
+    }
+
+    thead th:hover i.bi-arrow-up {
+        border: 1.4px solid #6c00bd;
+    }
+
+    thead th:hover {
+        color: #6c00bd;
+    }
+
+    thead th.active i.bi-arrow-up {
+        background-color: #6c00bd;
+        color: #fff;
+    }
+
+    thead th.asc i.bi-arrow-up {
+        transform: rotate(180deg);
+    }
+
+    thead th.active,
+    tbody td.active {
+        color: #6c00bd;
+    }
+
+    .export__file {
+        position: relative;
+    }
+
+    .export__file .bi-box-arrow-right {
+        display: inline-block;
+        width: 2rem;
+        height: 2rem;
+        border-radius: 50%;
+        transition: .2s ease-in-out;
+        cursor: pointer;
+    }
+
+    .bi-arrow-clockwise:hover {
+        transform: scale(1.15);
+    }
+
+    .export__file .bi-box-arrow-right:hover {
+        /* background-color: #fff; */
+        transform: scale(1.15);
+    }
+
+    .export__file input {
+        display: none;
+    }
+
+    .export__file .export__file-options {
+        position: absolute;
+        right: 0;
+        width: 12rem;
+        border-radius: .5rem;
+        overflow: hidden;
+        text-align: center;
+        opacity: 0;
+        transform: scale(.8);
+        transform-origin: top right;
+        box-shadow: 0 .2rem .5rem #0004;
+        transition: .2s;
+    }
+
+    .export__file input:checked+.export__file-options {
+        opacity: 1;
+        transform: scale(1);
+        z-index: 100;
+    }
+
+    .export__file .export__file-options label {
+        display: block;
+        width: 100%;
+        padding: .6rem 0;
+        background-color: #f2f2f2;
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        transition: .2s ease-in-out;
+    }
+
+    .export__file .export__file-options label:first-of-type {
+        padding: 1rem 0;
+        background-color: #86e49d !important;
+    }
+
+    .export__file .export__file-options label:hover {
+        transform: scale(1.05);
+        background-color: #fff;
+        cursor: pointer;
+    }
+
+    #filter:hover {
+        transform: scale(1.05);
+        /* background-color: #fff; */
+        cursor: pointer;
+        border-radius: 50%;
+    }
+
+    .export__file .export__file-options i {
+        width: 2rem;
+        height: auto;
+    }
+</style>
+<!-- <script src="/public/JavaScripts/html2pdf.js"></script> -->
+<script src="/public/JavaScripts/xlsx.full.min.js"></script>
+<script src="/public/JavaScripts/chart.umd.js"></script>
+<script src="/public/JavaScripts/chartjs-plugin-datalabels.min.js"></script>
+<script src="/public/JavaScripts/chartjs-adapter-date-fns.bundle.min.js"></script>
+
+<div class="row" style="--bs-gutter-x: 0;">
+    <div class="row" style="width: 27vw; --bs-gutter-x: 0;">
+        <div id="chart24" style="width: 10vw; height: inherit; margin: auto;">
+            <canvas class="mx-1" id="Chart24" style="width: auto; height: 100vh;"></canvas>
+        </div>
+        <div class="col px-0 m-auto mx-1" style="width: 11vw;">
+            <div class="row justify-content-between" style="width: inherit; --bs-gutter-x: 0;">
+                <span style="width: auto; color: blue;">Packers</span>
+                <input type="text" name="npackers" id="npackers" placeholder="3"
+                    style="width: 2vw; padding: 0; padding-left: 5px; border: none;" disabled>
+            </div>
+            <div class="row justify-content-between mt-2" style="width: inherit; --bs-gutter-x: 0;">
+                <span style="width: auto; color: darkgray;">Bucket Elevators</span>
+                <input type="text" name="nbucketelevators" id="nbucketelevators" placeholder="3"
+                    style="width: 2vw; padding: 0; padding-left: 5px; border: none;" disabled>
+            </div>
+            <div class="row justify-content-between mt-2" style="width: inherit; --bs-gutter-x: 0;">
+                <span style="width: auto; color: lightblue;">Truck Loaders</span>
+                <input type="text" name="ntruckloaders" id="ntruckloaders" placeholder="5"
+                    style="width: 2vw; padding: 0; padding-left: 5px; border: none;" disabled>
+            </div>
+        </div>
+        <div class="row mt-1" style="width: 26.5vw; height: 66vh; --bs-gutter-x: 0;">
+            <div class="chart19 mt-1 mx-1" style="width: inherit; padding: 0;">
+                <canvas id="Chart19" style="width: inherit; height: 30vh;"></canvas>
+            </div>
+            <div class="chart20_1 mt-1 mx-1" style="width: inherit; padding: 0; display: none;">
+                <span id="Pfilter">Packer</span>
+                <canvas id="Chart20_1" style="width: inherit; height: auto;"></canvas>
+            </div>
+            <div class="chart20_2 mt-1 mx-1" style="width: inherit; padding: 0; display: none;">
+                <span id="BEfilter">Bucket Elevator</span>
+                <canvas id="Chart20_2" style="width: inherit; height: auto;"></canvas>
+            </div>
+            <div class="chart20_3 mt-1 mx-1" style="width: inherit; padding: 0; display: none;">
+                <span id="TLfilter">Truck Loader</span>
+                <canvas id="Chart20_3" style="width: inherit; height: auto;"></canvas>
+            </div>
+        </div>
+    </div>
+    <div id="allcontent" style="width: 64vw; border-left: 2px solid #ccc;">
+        <main class="table ms-2" id="customers_table">
+            <section class="table__header">
+                <div class="row"
+                    style="--bs-gutter-x: 0; width: 100%; justify-content: space-between; background: transparent;">
+                    <!-- Search Bar -->
+                    <div class="col-md-6 my-auto" id="searchbar"
+                        style="--bs-gutter-x: 0; width: auto; height: auto; background: transparent;">
+                        <div class="input-group StatsearchBar"
+                            style="width: auto; height: auto; float: right; background-color: #fff;">
+                            <input type="search" class="form-control" placeholder="Search Data..." style="width: auto;">
+                            <i class="bi bi-search p-0" style="width: auto; height: auto;"></i>
+                        </div>
+                    </div>
+                    <div class="row col-md-6" style="--bs-gutter-x: 0; width: auto; background: transparent;">
+                        <!-- Filter's Div -->
+                        <div id="filter"
+                            style="width: auto; height: fit-content; background: transparent; margin: auto;">
+                            <div class="btn-group">
+                                <button type="button" title="Filters" class="btn" data-bs-toggle="dropdown"
+                                    data-bs-display="static" aria-expanded="false"
+                                    style="border-radius: 50%; width: inherit; padding: 4px; font-size: 17px; transition: .2s ease-in-out;">
+                                    <i class="bi bi-arrow-down-up"
+                                        style="font-size: large; transform: scale(1.15);"></i>
+                                </button>
+                                <ul class="dropdown-menu dropdown-menu-end" style="width: max-content;">
+                                    <li class="dropdown-header">Filter By:</li>
+                                    <li class="list-group-item list-group-item-flex">
+                                        <input class="form-check-input mx-1" type="radio" name="orderType" id="fPacker">
+                                        <label class="form-check-label" for="fPacker">Packer</label>
+                                    </li>
+                                    <li class="list-group-item list-group-item-flex">
+                                        <input class="form-check-input mx-1" type="radio" name="orderType"
+                                            id="fBucketElevator">
+                                        <label class="form-check-label" for="fBucketElevator">Bucket Elevator</label>
+                                    </li>
+                                    <li class="list-group-item list-group-item-flex">
+                                        <input class="form-check-input mx-1" type="radio" name="orderType"
+                                            id="fTruckLoader">
+                                        <label class="form-check-label" for="fTruckLoader">Truck Loader</label>
+                                    </li>
+                                    <li class="list-group-item list-group-item-flex">
+                                        <input class="form-check-input mx-1" type="radio" name="orderType"
+                                            id="fCustomDates">
+                                        <label class="form-check-label" for="fCustomDates">Custom Dates</label>
+                                    </li>
+                                    <hr class="dropdown-divider my-1">
+                                    <li class="dropdown-header">Sort By:</li>
+                                    <li class="list-group-item list-group-item-flex">
+                                        <input class="form-check-input mx-1" type="radio" name="sortBy" id="fsDateWise">
+                                        <label class="form-check-label" for="fsDateWise">Date Wise</label>
+                                    </li>
+                                    <li class="list-group-item list-group-item-flex">
+                                        <input class="form-check-input mx-1" type="radio" name="sortBy" id="fsShiftWise"
+                                            checked>
+                                        <label class="form-check-label" for="fsShiftWise">Shift Wise</label>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <!-- Custom Dates -->
+                        <div class="row" id="customDatesInputGroups"
+                            style="width: auto; display: none; --bs-gutter-x: 0; background: transparent;">
+                            <div class="input-group col-md-6"
+                                style="width: auto; padding: 5px; padding-right: 0; border: none;">
+                                <span id="fromAddon"
+                                    style="color: red; cursor: pointer; padding: 0; padding-top: 5px; padding-bottom: 5px;">&#10060;</span>
+                                <span class="input-group-text px-1" id="fromLabel"
+                                    style="border-radius: var(--bs-border-radius) 0px 0px var(--bs-border-radius); margin-left: 2px; width: auto;">from:</span>
+                                <input type="datetime-local" class="form-control" placeholder="00:00"
+                                    aria-label="fromDate" aria-describedby="basic-addon1" id="fromDate"
+                                    style="outline: none; width: 14.5vw; background: #fff; height: inherit;">
+                            </div>
+                            <div class="input-group col-md-6"
+                                style="width: auto; padding: 5px; padding-left: 0; border: none;">
+                                <span class="input-group-text px-1" id="toLabel" style="width: auto;">to:</span>
+                                <input type="datetime-local" class="form-control" placeholder="" aria-label="toDate"
+                                    aria-describedby="basic-addon1" id="toDate"
+                                    style="border-radius: 0px var(--bs-border-radius) var(--bs-border-radius) 0px; margin-right: 2px; outline: none; width: 14.5vw; background: #fff; height: inherit;">
+                                <span id="toAddon"
+                                    style="color: green; cursor: pointer; padding: 0; padding-top: 5px; padding-bottom: 5px; width: auto;">&#10004;</span>
+                            </div>
+                        </div>
+                        <!-- Exporting in PDF, CSV and Excel -->
+                        <div class="export__file my-auto"
+                            style="text-align: center; width: auto; background: transparent;">
+                            <label for="export-file" class="bi bi-box-arrow-right py-1" title="Export File"
+                                style="font-size: x-large;" onclick="StatexportClick()"></label>
+                            <input type="checkbox" id="export-file">
+                            <div class="export__file-options" id="StatExportOptions">
+                                <label>Export As &nbsp; &#10140;</label>
+                                <label for="export-file" id="toPDF" onclick="exportPageToPdf('Page')">PDF <i
+                                        class="bi-file-pdf"></i></label>
+                                <!-- <label for="export-file" id="toJSON">JSON <i class="bi-filetype-json"></i></label> -->
+                                <label for="export-file" id="toCSV"
+                                    onclick="exportTableToCsv('OEEStatTable', '#StatTable')">CSV <i
+                                        class="bi-filetype-csv"></i></label>
+                                <label for="export-file" id="toEXCEL"
+                                    onclick="exportTableToExcel('OEEStatTable', '#StatTable')">EXCEL <i
+                                        class="bi-file-earmark-excel"></i></label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <section>
+                <div class="chart21 mx-2" style="width: inherit; height: 40vh;">
+                    <canvas id="Chart21" style="width: 100vw; height: 60vh;"></canvas>
+                </div>
+            </section>
+            <section class="table__body">
+                <!-- Rows and Overall OEE -->
+                <div class="row pb-1"
+                    style="--bs-gutter-x: 0; position: sticky; top: 0; left: 0; width: auto; margin-right: 5px; background: #fff; cursor: pointer; justify-content: space-between;">
+                    <div class="form-group row py-1" style="--bs-gutter-x: 0; width: auto;">
+                        <div class="input-group-text" style="width: auto;">
+                            <span style="width: auto;">Show </span>
+                            <select class="form-control mx-1" name="state" id="maxRows"
+                                style="width: auto; padding: 2px; text-align: center;">
+                                <option value="5000" selected> All</option>
+                                <option value="5">5</option>
+                                <option value="10">10</option>
+                                <option value="15">15</option>
+                                <option value="20">20</option>
+                                <option value="50">50</option>
+                                <option value="70">70</option>
+                                <option value="100">100</option>
+                            </select>
+                            <span style="width: auto;">Rows</span>
+                        </div>
+                        <div class="btn-group" style="width: auto;">
+                            <button class="btn btn-outline-info ms-1" id="btn1stShift" type="button"
+                                style="width: auto;">1st Shift</button>
+                            <button class="btn btn-outline-info" id="btn2ndShift" type="button"
+                                style="width: auto; display: none;">2nd
+                                Shift</button>
+                            <button class="btn btn-outline-info me-1" id="btn3rdShift" type="button"
+                                style="width: auto; display: none;">3rd Shift</button>
+                        </div>
+                        <button class="btn btn-outline-info me-1" id="btnShowAll" type="button"
+                            style="width: auto;">Show All</button>
+                    </div>
+                    <div class="row" style="--bs-gutter-x: 0; float: right; width: auto;">
+                        <div id="OeeStatus" class="row" style="--bs-gutter-x: 0; float: right; width: auto;">
+                            <span class="my-auto mx-0" id="gdot"
+                                style="display: none; height: 7px; width: 7px; background-color: green; border-radius: 50%; --bs-gutter-x: 0;"></span>
+                            <span class="my-auto mx-1" id="rdot"
+                                style=" display: none; height: 7px; width: 7px; background-color: red; border-radius: 50%; --bs-gutter-x: 0;"></span>
+                            <span class="my-auto" id="todaysOEE" style="width: auto;"></span>
+                            <i class="bi-arrow-up my-auto cup" style="display: none;"></i>
+                            <i class="bi-arrow-down my-auto cdown" style="display: none;"></i>
+                        </div>
+                        <!-- Removing All Filters -->
+                        <div class="nofilter my-auto"
+                            style="text-align: center; width: auto; background: transparent; cursor: pointer;">
+                            <label for="reload" class="bi-arrow-clockwise py-1" style="font-size: medium;"></label>
+                        </div>
+                    </div>
+                </div>
+                <!-- Table Starts -->
+                <table class="table" id="StatTable">
+                    <thead>
+                        <tr>
+                            <th class="text-center">Per Hour <i class="bi bi-arrow-up"></i></th>
+                            <th class="text-center">Availability <i class="bi bi-arrow-up"></i></th>
+                            <th class="text-center">Performance <i class="bi bi-arrow-up"></i></th>
+                            <th class="text-center">Quality <i class="bi bi-arrow-up"></i></th>
+                            <th class="text-center">Overall Equipment Efficiency <i class="bi bi-arrow-up"></i></th>
+                        </tr>
+                    </thead>
+                    <tbody id="StatdataTableBody">
+                        <!-- Dynamically Row's are adding -->
+                    </tbody>
+                </table>
+                <!-- Pagination -->
+                <div class="row col-md-12" id="table-bottom"
+                    style="--bs-gutter-x: 0; width: 100%; height: auto; background-color: #fff;">
+                    <div class="col-md-6 my-auto py-0" id="data-Info"></div>
+                    <div class="col-md-6 row pagination-container p-0" id="pagination"
+                        style="--bs-gutter-x: 0; width: auto; margin: auto; margin-top: 5px; margin-bottom: 5px; margin-right: 5px;">
+                        <nav aria-label="...">
+                            <ul class="pagination my-0">
+                                <!-- Pagination through Js -->
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+</div>
+
+<!-- OEE Stats Overlay -->
+<script>
+    function OEEstat() {
+        overlay.style.display = 'block';
+        document.querySelector('.OEEstat').classList.add('showOEEStat');
+    }
+    function OEEstat_closeModel() {
+        overlay.style.display = 'none';
+        document.querySelector('.OEEstat').classList.remove('showOEEStat');
+    }
+    var OEEstat_close = document.getElementById("OEEstat_close");
+    OEEstat_close.addEventListener("click", OEEstat_closeModel);
+</script>
+
+<!-- Table Row's adding dynamically and per hour is added -->
+<script>
+    // Function to get the formatted date and time
+    function getFormattedDateTime(dateTime) {
+        const options = { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit', hour12: false };
+        return new Date(dateTime).toLocaleString('en-IN', options);
+    }
+
+    let totalOEE = 0;
+    // Function to add a new row to the table
+    function addTableRow(index, dateTime) {
+        const tableBody = document.getElementById('StatdataTableBody');
+        const todaysOEE = document.getElementById('todaysOEE');
+        const newRow = tableBody.insertRow();
+        const timeCell = newRow.insertCell(0);
+        const availabilityCell = newRow.insertCell(1);
+        const performanceCell = newRow.insertCell(2);
+        const qualityCell = newRow.insertCell(3);
+        const oeeCell = newRow.insertCell(4);
+
+        newRow.id = 'OEEStatTableRow';
+        timeCell.id = 'time_' + index;
+        availabilityCell.id = 'Availability_' + index;
+        performanceCell.id = 'performance_' + index;
+        qualityCell.id = 'quality_' + index;
+        oeeCell.id = 'oee_' + index;
+
+        // Format the date and time
+        const formattedDateTime = getFormattedDateTime(dateTime);
+        timeCell.textContent = formattedDateTime;
+
+        // Find the corresponding time in Chart12 data
+        const timeIndex = data4.findIndex(item => item.x === index - 1);
+        if (timeIndex !== -1) {
+            const availabilityValue = data4[timeIndex].y;
+            const performanceValue = datac10_today[timeIndex].y;
+            const qualityValue = datac9_today[timeIndex].y;
+            const OEEValue = averagedData_current[timeIndex].y;
+            availabilityCell.textContent = availabilityValue.toFixed(2) + '%';
+            performanceCell.textContent = performanceValue.toFixed(2) + '%';
+            qualityCell.textContent = qualityValue.toFixed(2) + '%';
+            oeeCell.textContent = OEEValue.toFixed(2) + '%';
+
+            totalOEE += OEEValue;
+
+            // Calculate the number of oeeCell elements
+            const oeeCellElements = document.querySelectorAll('[id^="oee_"]');
+            const oeeCellCount = oeeCellElements.length;
+
+            // Ensure oeeCellCount is not 0 to avoid division by zero
+            const scaledTotalOEE = oeeCellCount > 0 ? (totalOEE / oeeCellCount) : 0;
+
+            todaysOEE.innerHTML = "Today's Total OEE: " + scaledTotalOEE.toFixed(2) + '%';
+        } else {
+            availabilityCell.textContent = 'N/A'; // Handle if data is not available for the specific time
+            performanceCell.textContent = 'N/A'; // Handle if data is not available for the specific time
+            qualityCell.textContent = 'N/A'; // Handle if data is not available for the specific time
+            oeeCell.textContent = 'N/A'; // Handle if data is not available for the specific time
+        }
+
+        // Add your logic to fill in the rest of the cells based on the time
+
+        // Update the time for the next row
+        const nextDateTime = new Date(dateTime);
+        nextDateTime.setHours(nextDateTime.getHours() + 1);
+
+        if (nextDateTime <= new Date()) {
+            addTableRow(index + 1, nextDateTime);
+        }
+    }
+
+    // Get the current date and time
+    const currentDatefortable = new Date();
+    currentDatefortable.setHours(6, 0, 0, 0); // Set the time to 06:00 AM
+
+    // Call the function to add the first row
+    addTableRow(1, currentDatefortable);
+
+    // todaysOEE is live
+    var blinkElement = document.getElementById('OeeStatus');
+    const cup = document.querySelector(".cup");
+    const cdown = document.querySelector(".cdown");
+    const gdot = document.querySelector("#gdot");
+    const rdot = document.querySelector("#rdot");
+
+    if (currentRealTimeValuec11 > yesterdayValuec11) {
+        setInterval(function () {
+            blinkElement.style.color = "#86e49d";
+            blinkElement.style.opacity = (blinkElement.style.opacity === '0' || blinkElement.style.opacity === '') ? '1' : '0';
+            gdot.style.display = "block";
+            rdot.style.display = "none";
+            cup.setAttribute("style", "display: block; width: auto; padding: 0; color: #86e49d;");
+            cdown.style.display = "none";
+        }, 500);
+    } else if (currentRealTimeValuec11 < yesterdayValuec11) {
+        setInterval(function () {
+            blinkElement.style.color = "#b30021";
+            blinkElement.style.opacity = (blinkElement.style.opacity === '0' || blinkElement.style.opacity === '') ? '1' : '0';
+            gdot.style.display = "none";
+            rdot.style.display = "block";
+            cup.style.display = "none";
+            cdown.setAttribute("style", "display: block; width: auto; padding: 0; color: #b30021;");
+        }, 500);
+    } else {
+        setInterval(function () {
+            blinkElement.style.color = "#000";
+            blinkElement.style.opacity = (blinkElement.style.opacity === '0' || blinkElement.style.opacity === '') ? '1' : '0';
+            rdot.style.display = "none";
+            gdot.style.display = "none";
+            cup.style.display = "none";
+            cdown.style.display = "none";
+        });
+    }
+</script>
+
+<!-- OEE Table Script Handing Search Bar and Export -->
+<script>
+    const search = document.querySelector('.StatsearchBar input'),
+        table_rows = document.querySelectorAll('.table__body tbody tr'),
+        table_headings = document.querySelectorAll('.table__body thead th');
+
+    // console.log('Number of Rows:', table_rows.length);
+    // console.log('Table Rows:', table_rows);
+    // 1. Searching for specific data of HTML table
+    search.addEventListener('input', searchStatTable);
+
+    function searchStatTable() {
+        table_rows.forEach((row, i) => {
+            let table_data = row.textContent.toLowerCase(),
+                search_data = search.value.toLowerCase();
+            console.log('Number of Rows:', table_rows.length);
+            console.log('Table Rows:', table_rows);
+            row.classList.toggle('hide', table_data.indexOf(search_data) < 0);
+            row.style.setProperty('--delay', i / 25 + 's');
+        })
+
+        document.querySelectorAll('tbody tr:not(.hide)').forEach((visible_row, i) => {
+            visible_row.style.backgroundColor = (i % 2 == 0) ? 'transparent' : '#0000000b';
+        });
+    }
+
+    // 2. Sorting | Ordering data of HTML table
+
+    table_headings.forEach((head, i) => {
+        let sort_asc = true;
+        head.onclick = () => {
+            console.log(head);
+            table_headings.forEach(head => head.classList.remove('active'));
+            head.classList.add('active');
+
+            document.querySelectorAll('td').forEach(td => td.classList.remove('active'));
+            table_rows.forEach(row => {
+                row.querySelectorAll('td')[i].classList.remove('active');
+                row.querySelectorAll('td')[i].classList.add('active');
+            })
+
+            head.classList.toggle('asc', sort_asc);
+            sort_asc = head.classList.contains('asc') ? false : true;
+
+            sortStatTable(i, sort_asc);
+        }
+    })
+
+    function sortStatTable(column, sort_asc) {
+        console.log('Sorting:', column, sort_asc);
+        const sortedRows = [...table_rows].sort((a, b) => {
+            let first_row = a.querySelectorAll('td')[column].textContent.toLowerCase(),
+                second_row = b.querySelectorAll('td')[column].textContent.toLowerCase();
+            console.log(first_row, second_row);
+            return sort_asc ? (first_row < second_row ? 1 : -1) : (first_row < second_row ? -1 : 1);
+        });
+
+        const newTbody = document.createElement('tbody');
+        sortedRows.forEach(sorted_row => newTbody.appendChild(sorted_row));
+
+        const oldTbody = document.querySelector('.table__body tbody');
+        oldTbody.parentNode.replaceChild(newTbody, oldTbody);
+    }
+
+    function StatexportClick() {
+        const ExportBtn = document.getElementById('StatExportOptions');
+        ExportBtn.style.display = "block";
+    }
+
+    // 3. Converting HTML table to PDF
+    const pdf_btn = document.querySelector('#toPDF');
+
+    const exportPageToPdf = (filename) => {
+        setTimeout(() => {
+            // Hide exportOptions after 0.5 seconds
+            setTimeout(() => {
+                document.getElementById('StatExportOptions').style.display = "none";
+            }, 500);
+
+            // Trigger the print window
+            window.print();
+        }, 100);
+    };
+
+    // 4. Converting HTML table to JSON
+
+    // const json_btn = document.querySelector('#toJSON');
+
+    // const toJSON = function (table) {
+    //     let table_data = [],
+    //         t_head = [],
+
+    //         t_headings = table.querySelectorAll('th'),
+    //         t_rows = table.querySelectorAll('tbody tr');
+
+    //     for (let t_heading of t_headings) {
+    //         let actual_head = t_heading.textContent.trim().split(' ');
+
+    //         t_head.push(actual_head.splice(0, actual_head.length - 1).join(' ').toLowerCase());
+    //     }
+
+    //     t_rows.forEach(row => {
+    //         const row_object = {},
+    //             t_cells = row.querySelectorAll('td');
+
+    //         t_cells.forEach((t_cell, cell_index) => {
+    //             const icon = t_cell.querySelector('i');
+    //             if (icon) {
+    //                 row_object['customer icon'] = icon.className;;
+    //             }
+    //             row_object[t_head[cell_index]] = t_cell.textContent.trim();
+    //         })
+    //         table_data.push(row_object);
+    //     })
+
+    //     return JSON.stringify(table_data, null, 4);
+    // }
+
+    // json_btn.onclick = () => {
+    //     const json = toJSON(customers_table);
+    //     downloadFile(json, 'json')
+    // }
+
+    // 5. Converting HTML table to CSV File
+
+    const csv_btn = document.querySelector('#toCSV');
+
+    const exportTableToCsv = (filename, tableSelector) => {
+        const table = document.querySelector(tableSelector);
+        const csv = [];
+        const rows = table.rows;
+
+        for (let i = 0; i < rows.length; i++) {
+            const row = rows[i];
+            const rowData = [];
+
+            for (let j = 0; j < row.cells.length; j++) {
+                const cell = row.cells[j];
+                rowData.push(cell.innerText);
+            }
+
+            csv.push(rowData.join(','));
+        }
+
+        setTimeout(() => {
+            document.getElementById('StatExportOptions').style.display = "none";
+        }, 500);
+
+        const csvContent = "data:text/csv;charset=utf-8," + csv.join("\n");
+        const encodedUri = encodeURI(csvContent);
+        const link = document.createElement("a");
+        link.setAttribute("href", encodedUri);
+        link.setAttribute("download", filename + ".csv");
+        document.body.appendChild(link); // Required for FF
+        link.click(); // This will download the data file named "filename.csv"
+    };
+
+    // 6. Converting HTML table to EXCEL File
+
+    const excel_btn = document.querySelector('#toEXCEL');
+
+    function s2ab(s) {
+        const buf = new ArrayBuffer(s.length);
+        const view = new Uint8Array(buf);
+        for (let i = 0; i !== s.length; ++i) view[i] = s.charCodeAt(i) & 0xFF;
+        return buf;
+    }
+
+    const exportTableToExcel = (filename, tableSelector) => {
+        const table = document.querySelector(tableSelector);
+        const wb = XLSX.utils.table_to_book(table, { sheet: "Sheet1" });
+        const wbout = XLSX.write(wb, { bookType: "xlsx", type: "binary" });
+        const blob = new Blob([s2ab(wbout)], { type: "application/octet-stream" });
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement("a");
+
+        setTimeout(() => {
+            document.getElementById('StatExportOptions').style.display = "none";
+        }, 500);
+
+        a.href = url;
+        a.download = filename + ".xlsx";
+        document.body.appendChild(a);
+        a.click();
+    };
+</script>
+
+<!-- Table Rows & Pagination -->
+<script>
+    var currentTime = new Date();
+    var currentHourfilters = currentTime.getHours();
+    var currentShift = 'all';
+    var currentPage = 1;
+    var entriesPerPage = parseInt($('#maxRows').val());
+
+    $('#maxRows').change(function () {
+        entriesPerPage = parseInt($(this).val());
+        currentPage = 1;
+        updateTable(entriesPerPage);
+    });
+
+    if (currentHourfilters >= 14) {
+        btn1stShift.addEventListener('mousedown', function () {
+            currentShift = '1st';
+            currentPage = 1; // Reset the current page when changing shifts
+            updateTable(entriesPerPage);
+        });
+
+        btn2ndShift.addEventListener('mousedown', function () {
+            currentShift = '2nd';
+            currentPage = 1; // Reset the current page when changing shifts
+            updateTable(entriesPerPage);
+        });
+
+        btn3rdShift.addEventListener('mousedown', function () {
+            currentShift = '3rd';
+            currentPage = 1; // Reset the current page when changing shifts
+            updateTable(entriesPerPage);
+        });
+    }
+    updateTable(entriesPerPage);
+
+    function updateTable(entriesPerPage) {
+        $('#StatdataTableBody #OEEStatTableRow').hide();
+
+        if (isNaN(entriesPerPage) || entriesPerPage <= 0) {
+            entriesPerPage = 5;
+        }
+
+        var startIndex = (currentPage - 1) * entriesPerPage;
+        var endIndex = startIndex + entriesPerPage;
+
+        var rowsToShow = [];
+        if (currentShift === 'all') {
+            rowsToShow = $('#StatdataTableBody #OEEStatTableRow');
+        } else {
+            // Determine the range of rows for the selected shift
+            var shiftStartIndex = (parseInt(currentShift) - 1) * 8;
+            rowsToShow = $('#StatdataTableBody #OEEStatTableRow').slice(shiftStartIndex, shiftStartIndex + 8);
+        }
+
+        // Show the selected rows
+        rowsToShow.slice(startIndex, endIndex).show();
+
+        updatePagination();
+
+        updateShowingInfo();
+    }
+
+    // Add the following function to update the "Showing" information
+    function updateShowingInfo() {
+        var totalRows = $('#StatdataTableBody #OEEStatTableRow').length;
+        var startIndex = (currentPage - 1) * entriesPerPage + 1;
+        var endIndex = Math.min(startIndex + entriesPerPage - 1, totalRows);
+
+        $('#data-Info').text('Showing ' + startIndex + ' to ' + endIndex + ' of ' + totalRows + ' entries');
+    }
+
+    function updatePagination() {
+        var totalRows = $('#StatdataTableBody #OEEStatTableRow').length;
+        var totalPages = Math.ceil(totalRows / entriesPerPage);
+
+        var paginationHtml = '';
+
+        if (totalPages > 1) {
+            paginationHtml += '<li class="page-item' + (currentPage > 1 ? '' : ' disabled') + '" id="prev"><span class="page-link bi-chevron-left" style="padding: 10px;"></span></li>';
+        }
+
+        for (var i = 1; i <= totalPages; i++) {
+            paginationHtml += '<li class="page-item' + (i === currentPage ? ' active' : '') + '" data-page="' + i + '"><span class="page-link">' + i + '</span></li>';
+        }
+
+        if (totalPages > 1) {
+            paginationHtml += '<li class="page-item' + (currentPage < totalPages ? '' : ' disabled') + '" id="next"><span class="page-link bi-chevron-right" style="padding: 10px;"></span></li>';
+        }
+
+        $('.pagination').html(paginationHtml);
+
+        // Updated click event handlers for pagination links
+        $('.pagination li[id="prev"]').click(function () {
+            if (currentPage > 1) {
+                currentPage--;
+                updateTable(entriesPerPage);
+            }
+        });
+
+        $('.pagination li[id="next"]').click(function () {
+            if (currentPage < totalPages) {
+                currentPage++;
+                updateTable(entriesPerPage);
+            }
+        });
+
+        $('.pagination li[data-page]').click(function () {
+            currentPage = parseInt($(this).attr('data-page'));
+            updateTable(entriesPerPage);
+        });
+    }
+</script>
+
+<!-- Script for Hiding/Unhiding Chart 20 (1, 2 & 3) -->
+<script>
+    const filter = document.getElementById("filter");
+    const Pfilter = document.getElementById("Pfilter");
+    const BEfilter = document.getElementById("BEfilter");
+    const TLfilter = document.getElementById("TLfilter");
+    const fPacker = document.getElementById("fPacker");
+    const fBucketElevator = document.getElementById("fBucketElevator");
+    const fTruckLoader = document.getElementById("fTruckLoader");
+    const fCustomDates = document.getElementById("fCustomDates");
+    const fsDateWise = document.getElementById("fsDateWise");
+    const fsShiftWise = document.getElementById("fsShiftWise");
+    const btn1stShift = document.getElementById("btn1stShift");
+    const btn2ndShift = document.getElementById("btn2ndShift");
+    const btn3rdShift = document.getElementById("btn3rdShift");
+    const btnShowAll = document.getElementById("btnShowAll");
+    const divchart20_1 = document.getElementsByClassName("chart20_1")[0];
+    const divchart20_2 = document.getElementsByClassName("chart20_2")[0];
+    const divchart20_3 = document.getElementsByClassName("chart20_3")[0];
+    const customDatesInputGroups = document.getElementById("customDatesInputGroups");
+    const fromDate = document.getElementById("fromDate");
+    const toDate = document.getElementById("toDate");
+    const fromAddon = document.getElementById("fromAddon");
+    const toAddon = document.getElementById("toAddon");
+    const table__body = document.querySelector(".table__body");
+    const tablebottom = document.querySelector("#table-bottom");
+
+    const reload = document.querySelector(".bi-arrow-clockwise");
+    const StatdataTableBody = document.getElementById("StatdataTableBody");
+    const radioButtons = document.querySelectorAll('input[type="radio"]');
+
+    // Store the original content of the table body
+    const originalTableBodyContent = StatdataTableBody.innerHTML;
+
+    reload.onclick = function () {
+        // Clear the current content in the table body
+        StatdataTableBody.innerHTML = "";
+
+        reload.style.transition = "transform 1s linear";
+        reload.style.transform = "rotate(360deg)";
+
+        setTimeout(function () {
+            restoreOriginalTableBody();
+            reload.style.transform = "rotate(0deg)"; // Reset rotation
+        }, 100);
+
+        let th = document.querySelectorAll('th');
+        th.forEach(th => th.classList.remove('active'));
+        th.forEach(th => th.classList.remove('asc'));
+
+        radioButtons.forEach((radioButton) => {
+            radioButton.checked = false;
+        })
+    };
+
+    // Function to restore the original content of the table body
+    function restoreOriginalTableBody() {
+        StatdataTableBody.innerHTML = originalTableBodyContent;
+    }
+
+    fPacker.addEventListener('click', () => {
+        divchart20_1.style.display = "block";
+        divchart20_2.style.display = "none";
+        divchart20_3.style.display = "none";
+    })
+    fBucketElevator.addEventListener('click', () => {
+        divchart20_1.style.display = "none";
+        divchart20_2.style.display = "block";
+        divchart20_3.style.display = "none";
+    })
+    fTruckLoader.addEventListener('click', () => {
+        divchart20_1.style.display = "none";
+        divchart20_2.style.display = "none";
+        divchart20_3.style.display = "block";
+    })
+    fCustomDates.addEventListener('click', () => {
+        filter.style.display = "none";
+        divchart20_1.style.display = "block";
+        divchart20_2.style.display = "block";
+        divchart20_3.style.display = "block";
+        customDatesInputGroups.style.display = "block";
+        // table.style.height = "100vh";
+        table__body.setAttribute("style", "Overflow: Visible; height: auto;");
+        tablebottom.style.position = "relative";
+
+        event.preventDefault(); // Prevent the default link behavior
+        // d2.setAttribute('style', '');
+        radioButtons.forEach((radioButton) => {
+            radioButton.checked = false;
+        })
+        customDatesInputGroups.setAttribute('style', 'display:inline-flex; float: right; width: auto; height: inherit; flex-direction: row; margin-top: 0; background: transparent;'); // Show the custom dates input groups
+        filter.style.display = "none"; // Hide the "Today" button
+        // Add click event to the red cross sign to go back to "Today"
+        fromAddon.addEventListener("click", function () {
+            // dw.setAttribute('style', 'justify-content: space-between;');
+            filter.style.display = "block";
+            table__body.style.overflow = "scroll";
+            table__body.style.height = "33vh";
+            tablebottom.style.position = "sticky";
+            // d2.style.width = "auto";
+            customDatesInputGroups.style.display = "none";
+            divchart20_1.style.display = "none";
+            divchart20_2.style.display = "none";
+            divchart20_3.style.display = "none";
+            radioButtons.forEach((radioButton) => {
+                radioButton.checked = false;
+                if (radioButton === document.getElementById("fsShiftWise")) {
+                    radioButton.checked = true;
+                }
+            })
+        });
+
+        // Add click event to the green right-tick sign to change dashboard data
+        toAddon.addEventListener("click", function () {
+            // You can add code here to change the dashboard data using the selected date range (fromDate and toDate values).
+        });
+
+        var now = new Date();
+        now.setHours(0, 0, 0, 0);
+        now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
+        fromDate.value = now.toISOString().slice(0, 16);
+
+        var now = new Date();
+        now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
+        toDate.value = now.toISOString().slice(0, 16);
+    })
+    fsDateWise.addEventListener('click', () => {
+        if (6 <= currentHourfilters && currentHourfilters < 14) {
+            btn1stShift.style.display = "block";
+            btn1stShift.classList.remove("btn-outline-info");
+            btn1stShift.classList.add("btn-info", 'me-1');
+            btn2ndShift.style.display = "none";
+            btn3rdShift.style.display = "none";
+            btnShowAll.classList.remove("btn-info");
+            btnShowAll.classList.add("btn-outline-info");
+            updateShowingInfo();
+        } else if (14 <= currentHourfilters && currentHourfilters < 22) {
+            // console.log(currentHourfilters);
+            btn1stShift.style.display = "block";
+            btn1stShift.classList.remove("btn-info", 'me-1');
+            btn1stShift.classList.add("btn-outline-info");
+            btn2ndShift.style.display = "block";
+            btn2ndShift.classList.add("me-1");
+            btn1stShift.addEventListener('click', function () {
+                currentShift = '1st';
+                currentPage = 1; // Reset the current page when changing shifts
+                updateTable(entriesPerPage);
+                btn1stShift.classList.remove("btn-outline-info");
+                btn1stShift.classList.add("btn-info");
+                btn2ndShift.classList.remove("btn-info");
+                btn2ndShift.classList.add("btn-outline-info");
+                btn3rdShift.classList.remove("btn-info");
+                btn3rdShift.classList.add("btn-outline-info");
+                btnShowAll.classList.remove("btn-info");
+                btnShowAll.classList.add("btn-outline-info");
+                updateShowingInfo();
+            });
+
+            btn2ndShift.addEventListener('click', function () {
+                currentShift = '2nd';
+                currentPage = 1; // Reset the current page when changing shifts
+                updateTable(entriesPerPage);
+                btn1stShift.classList.remove("btn-info");
+                btn1stShift.classList.add("btn-outline-info");
+                btn2ndShift.classList.remove("btn-outline-info");
+                btn2ndShift.classList.add("btn-info");
+                btnShowAll.classList.remove("btn-info");
+                btnShowAll.classList.add("btn-outline-info");
+                updateShowingInfo();
+            });
+
+            // Add a click event listener to the "Show All" button
+            btnShowAll.addEventListener('click', function () {
+                currentShift = 'all';
+                currentPage = 1; // Reset the current page when showing all rows
+                updateTable(entriesPerPage);
+                btn1stShift.classList.remove("btn-info");
+                btn1stShift.classList.add("btn-outline-info");
+                btn2ndShift.classList.remove("btn-info");
+                btn2ndShift.classList.add("btn-outline-info");
+                btn3rdShift.classList.remove("btn-info");
+                btn3rdShift.classList.add("btn-outline-info");
+                btnShowAll.classList.remove("btn-outline-info");
+                btnShowAll.classList.add("btn-info");
+                updateShowingInfo();
+            });
+            updateShowingInfo();
+        } else if (22 <= currentHourfilters && currentHourfilters < 6) {
+            btn1stShift.style.display = "block";
+            btn2ndShift.style.display = "block";
+            btn2ndShift.classList.remove("me-1");
+            btn3rdShift.style.display = "block";
+            btn1stShift.addEventListener('click', function () {
+                currentShift = '1st';
+                currentPage = 1; // Reset the current page when changing shifts
+                updateTable(entriesPerPage);
+                btn1stShift.classList.remove("btn-outline-info");
+                btn1stShift.classList.add("btn-info");
+                btn2ndShift.classList.remove("btn-info");
+                btn2ndShift.classList.add("btn-outline-info");
+                btn3rdShift.classList.remove("btn-info");
+                btn3rdShift.classList.add("btn-outline-info");
+                btnShowAll.classList.remove("btn-info");
+                btnShowAll.classList.add("btn-outline-info");
+                updateShowingInfo();
+            });
+
+            btn2ndShift.addEventListener('click', function () {
+                currentShift = '2nd';
+                currentPage = 1; // Reset the current page when changing shifts
+                updateTable(entriesPerPage);
+                btn1stShift.classList.remove("btn-info");
+                btn1stShift.classList.add("btn-outline-info");
+                btn2ndShift.classList.remove("btn-outline-info");
+                btn2ndShift.classList.add("btn-info");
+                btn3rdShift.classList.remove("btn-info");
+                btn3rdShift.classList.add("btn-outline-info");
+                btnShowAll.classList.remove("btn-info");
+                btnShowAll.classList.add("btn-outline-info");
+                updateShowingInfo();
+            });
+
+            btn3rdShift.addEventListener('click', function () {
+                currentShift = '3rd';
+                currentPage = 1; // Reset the current page when changing shifts
+                updateTable(entriesPerPage);
+                btn1stShift.classList.remove("btn-info");
+                btn1stShift.classList.add("btn-outline-info");
+                btn2ndShift.classList.remove("btn-info");
+                btn2ndShift.classList.add("btn-outline-info");
+                btn3rdShift.classList.remove("btn-outline-info");
+                btn3rdShift.classList.add("btn-info");
+                btnShowAll.classList.remove("btn-info");
+                btnShowAll.classList.add("btn-outline-info");
+                updateShowingInfo();
+            });
+
+            // Add a click event listener to the "Show All" button
+            btnShowAll.addEventListener('click', function () {
+                currentShift = 'all';
+                currentPage = 1; // Reset the current page when showing all rows
+                updateTable(entriesPerPage);
+                btn1stShift.classList.remove("btn-info");
+                btn1stShift.classList.add("btn-outline-info");
+                btn2ndShift.classList.remove("btn-info");
+                btn2ndShift.classList.add("btn-outline-info");
+                btn3rdShift.classList.remove("btn-info");
+                btn3rdShift.classList.add("btn-outline-info");
+                btnShowAll.classList.remove("btn-outline-info");
+                btnShowAll.classList.add("btn-info");
+                updateShowingInfo();
+            });
+            updateShowingInfo();
+        } else {
+            btn1stShift.style.display = "block";
+            btn2ndShift.style.display = "block";
+            btn3rdShift.style.display = "block";
+
+            // Add a click event listener to the "Show All" button
+            btnShowAll.addEventListener('click', function () {
+                currentShift = 'all';
+                currentPage = 1; // Reset the current page when showing all rows
+                updateTable(entriesPerPage);
+                btn1stShift.classList.remove("btn-info");
+                btn1stShift.classList.add("btn-outline-info");
+                btn2ndShift.classList.remove("btn-info");
+                btn2ndShift.classList.add("btn-outline-info");
+                btn3rdShift.classList.remove("btn-info");
+                btn3rdShift.classList.add("btn-outline-info");
+                btnShowAll.classList.remove("btn-outline-info");
+                btnShowAll.classList.add("btn-info");
+                updateShowingInfo();
+            });
+            updateShowingInfo();
+        }
+    })
+    if (6 <= currentHourfilters && currentHourfilters < 14) {
+        btn1stShift.style.display = "block";
+        btn1stShift.classList.remove("btn-outline-info");
+        btn1stShift.classList.add("btn-info", 'me-1');
+        btn2ndShift.style.display = "none";
+        btn3rdShift.style.display = "none";
+        btnShowAll.classList.remove("btn-info");
+        btnShowAll.classList.add("btn-outline-info");
+        updateShowingInfo();
+    } else if (14 <= currentHourfilters && currentHourfilters < 22) {
+        // console.log(currentHourfilters);
+        btn1stShift.style.display = "block";
+        btn1stShift.classList.remove("btn-info", 'me-1');
+        btn1stShift.classList.add("btn-outline-info");
+        btn2ndShift.style.display = "block";
+        btn2ndShift.classList.add("me-1");
+        btn1stShift.addEventListener('click', function () {
+            currentShift = '1st';
+            currentPage = 1; // Reset the current page when changing shifts
+            updateTable(entriesPerPage);
+            btn1stShift.classList.remove("btn-outline-info");
+            btn1stShift.classList.add("btn-info");
+            btn2ndShift.classList.remove("btn-info");
+            btn2ndShift.classList.add("btn-outline-info");
+            btn3rdShift.classList.remove("btn-info");
+            btn3rdShift.classList.add("btn-outline-info");
+            btnShowAll.classList.remove("btn-info");
+            btnShowAll.classList.add("btn-outline-info");
+            updateShowingInfo();
+        });
+
+        btn2ndShift.addEventListener('click', function () {
+            currentShift = '2nd';
+            currentPage = 1; // Reset the current page when changing shifts
+            updateTable(entriesPerPage);
+            btn1stShift.classList.remove("btn-info");
+            btn1stShift.classList.add("btn-outline-info");
+            btn2ndShift.classList.remove("btn-outline-info");
+            btn2ndShift.classList.add("btn-info");
+            btnShowAll.classList.remove("btn-info");
+            btnShowAll.classList.add("btn-outline-info");
+            updateShowingInfo();
+        });
+
+        // Add a click event listener to the "Show All" button
+        btnShowAll.addEventListener('click', function () {
+            currentShift = 'all';
+            currentPage = 1; // Reset the current page when showing all rows
+            updateTable(entriesPerPage);
+            btn1stShift.classList.remove("btn-info");
+            btn1stShift.classList.add("btn-outline-info");
+            btn2ndShift.classList.remove("btn-info");
+            btn2ndShift.classList.add("btn-outline-info");
+            btn3rdShift.classList.remove("btn-info");
+            btn3rdShift.classList.add("btn-outline-info");
+            btnShowAll.classList.remove("btn-outline-info");
+            updateShowingInfo();
+            btnShowAll.classList.add("btn-info");
+        });
+        updateShowingInfo();
+    } else if (22 <= currentHourfilters && currentHourfilters < 6) {
+        btn1stShift.style.display = "block";
+        btn2ndShift.style.display = "block";
+        btn2ndShift.classList.remove("me-1");
+        btn3rdShift.style.display = "block";
+        btn1stShift.addEventListener('click', function () {
+            currentShift = '1st';
+            currentPage = 1; // Reset the current page when changing shifts
+            updateTable(entriesPerPage);
+            btn1stShift.classList.remove("btn-outline-info");
+            btn1stShift.classList.add("btn-info");
+            btn2ndShift.classList.remove("btn-info");
+            btn2ndShift.classList.add("btn-outline-info");
+            btn3rdShift.classList.remove("btn-info");
+            btn3rdShift.classList.add("btn-outline-info");
+            btnShowAll.classList.remove("btn-info");
+            btnShowAll.classList.add("btn-outline-info");
+            updateShowingInfo();
+        });
+
+        btn2ndShift.addEventListener('click', function () {
+            currentShift = '2nd';
+            currentPage = 1; // Reset the current page when changing shifts
+            updateTable(entriesPerPage);
+            btn1stShift.classList.remove("btn-info");
+            btn1stShift.classList.add("btn-outline-info");
+            btn2ndShift.classList.remove("btn-outline-info");
+            btn2ndShift.classList.add("btn-info");
+            btn3rdShift.classList.remove("btn-info");
+            btn3rdShift.classList.add("btn-outline-info");
+            btnShowAll.classList.remove("btn-info");
+            btnShowAll.classList.add("btn-outline-info");
+            updateShowingInfo();
+        });
+
+        btn3rdShift.addEventListener('click', function () {
+            currentShift = '3rd';
+            currentPage = 1; // Reset the current page when changing shifts
+            updateTable(entriesPerPage);
+            btn1stShift.classList.remove("btn-info");
+            btn1stShift.classList.add("btn-outline-info");
+            btn2ndShift.classList.remove("btn-info");
+            btn2ndShift.classList.add("btn-outline-info");
+            btn3rdShift.classList.remove("btn-outline-info");
+            btn3rdShift.classList.add("btn-info");
+            btnShowAll.classList.remove("btn-info");
+            btnShowAll.classList.add("btn-outline-info");
+            updateShowingInfo();
+        });
+
+        // Add a click event listener to the "Show All" button
+        btnShowAll.addEventListener('click', function () {
+            currentShift = 'all';
+            currentPage = 1; // Reset the current page when showing all rows
+            updateTable(entriesPerPage);
+            btn1stShift.classList.remove("btn-info");
+            btn1stShift.classList.add("btn-outline-info");
+            btn2ndShift.classList.remove("btn-info");
+            btn2ndShift.classList.add("btn-outline-info");
+            btn3rdShift.classList.remove("btn-info");
+            btn3rdShift.classList.add("btn-outline-info");
+            btnShowAll.classList.remove("btn-outline-info");
+            btnShowAll.classList.add("btn-info");
+            updateShowingInfo();
+        });
+        updateShowingInfo();
+    } else {
+        btn1stShift.style.display = "block";
+        btn2ndShift.style.display = "block";
+        btn3rdShift.style.display = "block";
+
+        // Add a click event listener to the "Show All" button
+        btnShowAll.addEventListener('click', function () {
+            currentShift = 'all';
+            currentPage = 1; // Reset the current page when showing all rows
+            updateTable(entriesPerPage);
+            btn1stShift.classList.remove("btn-info");
+            btn1stShift.classList.add("btn-outline-info");
+            btn2ndShift.classList.remove("btn-info");
+            btn2ndShift.classList.add("btn-outline-info");
+            btn3rdShift.classList.remove("btn-info");
+            btn3rdShift.classList.add("btn-outline-info");
+            btnShowAll.classList.remove("btn-outline-info");
+            btnShowAll.classList.add("btn-info");
+            updateShowingInfo();
+        });
+        updateShowingInfo();
+    }
+    fsShiftWise.addEventListener('click', () => {
+        if (6 <= currentHourfilters && currentHourfilters < 14) {
+            btn1stShift.style.display = "block";
+            btn1stShift.classList.remove("btn-outline-info");
+            btn1stShift.classList.add("btn-info", 'me-1');
+            btn2ndShift.style.display = "none";
+            btn3rdShift.style.display = "none";
+            btnShowAll.classList.remove("btn-info");
+            btnShowAll.classList.add("btn-outline-info");
+            updateShowingInfo();
+        } else if (14 <= currentHourfilters && currentHourfilters < 22) {
+            // console.log(currentHourfilters);
+            btn1stShift.style.display = "block";
+            btn1stShift.classList.remove("btn-info", 'me-1');
+            btn1stShift.classList.add("btn-outline-info");
+            btn2ndShift.style.display = "block";
+            btn2ndShift.classList.add("me-1");
+            btn1stShift.addEventListener('click', function () {
+                currentShift = '1st';
+                currentPage = 1; // Reset the current page when changing shifts
+                updateTable(entriesPerPage);
+                btn1stShift.classList.remove("btn-outline-info");
+                btn1stShift.classList.add("btn-info");
+                btn2ndShift.classList.remove("btn-info");
+                btn2ndShift.classList.add("btn-outline-info");
+                btn3rdShift.classList.remove("btn-info");
+                btn3rdShift.classList.add("btn-outline-info");
+                btnShowAll.classList.remove("btn-info");
+                btnShowAll.classList.add("btn-outline-info");
+                updateShowingInfo();
+            });
+
+            btn2ndShift.addEventListener('click', function () {
+                currentShift = '2nd';
+                currentPage = 1; // Reset the current page when changing shifts
+                updateTable(entriesPerPage);
+                btn1stShift.classList.remove("btn-info");
+                btn1stShift.classList.add("btn-outline-info");
+                btn2ndShift.classList.remove("btn-outline-info");
+                btn2ndShift.classList.add("btn-info");
+                btnShowAll.classList.remove("btn-info");
+                btnShowAll.classList.add("btn-outline-info");
+                updateShowingInfo();
+            });
+
+            // Add a click event listener to the "Show All" button
+            btnShowAll.addEventListener('click', function () {
+                currentShift = 'all';
+                currentPage = 1; // Reset the current page when showing all rows
+                updateTable(entriesPerPage);
+                btn1stShift.classList.remove("btn-info");
+                btn1stShift.classList.add("btn-outline-info");
+                btn2ndShift.classList.remove("btn-info");
+                btn2ndShift.classList.add("btn-outline-info");
+                btn3rdShift.classList.remove("btn-info");
+                btn3rdShift.classList.add("btn-outline-info");
+                btnShowAll.classList.remove("btn-outline-info");
+                btnShowAll.classList.add("btn-info");
+                updateShowingInfo();
+            });
+            updateShowingInfo();
+        } else if (22 <= currentHourfilters && currentHourfilters < 6) {
+            btn1stShift.style.display = "block";
+            btn2ndShift.style.display = "block";
+            btn2ndShift.classList.remove("me-1");
+            btn3rdShift.style.display = "block";
+            btn1stShift.addEventListener('click', function () {
+                currentShift = '1st';
+                currentPage = 1; // Reset the current page when changing shifts
+                updateTable(entriesPerPage);
+                btn1stShift.classList.remove("btn-outline-info");
+                btn1stShift.classList.add("btn-info");
+                btn2ndShift.classList.remove("btn-info");
+                btn2ndShift.classList.add("btn-outline-info");
+                btn3rdShift.classList.remove("btn-info");
+                btn3rdShift.classList.add("btn-outline-info");
+                btnShowAll.classList.remove("btn-info");
+                btnShowAll.classList.add("btn-outline-info");
+                updateShowingInfo();
+            });
+
+            btn2ndShift.addEventListener('click', function () {
+                currentShift = '2nd';
+                currentPage = 1; // Reset the current page when changing shifts
+                updateTable(entriesPerPage);
+                btn1stShift.classList.remove("btn-info");
+                btn1stShift.classList.add("btn-outline-info");
+                btn2ndShift.classList.remove("btn-outline-info");
+                btn2ndShift.classList.add("btn-info");
+                btn3rdShift.classList.remove("btn-info");
+                btn3rdShift.classList.add("btn-outline-info");
+                btnShowAll.classList.remove("btn-info");
+                btnShowAll.classList.add("btn-outline-info");
+                updateShowingInfo();
+            });
+
+            btn3rdShift.addEventListener('click', function () {
+                currentShift = '3rd';
+                currentPage = 1; // Reset the current page when changing shifts
+                updateTable(entriesPerPage);
+                btn1stShift.classList.remove("btn-info");
+                btn1stShift.classList.add("btn-outline-info");
+                btn2ndShift.classList.remove("btn-info");
+                btn2ndShift.classList.add("btn-outline-info");
+                btn3rdShift.classList.remove("btn-outline-info");
+                btn3rdShift.classList.add("btn-info");
+                btnShowAll.classList.remove("btn-info");
+                btnShowAll.classList.add("btn-outline-info");
+                updateShowingInfo();
+            });
+
+            // Add a click event listener to the "Show All" button
+            btnShowAll.addEventListener('click', function () {
+                currentShift = 'all';
+                currentPage = 1; // Reset the current page when showing all rows
+                updateTable(entriesPerPage);
+                btn1stShift.classList.remove("btn-info");
+                btn1stShift.classList.add("btn-outline-info");
+                btn2ndShift.classList.remove("btn-info");
+                btn2ndShift.classList.add("btn-outline-info");
+                btn3rdShift.classList.remove("btn-info");
+                btn3rdShift.classList.add("btn-outline-info");
+                btnShowAll.classList.remove("btn-outline-info");
+                btnShowAll.classList.add("btn-info");
+                updateShowingInfo();
+            });
+            updateShowingInfo();
+        } else {
+            btn1stShift.style.display = "block";
+            btn2ndShift.style.display = "block";
+            btn3rdShift.style.display = "block";
+
+            // Add a click event listener to the "Show All" button
+            btnShowAll.addEventListener('click', function () {
+                currentShift = 'all';
+                currentPage = 1; // Reset the current page when showing all rows
+                updateTable(entriesPerPage);
+                btn1stShift.classList.remove("btn-info");
+                btn1stShift.classList.add("btn-outline-info");
+                btn2ndShift.classList.remove("btn-info");
+                btn2ndShift.classList.add("btn-outline-info");
+                btn3rdShift.classList.remove("btn-info");
+                btn3rdShift.classList.add("btn-outline-info");
+                btnShowAll.classList.remove("btn-outline-info");
+                btnShowAll.classList.add("btn-info");
+                updateShowingInfo();
+            });
+            updateShowingInfo();
+        }
+    })
+</script>
+
+<!-- Script for Chart 19, 20 21, 24 -->
+<script>
+    var availabilityValue = currentRealTimeValuec9.toFixed(2); /* Retrieve or set the value from dashboard.html */;
+    var performanceValue = currentRealTimeValuec10.toFixed(2); /* Retrieve or set the value from dashboard.html */;
+    var qualityValue = currentRealTimeValuec12.toFixed(2); /* Retrieve or set the value from dashboard.html */;
+    var OEEValue = currentRealTimeValuec11.toFixed(2); /* Retrieve or set the value from dashboard.html */;
+    // Function to generate date strings based on the current date
+    function generateDateStrings(numDays) {
+        var dateStrings = [];
+        var currentDate = new Date();
+
+        for (var i = 0; i < numDays; i++) {
+            var date = new Date(currentDate);
+            date.setDate(currentDate.getDate() - i);
+            date.setHours(0, 0, 0, 0);
+            // console.log(date)
+
+            var dateString = `${date.getDate() < 10 ? '0' : ''}${date.getDate()}/${date.getMonth() + 1 < 10 ? '0' : ''}${date.getMonth() + 1}/${date.getFullYear()} 00:00`;
+            dateStrings.unshift(dateString);  // Add date strings to the beginning of the array
+        }
+
+        return dateStrings;
+    }
+
+    const data = {
+        labels: ["Packer", "Bucket Elevator", "Truck Loader"],
+        // labelsLink: ["/templates/views/Packer.html", "/templates/views/BucketElevator.html", "/templates/views/TruckLoader.html"],
+        datasets: [
+            {
+                label: 'Previous Day',
+                date: '19/11/2023',
+                data: [45, 30, 80],
+                backgroundColor: [
+                    'rgb(231, 58, 58, 0.4)',
+                    'rgb(231, 58, 58, 0.4)',
+                    'rgb(231, 58, 58, 0.4)'
+                ],
+                borderColor: [
+                    'rgb(231, 58, 58)',
+                    'rgb(231, 58, 58)',
+                    'rgb(231, 58, 58)'
+                ],
+                borderRadius: 5,
+                borderWidth: 1
+            },
+            {
+                label: 'Today',
+                date: '20/11/2023',
+                data: [69, 66.3, 75],
+                backgroundColor: [
+                    'rgba(54, 162, 235, 0.4)',
+                    'rgba(54, 162, 235, 0.4)',
+                    'rgba(54, 162, 235, 0.4)'
+                ],
+                borderColor: [
+                    'rgba(54, 162, 235)',
+                    'rgba(54, 162, 235)',
+                    'rgba(54, 162, 235)'
+                ],
+                borderRadius: 5,
+                borderWidth: 1
+            }
+        ]
+    };
+
+    const config = {
+        type: 'bar',
+        data,
+        options: {
+            indexAxis: 'y',
+            plugins: {
+                datalabels: {
+                    align: 'center',
+                    anchor: 'center',
+                    color: '#000',
+                    font: {
+                        weight: 'bold'
+                    },
+                    formatter: function (value, context) {
+                        return `${value}%`; // Display values on top of bars
+                    },
+                    precision: 1,
+                    fontSize: 14,
+                    fontColor: [
+                        'rgb(231, 58, 58)',
+                        'rgba(54, 162, 235)',
+                        'rgba(43, 226, 89)'
+                    ]
+                }
+            },
+            scales: {
+                x: {
+                    max: 100,
+                    ticks: {
+                        beginAtZero: true
+                    }
+                },
+                y: {
+                    ticks: {
+                        color: '#000'
+                    }
+                }
+            },
+            legend: {
+                display: true,
+                position: 'bottom',
+                labels: {
+                    fontSize: 14,
+                    fontColor: '#000'
+                }
+            }
+        }
+    };
+
+    // Below function will work when retriving data from another chart
+    // Function to update c19Bar chart with average values
+    // function updateC19ChartData() {
+    //     // Calculate the averages and update c19Bar
+    //     const todayDataset = c19Bar.data.datasets.find(dataset => dataset.label === 'Today');
+
+    //     // c20StackBar1
+    //     const currentDatac20sb1 = c20StackBar1.data.datasets.find(dataset => dataset.label === 'Today').data;
+    //     const numericDatac20sb1 = currentDatac20sb1.map(value => parseFloat(value));
+    //     const sumCurrentDatac20sb1 = numericDatac20sb1.reduce((acc, value) => acc + value);
+    //     const averageCurrentDatac20sb1 = sumCurrentDatac20sb1 / currentDatac20sb1.length;
+
+    //     // Update c19Bar chart datasets with label 'Today'
+    //     todayDataset.data[0] = averageCurrentDatac20sb1;
+
+    //     // c20StackBar2
+    //     const currentDatac20sb2 = c20StackBar2.data.datasets.find(dataset => dataset.label === 'Today').data;
+    //     const numericDatac20sb2 = currentDatac20sb2.map(value => parseFloat(value));
+    //     const sumCurrentDatac20sb2 = numericDatac20sb2.reduce((acc, value) => acc + value);
+    //     const averageCurrentDatac20sb2 = sumCurrentDatac20sb2 / currentDatac20sb2.length;
+
+    //     // Update c19Bar chart datasets with label 'Today'
+    //     todayDataset.data[1] = averageCurrentDatac20sb2;
+
+    //     // c20StackBar3
+    //     const currentDatac20sb3 = c20StackBar3.data.datasets.find(dataset => dataset.label === 'Today').data;
+    //     const numericDatac20sb3 = currentDatac20sb3.map(value => parseFloat(value));
+    //     const sumCurrentDatac20sb3 = numericDatac20sb3.reduce((acc, value) => acc + value);
+    //     const averageCurrentDatac20sb3 = sumCurrentDatac20sb3 / currentDatac20sb3.length;
+
+    //     // Update c19Bar chart datasets with label 'Today'
+    //     todayDataset.data[2] = averageCurrentDatac20sb3;
+
+    //     c19Bar.update();
+    // }
+
+    var ctx5 = document.getElementById("Chart19").getContext('2d');
+    var c19Bar = new Chart(ctx5, config);
+
+    var ctx6 = document.getElementById("Chart20_1").getContext('2d');
+    var c20StackBar1 = new Chart(ctx6, {
+        type: 'bar',
+        data: {
+            labels: ['Availability', 'Performance', 'Quality'],
+            datasets: [
+                {
+                    label: 'Previous Day',
+                    date: '19/11/2023',
+                    data: ['42', '47', '99'],
+                    backgroundColor: [
+                        'rgb(231, 58, 58, 0.4)',
+                        'rgb(231, 58, 58, 0.4)',
+                        'rgb(231, 58, 58, 0.4)'
+                    ],
+                    borderColor: [
+                        'rgb(231, 58, 58)',
+                        'rgb(231, 58, 58)',
+                        'rgb(231, 58, 58)'
+                    ],
+                    borderRadius: 5,
+                    borderWidth: 1
+                },
+                {
+                    label: 'Today',
+                    date: '20/11/2023',
+                    data: ['49', '59', '99'],
+                    backgroundColor: [
+                        'rgba(54, 162, 235, 0.4)',
+                        'rgba(54, 162, 235, 0.4)',
+                        'rgba(54, 162, 235, 0.4)'
+                    ],
+                    borderColor: [
+                        'rgba(54, 162, 235)',
+                        'rgba(54, 162, 235)',
+                        'rgba(54, 162, 235)',
+                    ],
+                    borderRadius: 5,
+                    borderWidth: 1
+                }
+            ]
+        },
+        options: {
+            plugins: {
+                datalabels: {
+                    align: 'start',
+                    anchor: 'end',
+                    color: '#000', // You can customize label color if needed
+                    font: {
+                        weight: '' // You can customize font weight if needed
+                    },
+                    formatter: function (value, context) {
+                        // Display the dataset label and date in dd/mm/yyyy format below the bars
+                        return `\u2022 ${context.dataset.date} \n ${value}`;
+                    }
+                }
+            },
+            animations: {
+                duration: 1000
+            },
+            responsive: true,
+            scales: {
+                x: {
+                    stacked: true,
+                },
+                y: {
+                    stacked: true
+                }
+            }
+        },
+        // plugins: [ChartDataLabels]
+    });
+
+    var ctx7 = document.getElementById("Chart21").getContext('2d');
+    var c21Line = new Chart(ctx7, {
+        type: 'line',
+        data: {
+            labels: generateDateStrings(6),
+            datasets: [
+                {
+                    label: 'Overall OEE',
+                    data: [],
+                    backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                    borderColor: 'rgba(54, 162, 235)',
+                    borderWidth: 2,
+                    pointRadius: 5,
+                    pointBackgroundColor: 'rgba(54, 162, 235)',
+                    tension: 0.4
+                }
+            ]
+        },
+        options: {
+            indexAxis: 'x',
+            // animations: {
+            //     radius: {
+            //         duration: 400,
+            //         easing: 'linear',
+            //         loop: (context) => context.active
+            //     }
+            // },
+            // hoverRadius: 12,
+            // hoverBackgroundColor: 'grey',
+            // interaction: {
+            //     mode: 'nearest',
+            //     intersect: false,
+            //     axis: 'x'
+            // },
+            scales: {
+                x: {
+                    padding: {
+                        left: 20
+                    }
+                },
+                y: {
+                    beginAtZero: true,
+                    max: 100,
+                    ticks: {
+                        callback: (value, index, values) => {
+                            return `${value}%`
+                        }
+                    }
+                }
+            },
+            plugins: {
+                tooltip: {
+                    enabled: true,
+                    callbacks: {
+                        label: function (tooltipItems, data) {
+                            var multistringText = [];
+                            data = (tooltipItems.raw.y).toFixed(2);
+                            // console.log('tooltipItems.raw: ', tooltipItems.raw.y)
+                            // console.log('availabilityVal: ', availabilityValue[3].y.toFixed(2))
+
+                            // Adding lines to the array
+                            multistringText.push('Overall OEE: ' + data + '%');
+                            multistringText.push('Availability: ' + availabilityValue[3].y.toFixed(2) + '%');
+                            multistringText.push('Performance: ' + performanceValue[3].y.toFixed(2) + '%');
+                            multistringText.push('Quality: ' + qualityValue[3].y.toFixed(2) + '%');
+
+                            return multistringText;
+                        }
+                    },
+                    backgroundColor: "#9cbba1",
+                    titleColor: "#042a0b",
+                    bodyColor: "#042a0b",
+                    titleFont: { weight: 'bold' },
+                    padding: 10,
+                    cornerRadius: 10,
+                    borderColor: "#042a0b",
+                    borderWidth: "2",
+                    // xAlign: "left"
+                },
+                // legend: {
+                //     display: false
+                // }
+            }
+        }
+    });
+
+    // Function to get the latest values from C11Line and update c21Line
+    function updateC21LineWithData() {
+        // Get the latest data from C11Line
+        const latestDataC9 = C9Line.data.datasets.find(dataset => dataset.label === 'current').data;
+        const latestDataC10 = C10Line.data.datasets.find(dataset => dataset.label === 'current').data;
+        const latestDataC11 = C11Line.data.datasets.find(dataset => dataset.label === 'current').data;
+        const latestDataC12 = C12Line.data.datasets.find(dataset => dataset.label === 'Today').data;
+
+        // Extract the values based on the number of labels in c21Line
+        const numberOfLabelsInC21 = c21Line.data.labels.length;
+        const latestValuesC9 = latestDataC9.slice(-numberOfLabelsInC21);
+        const latestValuesC10 = latestDataC10.slice(-numberOfLabelsInC21);
+        const latestValuesC11 = latestDataC11.slice(-numberOfLabelsInC21);
+        const latestValuesC12 = latestDataC12.slice(-numberOfLabelsInC21);
+
+        // Update the data array of c21Line
+        c21Line.data.datasets[0].data = latestValuesC11;
+        availabilityValue = latestValuesC12;
+        performanceValue = latestValuesC10;
+        qualityValue = latestValuesC9;
+
+        // Update the chart
+        c21Line.update();
+        // console.log('QlatestValuesC9: ', latestValuesC9);
+        // console.log('PlatestValuesC10: ', latestValuesC10);
+        // console.log('OlatestValuesC11: ', latestValuesC11);
+        // console.log('AlatestValuesC12: ', latestValuesC12);
+        // console.log('OEEVal: ', OEEValue);
+    }
+    // Call the function to update c21Line initially
+    updateC21LineWithData();
+
+    var ctx8 = document.getElementById("Chart20_2").getContext('2d');
+    var c20StackBar2 = new Chart(ctx8, {
+        type: 'bar',
+        data: {
+            labels: ['Availability', 'Performance', 'Quality'],
+            datasets: [
+                {
+                    label: 'Previous Day',
+                    date: '19/11/2023',
+                    data: ['43', '42', '99'],
+                    backgroundColor: [
+                        'rgb(231, 58, 58, 0.4)',
+                        'rgb(231, 58, 58, 0.4)',
+                        'rgb(231, 58, 58, 0.4)'
+                    ],
+                    borderColor: [
+                        'rgb(231, 58, 58)',
+                        'rgb(231, 58, 58)',
+                        'rgb(231, 58, 58)'
+                    ],
+                    borderRadius: 5,
+                    borderWidth: 1
+                },
+                {
+                    label: 'Today',
+                    date: '20/11/2023',
+                    data: ['47', '53', '99'],
+                    backgroundColor: [
+                        'rgba(54, 162, 235, 0.4)',
+                        'rgba(54, 162, 235, 0.4)',
+                        'rgba(54, 162, 235, 0.4)'
+                    ],
+                    borderColor: [
+                        'rgba(54, 162, 235)',
+                        'rgba(54, 162, 235)',
+                        'rgba(54, 162, 235)',
+                    ],
+                    borderRadius: 5,
+                    borderWidth: 1
+                }
+            ]
+        },
+        options: {
+            animation: {
+                duration: 1000,
+                x: {
+                    type: 'number',
+                    easing: 'linear',
+                    duration: totalDuration
+                },
+                y: {
+                    type: 'number',
+                    easing: 'linear',
+                    duration: totalDuration
+                }
+            },
+            plugins: {
+                datalabels: {
+                    align: 'start',
+                    anchor: 'end',
+                    color: '#000', // You can customize label color if needed
+                    font: {
+                        weight: '' // You can customize font weight if needed
+                    },
+                    formatter: function (value, context) {
+                        // Display the dataset label and date in dd/mm/yyyy format below the bars
+                        return `\u2022 ${context.dataset.date} \n ${value}`;
+                    }
+                }
+            },
+            responsive: true,
+            scales: {
+                x: {
+                    stacked: true,
+                },
+                y: {
+                    stacked: true
+                }
+            }
+        },
+        // plugins: [ChartDataLabels]
+    });
+
+    var ctx9 = document.getElementById("Chart20_3").getContext('2d');
+    var c20StackBar3 = new Chart(ctx9, {
+        type: 'bar',
+        data: {
+            labels: ['Availability', 'Performance', 'Quality'],
+            datasets: [
+                {
+                    label: 'Previous Day',
+                    date: '19/11/2023',
+                    data: ['44', '46', '99'],
+                    backgroundColor: [
+                        'rgb(231, 58, 58, 0.4)',
+                        'rgb(231, 58, 58, 0.4)',
+                        'rgb(231, 58, 58, 0.4)'
+                    ],
+                    borderColor: [
+                        'rgb(231, 58, 58)',
+                        'rgb(231, 58, 58)',
+                        'rgb(231, 58, 58)'
+                    ],
+                    borderRadius: 5,
+                    borderWidth: 1
+                },
+                {
+                    label: 'Today',
+                    date: '20/11/2023',
+                    data: ['51', '57', '99'],
+                    backgroundColor: [
+                        'rgba(54, 162, 235, 0.4)',
+                        'rgba(54, 162, 235, 0.4)',
+                        'rgba(54, 162, 235, 0.4)'
+                    ],
+                    borderColor: [
+                        'rgba(54, 162, 235)',
+                        'rgba(54, 162, 235)',
+                        'rgba(54, 162, 235)',
+                    ],
+                    borderRadius: 5,
+                    borderWidth: 1
+                }
+            ]
+        },
+        options: {
+            plugins: {
+                datalabels: {
+                    align: 'start',
+                    anchor: 'end',
+                    color: '#000', // You can customize label color if needed
+                    font: {
+                        weight: '' // You can customize font weight if needed
+                    },
+                    formatter: function (value, context) {
+                        // Display the dataset label and date in dd/mm/yyyy format below the bars
+                        return `\u2022 ${context.dataset.date} \n ${value}`;
+                    }
+                }
+            },
+            animations: {
+                duration: 1000
+            },
+            responsive: true,
+            scales: {
+                x: {
+                    stacked: true,
+                },
+                y: {
+                    stacked: true
+                }
+            }
+        },
+        // plugins: [ChartDataLabels]
+    });
+
+    var ctx10 = document.getElementById("Chart24").getContext('2d');
+    var c24doughnut = new Chart(ctx10, {
+        type: 'doughnut',
+        data: {
+            labels: ['Packers', 'Truck Loaders', 'Bucket Elevators'],
+            datasets: [{
+                data: [3, 5, 3],
+                backgroundColor: [
+                    'rgba(54, 162, 235, 0.8)',  // Blue
+                    'rgba(173, 216, 230, 0.8)', // Light Blue
+                    'rgba(169, 169, 169, 0.8)'  // Dark Gray
+                ],
+                hoverOffset: 8
+            }]
+        },
+        options: {
+            plugins: {
+                legend: {
+                    display: false,
+                    position: 'bottom',
+                    padding: 20 // Adjust the padding as needed
+                }
+            },
+            cutout: '75%',
+            animation: {
+                animateScale: true,
+                animateRotate: true
+            }
+        }
+    })
+
+</script>

@@ -1,0 +1,1520 @@
+<link rel="stylesheet" href="/public/CSS/footer.css">
+<footer>
+    Copyright © 2023 BEUMER Group India. All Rights Reserved.
+</footer>
+</body>
+
+</html>
+
+<!-- for chart 20 loading through buttons -->
+<!-- 
+    <div class="row" style="--bs-gutter-x: 0;">
+                <a class="btn btn-outline-none my-auto" id="P_M"
+                    style="width: 17%; font-size: small; border: 1px solid lightgray; background-color: #66BB6A; margin: 2px;">Packer</a>
+                <a class="btn btn-outline-none my-auto" id="BE_M"
+                    style="width: 18%; font-size: small; border: 1px solid lightgray; margin: 2px;">Bucket Elevator</a>
+                <a class="btn btn-outline-none my-auto" id="TL_M"
+                    style="width: 17%; font-size: small; border: 1px solid lightgray; margin: 2px;">Truck Loader</a>
+                <a class="btn btn-outline-none" id="gtm"
+                    style="position: fixed; float: right; right: 0; display: block; width: 10%;">Go To Machine</a>
+            </div>
+            <div class="chart20">
+                <canvas id="Chart20_1" style="width: 100vw; height: 57.5vh !important; display: block;"></canvas>
+                <canvas id="Chart20_2" style="width: 100vw; height: 57.5vh !important; display: none;"></canvas>
+                <canvas id="Chart20_3" style="width: 100vw; height: 57.5vh !important; display: none;"></canvas>
+            </div>
+    const pbutton = document.getElementById("P_M");
+    const bebutton = document.getElementById("BE_M");
+    const tlbutton = document.getElementById("TL_M");
+    c20StackBar1 = new Chart(ctx6, {
+        type: 'bar',
+        data: {
+            labels: ['Availability', 'Performance', 'Quality'],
+            datasets: [
+                {
+                    label: 'Previous Day',
+                    date: '19/11/2023',
+                    data: ['42', '47', '99'],
+                    backgroundColor: [
+                        'rgb(231, 58, 58, 0.4)',
+                        'rgb(231, 58, 58, 0.4)',
+                        'rgb(231, 58, 58, 0.4)'
+                    ],
+                    borderColor: [
+                        'rgb(231, 58, 58)',
+                        'rgb(231, 58, 58)',
+                        'rgb(231, 58, 58)'
+                    ],
+                    borderWidth: 1
+                },
+                {
+                    label: 'Today',
+                    date: '20/11/2023',
+                    data: ['49', '59', '99'],
+                    backgroundColor: [
+                        'rgba(54, 162, 235, 0.4)',
+                        'rgba(54, 162, 235, 0.4)',
+                        'rgba(54, 162, 235, 0.4)'
+                    ],
+                    borderColor: [
+                        'rgba(54, 162, 235)',
+                        'rgba(54, 162, 235)',
+                        'rgba(54, 162, 235)',
+                    ],
+                    borderWidth: 1
+                }
+            ]
+        },
+        options: {
+            plugins: {
+                datalabels: {
+                    align: 'start',
+                    anchor: 'end',
+                    color: '#000', // You can customize label color if needed
+                    font: {
+                        weight: '' // You can customize font weight if needed
+                    },
+                    formatter: function (value, context) {
+                        // Display the dataset label and date in dd/mm/yyyy format below the bars
+                        return `\u2022 ${context.dataset.date} \n ${value}`;
+                    }
+                }
+            },
+            responsive: true,
+            scales: {
+                x: {
+                    stacked: true,
+                },
+                y: {
+                    stacked: true
+                }
+            }
+        },
+        plugins: [ChartDataLabels]
+    });
+    const gtm = document.getElementById("gtm");
+    gtm.setAttribute('href', '/templates/views/base.html?selectedOption=Packer&selectedSubOption=AllPackers');
+
+    c20StackBar2 = new Chart(ctx8, {
+        type: 'bar',
+        data: {
+            labels: ['Availability', 'Performance', 'Quality'],
+            datasets: [
+                {
+                    label: 'Previous Day',
+                    date: '19/11/2023',
+                    data: ['43', '42', '99'],
+                    backgroundColor: [
+                        'rgb(231, 58, 58, 0.4)',
+                        'rgb(231, 58, 58, 0.4)',
+                        'rgb(231, 58, 58, 0.4)'
+                    ],
+                    borderColor: [
+                        'rgb(231, 58, 58)',
+                        'rgb(231, 58, 58)',
+                        'rgb(231, 58, 58)'
+                    ],
+                    borderWidth: 1
+                },
+                {
+                    label: 'Today',
+                    date: '20/11/2023',
+                    data: ['47', '53', '99'],
+                    backgroundColor: [
+                        'rgba(54, 162, 235, 0.4)',
+                        'rgba(54, 162, 235, 0.4)',
+                        'rgba(54, 162, 235, 0.4)'
+                    ],
+                    borderColor: [
+                        'rgba(54, 162, 235)',
+                        'rgba(54, 162, 235)',
+                        'rgba(54, 162, 235)',
+                    ],
+                    borderWidth: 1
+                }
+            ]
+        },
+        options: {
+            plugins: {
+                datalabels: {
+                    align: 'start',
+                    anchor: 'end',
+                    color: '#000', // You can customize label color if needed
+                    font: {
+                        weight: '' // You can customize font weight if needed
+                    },
+                    formatter: function (value, context) {
+                        // Display the dataset label and date in dd/mm/yyyy format below the bars
+                        return `\u2022 ${context.dataset.date} \n ${value}`;
+                    }
+                }
+            },
+            responsive: true,
+            scales: {
+                x: {
+                    stacked: true,
+                },
+                y: {
+                    stacked: true
+                }
+            }
+        },
+        plugins: [ChartDataLabels]
+    });
+
+    c20StackBar3 = new Chart(ctx9, {
+        type: 'bar',
+        data: {
+            labels: ['Availability', 'Performance', 'Quality'],
+            datasets: [
+                {
+                    label: 'Previous Day',
+                    date: '19/11/2023',
+                    data: ['44', '46', '99'],
+                    backgroundColor: [
+                        'rgb(231, 58, 58, 0.4)',
+                        'rgb(231, 58, 58, 0.4)',
+                        'rgb(231, 58, 58, 0.4)'
+                    ],
+                    borderColor: [
+                        'rgb(231, 58, 58)',
+                        'rgb(231, 58, 58)',
+                        'rgb(231, 58, 58)'
+                    ],
+                    borderWidth: 1
+                },
+                {
+                    label: 'Today',
+                    date: '20/11/2023',
+                    data: ['51', '57', '99'],
+                    backgroundColor: [
+                        'rgba(54, 162, 235, 0.4)',
+                        'rgba(54, 162, 235, 0.4)',
+                        'rgba(54, 162, 235, 0.4)'
+                    ],
+                    borderColor: [
+                        'rgba(54, 162, 235)',
+                        'rgba(54, 162, 235)',
+                        'rgba(54, 162, 235)',
+                    ],
+                    borderWidth: 1
+                }
+            ]
+        },
+        options: {
+            plugins: {
+                datalabels: {
+                    align: 'start',
+                    anchor: 'end',
+                    color: '#000', // You can customize label color if needed
+                    font: {
+                        weight: '' // You can customize font weight if needed
+                    },
+                    formatter: function (value, context) {
+                        // Display the dataset label and date in dd/mm/yyyy format below the bars
+                        return `\u2022 ${context.dataset.date} \n ${value}`;
+                    }
+                }
+            },
+            responsive: true,
+            scales: {
+                x: {
+                    stacked: true,
+                },
+                y: {
+                    stacked: true
+                }
+            }
+        },
+        plugins: [ChartDataLabels]
+    });
+
+
+    pbutton.addEventListener('click', () => {
+        destroyCharts();
+        console.log("Packer Clicked!");
+        document.getElementById('Chart20_1').style.display = 'block';
+        document.getElementById('Chart20_2').style.display = 'none';
+        document.getElementById('Chart20_3').style.display = 'none';
+        c20StackBar1 = new Chart(ctx6, {
+            type: 'bar',
+            data: {
+                labels: ['Availability', 'Performance', 'Quality'],
+                datasets: [
+                    {
+                        label: 'Previous Day',
+                        date: '19/11/2023',
+                        data: ['42', '47', '99'],
+                        backgroundColor: [
+                            'rgb(231, 58, 58, 0.4)',
+                            'rgb(231, 58, 58, 0.4)',
+                            'rgb(231, 58, 58, 0.4)'
+                        ],
+                        borderColor: [
+                            'rgb(231, 58, 58)',
+                            'rgb(231, 58, 58)',
+                            'rgb(231, 58, 58)'
+                        ],
+                        borderWidth: 1
+                    },
+                    {
+                        label: 'Today',
+                        date: '20/11/2023',
+                        data: ['49', '59', '99'],
+                        backgroundColor: [
+                            'rgba(54, 162, 235, 0.4)',
+                            'rgba(54, 162, 235, 0.4)',
+                            'rgba(54, 162, 235, 0.4)'
+                        ],
+                        borderColor: [
+                            'rgba(54, 162, 235)',
+                            'rgba(54, 162, 235)',
+                            'rgba(54, 162, 235)',
+                        ],
+                        borderWidth: 1
+                    }
+                ]
+            },
+            options: {
+                plugins: {
+                    datalabels: {
+                        align: 'start',
+                        anchor: 'end',
+                        color: '#000', // You can customize label color if needed
+                        font: {
+                            weight: '' // You can customize font weight if needed
+                        },
+                        formatter: function (value, context) {
+                            // Display the dataset label and date in dd/mm/yyyy format below the bars
+                            return `\u2022 ${context.dataset.date} \n ${value}`;
+                        }
+                    }
+                },
+                responsive: true,
+                scales: {
+                    x: {
+                        stacked: true,
+                    },
+                    y: {
+                        stacked: true
+                    }
+                }
+            },
+            plugins: [ChartDataLabels]
+        });
+        pbutton.style.backgroundColor = "#66BB6A";
+        bebutton.style.backgroundColor = "";
+        tlbutton.style.backgroundColor = "";
+        const gtm = document.getElementById("gtm");
+        // gtm.style.display = 'block';
+        gtm.setAttribute('href', '/templates/views/base.html?selectedOption=Packer&selectedSubOption=AllPackers');
+        updateC19ChartData();
+    })
+
+    bebutton.addEventListener('click', () => {
+        destroyCharts();
+        console.log("Bucket Elevator Clicked!");
+        document.getElementById('Chart20_1').style.display = 'none';
+        document.getElementById('Chart20_2').style.display = 'block';
+        document.getElementById('Chart20_3').style.display = 'none';
+        c20StackBar2 = new Chart(ctx8, {
+            type: 'bar',
+            data: {
+                labels: ['Availability', 'Performance', 'Quality'],
+                datasets: [
+                    {
+                        label: 'Previous Day',
+                        date: '19/11/2023',
+                        data: ['43', '42', '99'],
+                        backgroundColor: [
+                            'rgb(231, 58, 58, 0.4)',
+                            'rgb(231, 58, 58, 0.4)',
+                            'rgb(231, 58, 58, 0.4)'
+                        ],
+                        borderColor: [
+                            'rgb(231, 58, 58)',
+                            'rgb(231, 58, 58)',
+                            'rgb(231, 58, 58)'
+                        ],
+                        borderWidth: 1
+                    },
+                    {
+                        label: 'Today',
+                        date: '20/11/2023',
+                        data: ['47', '53', '99'],
+                        backgroundColor: [
+                            'rgba(54, 162, 235, 0.4)',
+                            'rgba(54, 162, 235, 0.4)',
+                            'rgba(54, 162, 235, 0.4)'
+                        ],
+                        borderColor: [
+                            'rgba(54, 162, 235)',
+                            'rgba(54, 162, 235)',
+                            'rgba(54, 162, 235)',
+                        ],
+                        borderWidth: 1
+                    }
+                ]
+            },
+            options: {
+                plugins: {
+                    datalabels: {
+                        align: 'start',
+                        anchor: 'end',
+                        color: '#000', // You can customize label color if needed
+                        font: {
+                            weight: '' // You can customize font weight if needed
+                        },
+                        formatter: function (value, context) {
+                            // Display the dataset label and date in dd/mm/yyyy format below the bars
+                            return `\u2022 ${context.dataset.date} \n ${value}`;
+                        }
+                    }
+                },
+                responsive: true,
+                scales: {
+                    x: {
+                        stacked: true,
+                    },
+                    y: {
+                        stacked: true
+                    }
+                }
+            },
+            plugins: [ChartDataLabels]
+        });
+        pbutton.style.backgroundColor = "";
+        bebutton.style.backgroundColor = "#66BB6A";
+        tlbutton.style.backgroundColor = "";
+        const gtm = document.getElementById("gtm");
+        // gtm.style.display = 'block';
+        gtm.setAttribute('href', '/templates/views/base.html?selectedOption=BucketElevator& selectedSubOption=AllBucketElevators');
+        updateC19ChartData();
+    })
+
+    tlbutton.addEventListener('click', () => {
+        destroyCharts();
+        console.log("Truck Loader Clicked!");
+        document.getElementById('Chart20_1').style.display = 'none';
+        document.getElementById('Chart20_2').style.display = 'none';
+        document.getElementById('Chart20_3').style.display = 'block';
+        c20StackBar3 = new Chart(ctx9, {
+            type: 'bar',
+            data: {
+                labels: ['Availability', 'Performance', 'Quality'],
+                datasets: [
+                    {
+                        label: 'Previous Day',
+                        date: '19/11/2023',
+                        data: ['44', '46', '99'],
+                        backgroundColor: [
+                            'rgb(231, 58, 58, 0.4)',
+                            'rgb(231, 58, 58, 0.4)',
+                            'rgb(231, 58, 58, 0.4)'
+                        ],
+                        borderColor: [
+                            'rgb(231, 58, 58)',
+                            'rgb(231, 58, 58)',
+                            'rgb(231, 58, 58)'
+                        ],
+                        borderWidth: 1
+                    },
+                    {
+                        label: 'Today',
+                        date: '20/11/2023',
+                        data: ['51', '57', '99'],
+                        backgroundColor: [
+                            'rgba(54, 162, 235, 0.4)',
+                            'rgba(54, 162, 235, 0.4)',
+                            'rgba(54, 162, 235, 0.4)'
+                        ],
+                        borderColor: [
+                            'rgba(54, 162, 235)',
+                            'rgba(54, 162, 235)',
+                            'rgba(54, 162, 235)',
+                        ],
+                        borderWidth: 1
+                    }
+                ]
+            },
+            options: {
+                plugins: {
+                    datalabels: {
+                        align: 'start',
+                        anchor: 'end',
+                        color: '#000', // You can customize label color if needed
+                        font: {
+                            weight: '' // You can customize font weight if needed
+                        },
+                        formatter: function (value, context) {
+                            // Display the dataset label and date in dd/mm/yyyy format below the bars
+                            return `\u2022 ${context.dataset.date} \n ${value}`;
+                        }
+                    }
+                },
+                responsive: true,
+                scales: {
+                    x: {
+                        stacked: true,
+                    },
+                    y: {
+                        stacked: true
+                    }
+                }
+            },
+            plugins: [ChartDataLabels]
+        });
+        pbutton.style.backgroundColor = "";
+        bebutton.style.backgroundColor = "";
+        tlbutton.style.backgroundColor = "#66BB6A";
+        const gtm = document.getElementById("gtm");
+        // gtm.style.display = 'block';
+        gtm.setAttribute('href', '/templates/views/base.html?selectedOption=TruckLoader&selectedSubOption=AllTruckLoaders');
+        updateC19ChartData();
+    }) -->
+
+<!-- for offcanvas -->
+<!-- <div id="gotoStat" style="width: auto; height: auto;">
+    <button class="c11 btn border-none px-1 py-0" type="button" data-bs-toggle="offcanvas"
+        data-bs-target="#offcanvasRight" aria-controls="offcanvasRight" style="position: absolute; right: 24vw;">
+        Go to Statistics
+    </button>
+</div>
+// OffCanvas Right
+<div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel"
+style="width: 50vw;">
+<div class="offcanvas-header">
+    <h3 class="offcanvas-title" id="offcanvasRightLabel"></h3>
+    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+</div>
+<div class="offcanvas-body pt-0">
+    <div class="chart19">
+        <canvas id="Chart19" style="width: 100vw; height: 57.5vh;"></canvas>
+    </div>
+    <div class="row" style="--bs-gutter-x: 0;">
+        <a class="btn btn-outline-none my-auto col-md-2" id="P_M"
+            style="width: auto; font-size: small; border: 1px solid lightgray; background-color: #66BB6A; margin: 2px;">Packer</a>
+        <a class="btn btn-outline-none my-auto col-md-2" id="BE_M"
+            style="width: auto; font-size: small; border: 1px solid lightgray; margin: 2px;">Bucket Elevator</a>
+        <a class="btn btn-outline-none my-auto col-md-2" id="TL_M"
+            style="width: auto; font-size: small; border: 1px solid lightgray; margin: 2px;">Truck Loader</a>
+        <a class="btn btn-outline-none col-md-6" id="gtm"
+            style="display: block; width: auto; margin-left: auto;">Go To Machine</a>
+    </div>
+    <div class="chart20">
+        <canvas id="Chart20_1" style="width: 100vw; height: 57.5vh !important; display: block;"></canvas>
+        <canvas id="Chart20_2" style="width: 100vw; height: 57.5vh !important; display: none;"></canvas>
+        <canvas id="Chart20_3" style="width: 100vw; height: 57.5vh !important; display: none;"></canvas>
+    </div>
+    <div class="chart21">
+        <div class="row justify-content-between" id="datewise" style="--bs-gutter-x: 0;">
+            <span style="width: auto; font-size: medium; font-weight: bold;">Overall OEE</span>
+            <div class="dropdown d2" style="width: auto;">
+                <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown"
+                    aria-expanded="false" id="today2" style="background: none; color: #000;">
+                    Today
+                </button>
+                <ul class="dropdown-menu">
+                    <li>
+                        <a class="dropdown-item text-center" href="" id="customDatesButton"
+                            style="text-decoration: none; color: #000;">Custom Dates</a>
+                    </li>
+                </ul>
+            </div>
+            <div id="customDatesInputGroups" style="width: auto; display: none;">
+                <div class="input-group col-md-6" style="width: 20.5vw; padding: 5px; padding-right: 0;">
+                    <span id="fromAddon"
+                        style="color: red; cursor: pointer; padding-top: 5px; padding-bottom: 5px;">&#10060;</span>
+                    <span class="input-group-text" id="fromLabel"
+                        style="border-radius: var(--bs-border-radius) 0px 0px var(--bs-border-radius); margin-left: 2px;">from:</span>
+                    <input type="datetime-local" class="form-control" placeholder="00:00" aria-label="fromDate"
+                        aria-describedby="basic-addon1" id="fromDate" style="outline: none;">
+                </div>
+                <div class="input-group col-md-6" style="width: 19vw; padding: 5px; padding-left: 0;">
+                    <span class="input-group-text" id="toLabel">to:</span>
+                    <input type="datetime-local" class="form-control" placeholder="" aria-label="toDate"
+                        aria-describedby="basic-addon1" id="toDate"
+                        style="border-radius: 0px var(--bs-border-radius) var(--bs-border-radius) 0px; margin-right: 2px; outline: none;">
+                    <span id="toAddon"
+                        style="color: green; cursor: pointer; padding-top: 5px; padding-bottom: 5px;">&#10004;</span>
+                </div>
+            </div>
+        </div>
+        <canvas id="Chart21" style="width: 100vw; height: 48vh;"></canvas>
+    </div>
+</div>
+</div>
+
+// script for same
+<script>
+    // ctx7
+    var ctx7 = document.getElementById("Chart21").getContext('2d');
+    var c21Line = new Chart(ctx7, {
+        type: 'line',
+        data: {
+            labels: ["18/11/2023 00:00", "18/11/2023 00:00", "19/11/2023 00:00", "20/11/2023 00:00"],
+            datasets: [
+                {
+                    label: 'Overall OEE',
+                    // date: '20/11/2023',
+                    data: [30, 47, 38, 61],
+                    backgroundColor: [
+                        'red',
+                        'blue',
+                        'yellow',
+                        'green',
+                    ],
+                    borderColor: [
+                        'red',
+                        'blue',
+                        'Yellow',
+                        'green',
+                    ],
+                    borderWidth: 1,
+                    tension: 0.4
+                }
+            ]
+        },
+        options: {
+            indexAxis: 'x',
+            animations: {
+                radius: {
+                    duration: 400,
+                    easing: 'linear',
+                    loop: (context) => context.active
+                }
+            },
+            hoverRadius: 12,
+            hoverBackgroundColor: 'grey',
+            interaction: {
+                mode: 'nearest',
+                intersect: false,
+                axis: 'x'
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    ticks: {
+                        callback: (value, index, values) => {
+                            return `${value}%`
+                        }
+                    }
+                },
+                x: {
+                    offset: true
+                }
+            },
+            plugins: {
+                tooltip: {
+                    enabled: false
+                }
+            }
+        }
+    })
+
+    // ctx5
+    const data = {
+        labels: ["Packer", "Bucket Elevator", "Truck Loader"],
+        // labelsLink: ["/templates/views/Packer.html", "/templates/views/BucketElevator.html", "/templates/views/TruckLoader.html"],
+        datasets: [
+            {
+                label: 'Previous Day',
+                date: '19/11/2023',
+                data: [45, 30, 80],
+                backgroundColor: [
+                    'rgb(231, 58, 58, 0.4)',
+                    'rgb(231, 58, 58, 0.4)',
+                    'rgb(231, 58, 58, 0.4)'
+                ],
+                borderColor: [
+                    'rgb(231, 58, 58)',
+                    'rgb(231, 58, 58)',
+                    'rgb(231, 58, 58)'
+                ],
+                borderWidth: 1
+            },
+            {
+                label: 'Today',
+                date: '20/11/2023',
+                data: [],
+                backgroundColor: [
+                    'rgba(54, 162, 235, 0.4)',
+                    'rgba(54, 162, 235, 0.4)',
+                    'rgba(54, 162, 235, 0.4)'
+                ],
+                borderColor: [
+                    'rgba(54, 162, 235)',
+                    'rgba(54, 162, 235)',
+                    'rgba(54, 162, 235)'
+                ],
+                borderWidth: 1
+            }
+        ]
+    };
+
+    const config = {
+        type: 'bar',
+        data,
+        options: {
+            plugins: {
+                // datalabels: {
+                //     align: 'start',
+                //     anchor: 'end',
+                //     color: '#000', // You can customize label color if needed
+                //     font: {
+                //         weight: '' // You can customize font weight if needed
+                //     },
+                //     formatter: function (value, context) {
+                //         // Display the dataset label and date in dd/mm/yyyy format below the bars
+                //         return `\u2022 ${context.dataset.date} \n  ${value}`;
+                //     },
+                //     precision: 1,
+                //     fontSize: 18,
+                //     fontColor: [
+                //         'rgb(231, 58, 58, 0.4)',
+                //         'rgba(54, 162, 235, 0.4)',
+                //         'rgba(43, 226, 89, 0.4)'
+                //     ]
+                // }
+            },
+            scales: {
+                x: {
+                    ticks: {
+                        color: ''
+                    }
+                },
+                y: {
+                    max: 100,
+                    ticks: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        },
+        // plugins: [ChartDataLabels]
+    }
+
+    // Function to update c19Bar chart with average values
+    function updateC19ChartData() {
+        // Calculate the averages and update c19Bar
+        const todayDataset = c19Bar.data.datasets.find(dataset => dataset.label === 'Today');
+
+        // c20StackBar1
+        const currentDatac20sb1 = c20StackBar1.data.datasets.find(dataset => dataset.label === 'Today').data;
+        const numericDatac20sb1 = currentDatac20sb1.map(value => parseFloat(value));
+        const sumCurrentDatac20sb1 = numericDatac20sb1.reduce((acc, value) => acc + value);
+        const averageCurrentDatac20sb1 = sumCurrentDatac20sb1 / currentDatac20sb1.length;
+
+        // Update c19Bar chart datasets with label 'Today'
+        todayDataset.data[0] = averageCurrentDatac20sb1;
+
+        // c20StackBar2
+        const currentDatac20sb2 = c20StackBar2.data.datasets.find(dataset => dataset.label === 'Today').data;
+        const numericDatac20sb2 = currentDatac20sb2.map(value => parseFloat(value));
+        const sumCurrentDatac20sb2 = numericDatac20sb2.reduce((acc, value) => acc + value);
+        const averageCurrentDatac20sb2 = sumCurrentDatac20sb2 / currentDatac20sb2.length;
+
+        // Update c19Bar chart datasets with label 'Today'
+        todayDataset.data[1] = averageCurrentDatac20sb2;
+
+        // c20StackBar3
+        const currentDatac20sb3 = c20StackBar3.data.datasets.find(dataset => dataset.label === 'Today').data;
+        const numericDatac20sb3 = currentDatac20sb3.map(value => parseFloat(value));
+        const sumCurrentDatac20sb3 = numericDatac20sb3.reduce((acc, value) => acc + value);
+        const averageCurrentDatac20sb3 = sumCurrentDatac20sb3 / currentDatac20sb3.length;
+
+        // Update c19Bar chart datasets with label 'Today'
+        todayDataset.data[2] = averageCurrentDatac20sb3;
+
+        c19Bar.update();
+    }
+
+    var ctx5 = document.getElementById("Chart19").getContext('2d');
+    var c19Bar = new Chart(ctx5, config);
+
+    // ctx6
+    var ctx6 = document.getElementById("Chart20_1").getContext('2d');
+    var ctx8 = document.getElementById("Chart20_2").getContext('2d');
+    var ctx9 = document.getElementById("Chart20_3").getContext('2d');
+    var c20StackBar1;
+    var c20StackBar2;
+    var c20StackBar3;
+
+    function destroyCharts() {
+        if (c20StackBar1) {
+            c20StackBar1.destroy();
+            c20StackBar1 = null;
+        }
+        else if (c20StackBar2) {
+            c20StackBar2.destroy();
+            c20StackBar2 = null;
+        }
+        else if (c20StackBar3) {
+            c20StackBar3.destroy();
+            c20StackBar3 = null;
+        }
+    }
+
+    const pbutton = document.getElementById("P_M");
+    const bebutton = document.getElementById("BE_M");
+    const tlbutton = document.getElementById("TL_M");
+    // destroyCharts();
+    c20StackBar1 = new Chart(ctx6, {
+        type: 'bar',
+        data: {
+            labels: ['Availability', 'Performance', 'Quality'],
+            datasets: [
+                {
+                    label: 'Previous Day',
+                    date: '19/11/2023',
+                    data: ['42', '47', '99'],
+                    backgroundColor: [
+                        'rgb(231, 58, 58, 0.4)',
+                        'rgb(231, 58, 58, 0.4)',
+                        'rgb(231, 58, 58, 0.4)'
+                    ],
+                    borderColor: [
+                        'rgb(231, 58, 58)',
+                        'rgb(231, 58, 58)',
+                        'rgb(231, 58, 58)'
+                    ],
+                    borderWidth: 1
+                },
+                {
+                    label: 'Today',
+                    date: '20/11/2023',
+                    data: ['49', '59', '99'],
+                    backgroundColor: [
+                        'rgba(54, 162, 235, 0.4)',
+                        'rgba(54, 162, 235, 0.4)',
+                        'rgba(54, 162, 235, 0.4)'
+                    ],
+                    borderColor: [
+                        'rgba(54, 162, 235)',
+                        'rgba(54, 162, 235)',
+                        'rgba(54, 162, 235)',
+                    ],
+                    borderWidth: 1
+                }
+            ]
+        },
+        options: {
+            plugins: {
+                datalabels: {
+                    align: 'start',
+                    anchor: 'end',
+                    color: '#000', // You can customize label color if needed
+                    font: {
+                        weight: '' // You can customize font weight if needed
+                    },
+                    formatter: function (value, context) {
+                        // Display the dataset label and date in dd/mm/yyyy format below the bars
+                        return `\u2022 ${context.dataset.date} \n ${value}`;
+                    }
+                }
+            },
+            responsive: true,
+            scales: {
+                x: {
+                    stacked: true,
+                },
+                y: {
+                    stacked: true
+                }
+            }
+        },
+        // plugins: [ChartDataLabels]
+    });
+    const gtm = document.getElementById("gtm");
+    gtm.setAttribute('href', '/templates/views/base.html?selectedOption=Packer&selectedSubOption=AllPackers');
+
+    c20StackBar2 = new Chart(ctx8, {
+        type: 'bar',
+        data: {
+            labels: ['Availability', 'Performance', 'Quality'],
+            datasets: [
+                {
+                    label: 'Previous Day',
+                    date: '19/11/2023',
+                    data: ['43', '42', '99'],
+                    backgroundColor: [
+                        'rgb(231, 58, 58, 0.4)',
+                        'rgb(231, 58, 58, 0.4)',
+                        'rgb(231, 58, 58, 0.4)'
+                    ],
+                    borderColor: [
+                        'rgb(231, 58, 58)',
+                        'rgb(231, 58, 58)',
+                        'rgb(231, 58, 58)'
+                    ],
+                    borderWidth: 1
+                },
+                {
+                    label: 'Today',
+                    date: '20/11/2023',
+                    data: ['47', '53', '99'],
+                    backgroundColor: [
+                        'rgba(54, 162, 235, 0.4)',
+                        'rgba(54, 162, 235, 0.4)',
+                        'rgba(54, 162, 235, 0.4)'
+                    ],
+                    borderColor: [
+                        'rgba(54, 162, 235)',
+                        'rgba(54, 162, 235)',
+                        'rgba(54, 162, 235)',
+                    ],
+                    borderWidth: 1
+                }
+            ]
+        },
+        options: {
+            animation: {
+                x: {
+                    type: 'number',
+                    easing: 'linear',
+                    duration: totalDuration
+                },
+                y: {
+                    type: 'number',
+                    easing: 'linear',
+                    duration: totalDuration
+                }
+            },
+            plugins: {
+                datalabels: {
+                    align: 'start',
+                    anchor: 'end',
+                    color: '#000', // You can customize label color if needed
+                    font: {
+                        weight: '' // You can customize font weight if needed
+                    },
+                    formatter: function (value, context) {
+                        // Display the dataset label and date in dd/mm/yyyy format below the bars
+                        return `\u2022 ${context.dataset.date} \n ${value}`;
+                    }
+                }
+            },
+            responsive: true,
+            scales: {
+                x: {
+                    stacked: true,
+                },
+                y: {
+                    stacked: true
+                }
+            }
+        },
+        // plugins: [ChartDataLabels]
+    });
+
+    c20StackBar3 = new Chart(ctx9, {
+        type: 'bar',
+        data: {
+            labels: ['Availability', 'Performance', 'Quality'],
+            datasets: [
+                {
+                    label: 'Previous Day',
+                    date: '19/11/2023',
+                    data: ['44', '46', '99'],
+                    backgroundColor: [
+                        'rgb(231, 58, 58, 0.4)',
+                        'rgb(231, 58, 58, 0.4)',
+                        'rgb(231, 58, 58, 0.4)'
+                    ],
+                    borderColor: [
+                        'rgb(231, 58, 58)',
+                        'rgb(231, 58, 58)',
+                        'rgb(231, 58, 58)'
+                    ],
+                    borderWidth: 1
+                },
+                {
+                    label: 'Today',
+                    date: '20/11/2023',
+                    data: ['51', '57', '99'],
+                    backgroundColor: [
+                        'rgba(54, 162, 235, 0.4)',
+                        'rgba(54, 162, 235, 0.4)',
+                        'rgba(54, 162, 235, 0.4)'
+                    ],
+                    borderColor: [
+                        'rgba(54, 162, 235)',
+                        'rgba(54, 162, 235)',
+                        'rgba(54, 162, 235)',
+                    ],
+                    borderWidth: 1
+                }
+            ]
+        },
+        options: {
+            plugins: {
+                datalabels: {
+                    align: 'start',
+                    anchor: 'end',
+                    color: '#000', // You can customize label color if needed
+                    font: {
+                        weight: '' // You can customize font weight if needed
+                    },
+                    formatter: function (value, context) {
+                        // Display the dataset label and date in dd/mm/yyyy format below the bars
+                        return `\u2022 ${context.dataset.date} \n ${value}`;
+                    }
+                }
+            },
+            responsive: true,
+            scales: {
+                x: {
+                    stacked: true,
+                },
+                y: {
+                    stacked: true
+                }
+            }
+        },
+        // plugins: [ChartDataLabels]
+    });
+
+    pbutton.addEventListener('click', () => {
+        console.log("Packer Clicked!");
+        destroyCharts();
+        document.getElementById('Chart20_1').style.display = 'block';
+        document.getElementById('Chart20_2').style.display = 'none';
+        document.getElementById('Chart20_3').style.display = 'none';
+        c20StackBar1 = new Chart(ctx6, {
+            type: 'bar',
+            data: {
+                labels: ['Availability', 'Performance', 'Quality'],
+                datasets: [
+                    {
+                        label: 'Previous Day',
+                        date: '19/11/2023',
+                        data: ['42', '47', '99'],
+                        backgroundColor: [
+                            'rgb(231, 58, 58, 0.4)',
+                            'rgb(231, 58, 58, 0.4)',
+                            'rgb(231, 58, 58, 0.4)'
+                        ],
+                        borderColor: [
+                            'rgb(231, 58, 58)',
+                            'rgb(231, 58, 58)',
+                            'rgb(231, 58, 58)'
+                        ],
+                        borderWidth: 1
+                    },
+                    {
+                        label: 'Today',
+                        date: '20/11/2023',
+                        data: ['49', '59', '99'],
+                        backgroundColor: [
+                            'rgba(54, 162, 235, 0.4)',
+                            'rgba(54, 162, 235, 0.4)',
+                            'rgba(54, 162, 235, 0.4)'
+                        ],
+                        borderColor: [
+                            'rgba(54, 162, 235)',
+                            'rgba(54, 162, 235)',
+                            'rgba(54, 162, 235)',
+                        ],
+                        borderWidth: 1
+                    }
+                ]
+            },
+            options: {
+                plugins: {
+                    datalabels: {
+                        align: 'start',
+                        anchor: 'end',
+                        color: '#000', // You can customize label color if needed
+                        font: {
+                            weight: '' // You can customize font weight if needed
+                        },
+                        formatter: function (value, context) {
+                            // Display the dataset label and date in dd/mm/yyyy format below the bars
+                            return `\u2022 ${context.dataset.date} \n ${value}`;
+                        }
+                    }
+                },
+                responsive: true,
+                scales: {
+                    x: {
+                        stacked: true,
+                    },
+                    y: {
+                        stacked: true
+                    }
+                }
+            },
+            //plugins: [ChartDataLabels]
+        });
+        pbutton.style.backgroundColor = "#66BB6A";
+        bebutton.style.backgroundColor = "";
+        tlbutton.style.backgroundColor = "";
+        const gtm = document.getElementById("gtm");
+        // gtm.style.display = 'block';
+        gtm.setAttribute('href', '/templates/views/base.html?selectedOption=Packer&selectedSubOption=AllPackers');
+        c20StackBar2 = null;
+        c20StackBar3 = null;
+    })
+
+    bebutton.addEventListener('click', () => {
+        console.log("Bucket Elevator Clicked!");
+        destroyCharts();
+        document.getElementById('Chart20_1').style.display = 'none';
+        document.getElementById('Chart20_2').style.display = 'block';
+        document.getElementById('Chart20_3').style.display = 'none';
+        c20StackBar2 = new Chart(ctx8, {
+            type: 'bar',
+            data: {
+                labels: ['Availability', 'Performance', 'Quality'],
+                datasets: [
+                    {
+                        label: 'Previous Day',
+                        date: '19/11/2023',
+                        data: ['43', '42', '99'],
+                        backgroundColor: [
+                            'rgb(231, 58, 58, 0.4)',
+                            'rgb(231, 58, 58, 0.4)',
+                            'rgb(231, 58, 58, 0.4)'
+                        ],
+                        borderColor: [
+                            'rgb(231, 58, 58)',
+                            'rgb(231, 58, 58)',
+                            'rgb(231, 58, 58)'
+                        ],
+                        borderWidth: 1
+                    },
+                    {
+                        label: 'Today',
+                        date: '20/11/2023',
+                        data: ['47', '53', '99'],
+                        backgroundColor: [
+                            'rgba(54, 162, 235, 0.4)',
+                            'rgba(54, 162, 235, 0.4)',
+                            'rgba(54, 162, 235, 0.4)'
+                        ],
+                        borderColor: [
+                            'rgba(54, 162, 235)',
+                            'rgba(54, 162, 235)',
+                            'rgba(54, 162, 235)',
+                        ],
+                        borderWidth: 1
+                    }
+                ]
+            },
+            options: {
+                plugins: {
+                    datalabels: {
+                        align: 'start',
+                        anchor: 'end',
+                        color: '#000', // You can customize label color if needed
+                        font: {
+                            weight: '' // You can customize font weight if needed
+                        },
+                        formatter: function (value, context) {
+                            // Display the dataset label and date in dd/mm/yyyy format below the bars
+                            return `\u2022 ${context.dataset.date} \n ${value}`;
+                        }
+                    }
+                },
+                responsive: true,
+                scales: {
+                    x: {
+                        stacked: true,
+                    },
+                    y: {
+                        stacked: true
+                    }
+                }
+            },
+            // plugins: [ChartDataLabels]
+        });
+        pbutton.style.backgroundColor = "";
+        bebutton.style.backgroundColor = "#66BB6A";
+        tlbutton.style.backgroundColor = "";
+        const gtm = document.getElementById("gtm");
+        // gtm.style.display = 'block';
+        gtm.setAttribute('href', '/templates/views/base.html?selectedOption=BucketElevator& selectedSubOption=AllBucketElevators');
+        c20StackBar1 = null;
+        c20StackBar3 = null;
+    })
+
+    tlbutton.addEventListener('click', () => {
+        console.log("Truck Loader Clicked!");
+        destroyCharts();
+        document.getElementById('Chart20_1').style.display = 'none';
+        document.getElementById('Chart20_2').style.display = 'none';
+        document.getElementById('Chart20_3').style.display = 'block';
+        c20StackBar3 = new Chart(ctx9, {
+            type: 'bar',
+            data: {
+                labels: ['Availability', 'Performance', 'Quality'],
+                datasets: [
+                    {
+                        label: 'Previous Day',
+                        date: '19/11/2023',
+                        data: ['44', '46', '99'],
+                        backgroundColor: [
+                            'rgb(231, 58, 58, 0.4)',
+                            'rgb(231, 58, 58, 0.4)',
+                            'rgb(231, 58, 58, 0.4)'
+                        ],
+                        borderColor: [
+                            'rgb(231, 58, 58)',
+                            'rgb(231, 58, 58)',
+                            'rgb(231, 58, 58)'
+                        ],
+                        borderWidth: 1
+                    },
+                    {
+                        label: 'Today',
+                        date: '20/11/2023',
+                        data: ['51', '57', '99'],
+                        backgroundColor: [
+                            'rgba(54, 162, 235, 0.4)',
+                            'rgba(54, 162, 235, 0.4)',
+                            'rgba(54, 162, 235, 0.4)'
+                        ],
+                        borderColor: [
+                            'rgba(54, 162, 235)',
+                            'rgba(54, 162, 235)',
+                            'rgba(54, 162, 235)',
+                        ],
+                        borderWidth: 1
+                    }
+                ]
+            },
+            options: {
+                plugins: {
+                    datalabels: {
+                        align: 'start',
+                        anchor: 'end',
+                        color: '#000', // You can customize label color if needed
+                        font: {
+                            weight: '' // You can customize font weight if needed
+                        },
+                        formatter: function (value, context) {
+                            // Display the dataset label and date in dd/mm/yyyy format below the bars
+                            return `\u2022 ${context.dataset.date} \n ${value}`;
+                        }
+                    }
+                },
+                responsive: true,
+                scales: {
+                    x: {
+                        stacked: true,
+                    },
+                    y: {
+                        stacked: true
+                    }
+                }
+            },
+            // plugins: [ChartDataLabels]
+        });
+        pbutton.style.backgroundColor = "";
+        bebutton.style.backgroundColor = "";
+        tlbutton.style.backgroundColor = "#66BB6A";
+        const gtm = document.getElementById("gtm");
+        // gtm.style.display = 'block';
+        gtm.setAttribute('href', '/templates/views/base.html?selectedOption=TruckLoader&selectedSubOption=AllTruckLoaders');
+        c20StackBar1 = null;
+        c20StackBar2 = null;
+    })
+
+    // function clickableScales(canvas, click) {
+    //     destroyCharts();
+    //     const height = c19Bar.scales.x.height
+    //     const top = c19Bar.scales.x.top
+    //     const bottom = c19Bar.scales.x.bottom
+    //     const left = c19Bar.scales.x.left
+    //     const right = c19Bar.scales.x.maxWidth / c19Bar.scales.x.ticks.length
+    //     console.log(canvas)
+    //     //console.log(click)
+    //     let resetCoordinates = canvas.getBoundingClientRect()
+    //     // console.log(click)
+    //     const x = click.clientX - resetCoordinates.left;
+    //     const y = click.clientY - resetCoordinates.top;
+    //     // console.log(x);
+    //     // console.log(y);
+    //     const labelColors = ['blue', 'red', 'green'];
+    //     let labelss = "";
+    //     for (let i = 0; i < c19Bar.scales.x.ticks.length; i++) {
+    //         if (x >= left + (right * i) && x <= right + (right * i) && y >= top && y <= bottom) {
+    //             labelss = data.labels[i];
+    //             console.log(labelss);
+    //             console.log('clicked label');
+
+    //             // Update color for the clicked label using the labelColors array
+    //             c19Bar.config.options.scales.x.ticks.color = c19Bar.config.options.scales.x.ticks.color || [];
+    //             c19Bar.config.options.scales.x.ticks.color[i] = labelColors[i];
+
+    //             // Create new charts based on the clicked label
+    //             if (labelss == "Packer") {
+    //                 // console.log("c20StackBar1");
+    //                 // console.log(c19Bar.config.options.scales.x.ticks.color[i] = 'blue');
+    //                 // c19Bar.config.options.scales.x.ticks.color[i] = 'blue';
+    //                 // c19Bar.update();
+    //                 destroyCharts();
+    //                 document.getElementById('Chart20_1').style.display = 'block';
+    //                 document.getElementById('Chart20_2').style.display = 'none';
+    //                 document.getElementById('Chart20_3').style.display = 'none';
+    //                 c20StackBar1 = new Chart(ctx6, {
+    //                     type: 'bar',
+    //                     data: {
+    //                         labels: ['Availability', 'Performance', 'Quality'],
+    //                         datasets: [
+    //                             {
+    //                                 label: 'Previous Day',
+    //                                 date: '19/11/2023',
+    //                                 data: ['42', '47', '99'],
+    //                                 backgroundColor: [
+    //                                     'rgb(231, 58, 58, 0.4)',
+    //                                     'rgb(231, 58, 58, 0.4)',
+    //                                     'rgb(231, 58, 58, 0.4)'
+    //                                 ],
+    //                                 borderColor: [
+    //                                     'rgb(231, 58, 58)',
+    //                                     'rgb(231, 58, 58)',
+    //                                     'rgb(231, 58, 58)'
+    //                                 ],
+    //                                 borderWidth: 1
+    //                             },
+    //                             {
+    //                                 label: 'Today',
+    //                                 date: '20/11/2023',
+    //                                 data: ['49', '59', '99'],
+    //                                 backgroundColor: [
+    //                                     'rgba(54, 162, 235, 0.4)',
+    //                                     'rgba(54, 162, 235, 0.4)',
+    //                                     'rgba(54, 162, 235, 0.4)'
+    //                                 ],
+    //                                 borderColor: [
+    //                                     'rgba(54, 162, 235)',
+    //                                     'rgba(54, 162, 235)',
+    //                                     'rgba(54, 162, 235)',
+    //                                 ],
+    //                                 borderWidth: 1
+    //                             }
+    //                         ]
+    //                     },
+    //                     options: {
+    //                         plugins: {
+    //                             datalabels: {
+    //                                 align: 'start',
+    //                                 anchor: 'end',
+    //                                 color: '#000', // You can customize label color if needed
+    //                                 font: {
+    //                                     weight: '' // You can customize font weight if needed
+    //                                 },
+    //                                 formatter: function (value, context) {
+    //                                     // Display the dataset label and date in dd/mm/yyyy format below the bars
+    //                                     return `\u2022 ${context.dataset.date} \n ${value}`;
+    //                                 }
+    //                             }
+    //                         },
+    //                         responsive: true,
+    //                         scales: {
+    //                             x: {
+    //                                 stacked: true,
+    //                             },
+    //                             y: {
+    //                                 stacked: true
+    //                             }
+    //                         }
+    //                     },
+    //                     plugins: [ChartDataLabels]
+    //                 });
+    //                 const machineName = document.getElementById("MachineName");
+    //                 machineName.innerHTML = "Packer";
+    //                 machineName.setAttribute('style', 'font-size: 18px; color: blue;');
+    //                 const gtm = document.getElementById("gtm");
+    //                 gtm.style.display = 'block';
+    //                 gtm.setAttribute('href', '/templates/views/base.html?selectedOption=Packer&selectedSubOption=AllPackers');
+    //                 // Also, update the dropdown selection to "packer"
+    //                 c20StackBar2 = null;
+    //                 c20StackBar3 = null;
+    //             }
+    //             else if (labelss == "Bucket Elevator") {
+    //                 // console.log("c20StackBar2");
+    //                 // console.log(c19Bar.config.options.scales.x.ticks.color[i] = 'red');
+    //                 // c19Bar.config.options.scales.x.ticks.color[i] = 'red';
+    //                 // c19Bar.update();
+    //                 destroyCharts();
+    //                 document.getElementById('Chart20_1').style.display = 'none';
+    //                 document.getElementById('Chart20_2').style.display = 'block';
+    //                 document.getElementById('Chart20_3').style.display = 'none';
+    //                 c20StackBar2 = new Chart(ctx8, {
+    //                     type: 'bar',
+    //                     data: {
+    //                         labels: ['Availability', 'Performance', 'Quality'],
+    //                         datasets: [
+    //                             {
+    //                                 label: 'Previous Day',
+    //                                 date: '19/11/2023',
+    //                                 data: ['43', '42', '99'],
+    //                                 backgroundColor: [
+    //                                     'rgb(231, 58, 58, 0.4)',
+    //                                     'rgb(231, 58, 58, 0.4)',
+    //                                     'rgb(231, 58, 58, 0.4)'
+    //                                 ],
+    //                                 borderColor: [
+    //                                     'rgb(231, 58, 58)',
+    //                                     'rgb(231, 58, 58)',
+    //                                     'rgb(231, 58, 58)'
+    //                                 ],
+    //                                 borderWidth: 1
+    //                             },
+    //                             {
+    //                                 label: 'Today',
+    //                                 date: '20/11/2023',
+    //                                 data: ['47', '53', '99'],
+    //                                 backgroundColor: [
+    //                                     'rgba(54, 162, 235, 0.4)',
+    //                                     'rgba(54, 162, 235, 0.4)',
+    //                                     'rgba(54, 162, 235, 0.4)'
+    //                                 ],
+    //                                 borderColor: [
+    //                                     'rgba(54, 162, 235)',
+    //                                     'rgba(54, 162, 235)',
+    //                                     'rgba(54, 162, 235)',
+    //                                 ],
+    //                                 borderWidth: 1
+    //                             }
+    //                         ]
+    //                     },
+    //                     options: {
+    //                         plugins: {
+    //                             datalabels: {
+    //                                 align: 'start',
+    //                                 anchor: 'end',
+    //                                 color: '#000', // You can customize label color if needed
+    //                                 font: {
+    //                                     weight: '' // You can customize font weight if needed
+    //                                 },
+    //                                 formatter: function (value, context) {
+    //                                     // Display the dataset label and date in dd/mm/yyyy format below the bars
+    //                                     return `\u2022 ${context.dataset.date} \n ${value}`;
+    //                                 }
+    //                             }
+    //                         },
+    //                         responsive: true,
+    //                         scales: {
+    //                             x: {
+    //                                 stacked: true,
+    //                             },
+    //                             y: {
+    //                                 stacked: true
+    //                             }
+    //                         }
+    //                     },
+    //                     plugins: [ChartDataLabels]
+    //                 });
+    //                 const machineName = document.getElementById("MachineName");
+    //                 machineName.innerHTML = "Bucket Elevator";
+    //                 machineName.setAttribute('style', 'font-size: 18px; color: red');
+    //                 const gtm = document.getElementById("gtm");
+    //                 gtm.style.display = 'block';
+    //                 gtm.setAttribute('href', '/templates/views/base.html?selectedOption=BucketElevator&selectedSubOption=AllBucketElevators');
+    //                 c20StackBar1 = null;
+    //                 c20StackBar3 = null;
+    //             }
+    //             else if (labelss == "Truck Loader") {
+    //                 // console.log("c20StackBar3");
+    //                 // console.log(c19Bar.config.options.scales.x.ticks.color[i] = 'green');
+    //                 // c19Bar.config.options.scales.x.ticks.color[i] = 'green';
+    //                 // c19Bar.update();
+    //                 destroyCharts();
+    //                 document.getElementById('Chart20_1').style.display = 'none';
+    //                 document.getElementById('Chart20_2').style.display = 'none';
+    //                 document.getElementById('Chart20_3').style.display = 'block';
+    //                 c20StackBar3 = new Chart(ctx9, {
+    //                     type: 'bar',
+    //                     data: {
+    //                         labels: ['Availability', 'Performance', 'Quality'],
+    //                         datasets: [
+    //                             {
+    //                                 label: 'Previous Day',
+    //                                 date: '19/11/2023',
+    //                                 data: ['44', '46', '99'],
+    //                                 backgroundColor: [
+    //                                     'rgb(231, 58, 58, 0.4)',
+    //                                     'rgb(231, 58, 58, 0.4)',
+    //                                     'rgb(231, 58, 58, 0.4)'
+    //                                 ],
+    //                                 borderColor: [
+    //                                     'rgb(231, 58, 58)',
+    //                                     'rgb(231, 58, 58)',
+    //                                     'rgb(231, 58, 58)'
+    //                                 ],
+    //                                 borderWidth: 1
+    //                             },
+    //                             {
+    //                                 label: 'Today',
+    //                                 date: '20/11/2023',
+    //                                 data: ['51', '57', '99'],
+    //                                 backgroundColor: [
+    //                                     'rgba(54, 162, 235, 0.4)',
+    //                                     'rgba(54, 162, 235, 0.4)',
+    //                                     'rgba(54, 162, 235, 0.4)'
+    //                                 ],
+    //                                 borderColor: [
+    //                                     'rgba(54, 162, 235)',
+    //                                     'rgba(54, 162, 235)',
+    //                                     'rgba(54, 162, 235)',
+    //                                 ],
+    //                                 borderWidth: 1
+    //                             }
+    //                         ]
+    //                     },
+    //                     options: {
+    //                         plugins: {
+    //                             datalabels: {
+    //                                 align: 'start',
+    //                                 anchor: 'end',
+    //                                 color: '#000', // You can customize label color if needed
+    //                                 font: {
+    //                                     weight: '' // You can customize font weight if needed
+    //                                 },
+    //                                 formatter: function (value, context) {
+    //                                     // Display the dataset label and date in dd/mm/yyyy format below the bars
+    //                                     return `\u2022 ${context.dataset.date} \n ${value}`;
+    //                                 }
+    //                             }
+    //                         },
+    //                         responsive: true,
+    //                         scales: {
+    //                             x: {
+    //                                 stacked: true,
+    //                             },
+    //                             y: {
+    //                                 stacked: true
+    //                             }
+    //                         }
+    //                     },
+    //                     plugins: [ChartDataLabels]
+    //                 });
+    //                 const machineName = document.getElementById("MachineName");
+    //                 machineName.innerHTML = "Truck Loader";
+    //                 machineName.setAttribute('style', 'font-size: 18px; color: green');
+    //                 const gtm = document.getElementById("gtm");
+    //                 gtm.style.display = 'block';
+    //                 gtm.setAttribute('href', '/templates/views/base.html?selectedOption=TruckLoader&selectedSubOption=AllTruckLoaders');
+    //                 c20StackBar1 = null;
+    //                 c20StackBar2 = null;
+    //             }
+    //             // window.open(c19Bar.config.data.labelsLink[i]);
+    //         } else {
+    //             // Reset color for other labels
+    //             c19Bar.config.options.scales.x.ticks.color = c19Bar.config.options.scales.x.ticks.color || [];
+    //             c19Bar.config.options.scales.x.ticks.color[i] = ''; // or any default color
+    //         }
+    //     }
+    // }
+
+    // c19 = document.getElementById("Chart19");
+    // c19.addEventListener('click', (e) => {
+    //     clickableScales(c19, e);
+    // });
+
+    // Update the charts for each label
+    updateC19ChartData();
+</script> -->

@@ -1,0 +1,2199 @@
+<title>Dashboard</title>
+<script src="/public/JavaScripts/jquery-3.7.1.js"></script>
+<link rel="stylesheet" href="/public/CSS/base.css">
+<link rel="stylesheet" href="/public/CSS/bootstrap/bootstrap.min.css">
+<style>
+    /* canvas#Chart20_1,
+    canvas#Chart20_2,
+    canvas#Chart20_3 {
+        width: 48vw !important;
+        max-height: 30.5vh !important;
+    } */
+
+    .canvasjs-chart-canvas {
+        width: inherit !important;
+    }
+
+    .cct-style {
+        top: 160px !important;
+        bottom: unset !important;
+        box-shadow: none !important;
+    }
+
+    .notificationBadge[data-count]:after {
+        position: absolute;
+        right: 5px;
+        top: -7%;
+        content: attr(data-count);
+        font-size: 85%;
+        padding: 0.6em;
+        border-radius: 999px;
+        line-height: 0.75em;
+        color: white;
+        background: rgba(255, 0, 0);
+        text-align: center;
+        min-width: 2em;
+        font-weight: bold;
+    }
+
+    .notification-ui a:after {
+        display: none;
+    }
+
+    .notification-ui_icon {
+        position: relative;
+    }
+
+    .notification-ui_icon .unread-notification {
+        display: inline-block;
+        height: 7px;
+        width: 7px;
+        border-radius: 7px;
+        background-color: #66BB6A;
+        position: absolute;
+        top: 7px;
+        left: 12px;
+    }
+
+    @media (min-width: 900px) {
+        .notification-ui_icon .unread-notification {
+            left: 20px;
+        }
+    }
+
+    .notification-ui_dd {
+        padding: 0;
+        border-radius: 10px;
+        /* -webkit-box-shadow: 0 5px 20px -3px rgba(0, 0, 0, 0.16); */
+        box-shadow: 0px 0px 5px 12px lightgray;
+        border: 0;
+        max-width: auto !important;
+    }
+
+    @media (min-width: 900px) {
+        .notification-ui_dd {
+            width: auto;
+            /* position: absolute;
+            right: -38.5px; */
+            top: 60.5px;
+        }
+    }
+
+    .notification-ui_dd:after {
+        content: "";
+        position: absolute;
+        top: -30px;
+        left: calc(64% - 7px);
+        border-top: 15px solid transparent;
+        border-right: 15px solid transparent;
+        border-bottom: 15px solid #fff;
+        border-left: 15px solid transparent;
+    }
+
+    .chStatus_dd:after {
+        content: "";
+        position: absolute;
+        top: -30px;
+        left: calc(90%);
+        border-top: 15px solid transparent;
+        border-right: 15px solid transparent;
+        border-bottom: 15px solid #fff;
+        border-left: 15px solid transparent;
+    }
+
+    .notification-ui_dd .notification-ui_dd-header {
+        border-bottom: 1px solid #ddd;
+        padding: 15px;
+    }
+
+    .notification-ui_dd .notification-ui_dd-header h3 {
+        margin-bottom: 0;
+    }
+
+    .notification-ui_dd .notification-ui_dd-content {
+        max-height: 500px;
+        overflow: auto;
+    }
+
+    .notification-list {
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        -webkit-box-pack: justify;
+        -ms-flex-pack: justify;
+        justify-content: space-between;
+        padding: 20px 0;
+        margin: 0 25px;
+        border-bottom: 1px solid #ddd;
+    }
+
+    .notification-list--unread {
+        position: relative;
+    }
+
+    .notification-list--unread:before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: -25px;
+        height: calc(100% + 1px);
+        border-left: 2px solid #29B6F6;
+    }
+
+    .notification-list .notification-list_img img {
+        height: 48px;
+        width: 48px;
+        border-radius: 50px;
+        margin-right: 20px;
+    }
+
+    .notification-list .notification-list_detail p {
+        margin-bottom: 5px;
+        line-height: 1.2;
+    }
+
+    .notification-list .notification-list_feature-img img {
+        height: 48px;
+        width: 48px;
+        border-radius: 5px;
+        margin-left: 20px;
+    }
+
+    /* OEE Stats */
+    .OEEstat {
+        /* border: 2px solid red; */
+        display: none;
+        width: auto;
+        background-color: white;
+        opacity: 0.8;
+        padding: 30px 20px;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        z-index: 3;
+        /* Ensure the modal appears above the backdrop */
+        box-shadow: 0px 0px 15px 10px #ccc;
+    }
+
+    .showOEEStat {
+        display: block;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        -webkit-filter: blur(0);
+        filter: blur(0);
+        opacity: 1;
+        border-radius: 10px;
+        /*overflow: visible;*/
+        /*z-index: 1;*/
+    }
+
+    #OEEstat_close {
+        position: absolute;
+        right: 0px;
+        top: 0px;
+        width: 30px;
+        color: white;
+        line-height: 30px;
+        height: 30px;
+        background-color: darkcyan;
+        text-align: center;
+        cursor: pointer;
+        border-radius: 0 10px 0 0;
+    }
+
+    .dashboard-container {
+        width: 70vw;
+        margin-left: 9px;
+        border: 1px solid lightgray;
+        border-radius: 4px;
+        background-color: whitesmoke;
+        padding: 10px;
+    }
+
+    .utilization-label {
+        padding-left: 5px;
+    }
+
+    .divider {
+        margin: 0;
+        border: 1px solid lightgray;
+        --bs-gutter-x: 0;
+    }
+
+    .chart-row {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .chart-item {
+        text-align: center;
+        /* width: 18%; */
+    }
+
+    .progress-container {
+        width: max-content;
+        margin: auto;
+    }
+
+    .chart-label {
+        margin-bottom: 0;
+        color: #000;
+        text-decoration: none;
+        font-size: 16px;
+        font-weight: bold;
+        margin-top: 5px;
+    }
+
+    /* Optional: Add hover effect for a more interactive feel */
+    .chart-label:hover {
+        color: #1E90FF;
+        /* Change the color on hover */
+    }
+</style>
+<script>
+    $(function () {
+        $("#header").load("header.html");
+    })
+</script>
+
+<body class="row" style="background-color: rgb(237, 237, 237); --bs-gutter-x: 0; overflow: auto; position: fixed;">
+    <header id="header" style="width: 6vw; height: auto;"></header>
+    <div class="right" style="width: 94vw; height: auto;">
+        <div class="rt ms-1" style="width: 93.5vw; height: auto;">
+            <span style="font-size: 30px;">Company Dashboard</span>
+            <!-- Shift Wise Status -->
+            <div class="row" id="dates" style="float: right; --bs-gutter-x: 0; width: auto;">
+                <div class="column col-md-3 mx-2 my-1" id="live_shift"
+                    style="width: auto; margin: auto; padding: 0; cursor: pointer;" onmouseover="currentStatus()"
+                    onmouseout="hidecurrentStatus()">
+                    <span class="ps-0" id="shift" style="width: auto;"></span>
+                    <div class="row" id="blink" style="width: fit-content; margin: auto; --bs-gutter-x: 0;">
+                        <span class="mt-2 mx-0" id="rorg"
+                            style="height: 7px; width: 7px; background-color: green; border-radius: 50%; --bs-gutter-x: 0;"></span>
+                        <span class="px-1" id="status" style="width: auto;">Live</span>
+                    </div>
+                    <div id="chStatus" class="dropdown-menu chStatus_dd"
+                        style="right: 8% !important; top: 8.5%; display: none; width: auto;">
+                        <div class="row" id="blink" style="--bs-gutter-x: 0;">
+                            <span class="m-auto mx-1"
+                                style="height: 7px; width: 7px; background-color: green; border-radius: 50%; --bs-gutter-x: 0;"></span>
+                            <span id="ch" style="width: auto;"></span>
+                        </div>
+                        <div class="row" style="--bs-gutter-x: 0; justify-content: space-between;">
+                            <div class="col-md-4 mx-2" style="width: auto; text-align: center;">
+                                <h3>Packer</h3>
+                                <ol class="list-group list-group-numbered" style="text-align: left;">
+                                    <li class="list-group-item">
+                                        Availability
+                                        <span class="badge bg-primary rounded-pill ms-1"
+                                            style="float: right;">74.5%</span>
+                                    </li>
+                                    <li class="list-group-item">
+                                        Performance
+                                        <span class="badge bg-primary rounded-pill ms-1"
+                                            style="float: right;">78.9%</span>
+                                    </li>
+                                    <li class="list-group-item">
+                                        Quality
+                                        <span class="badge bg-primary rounded-pill ms-1"
+                                            style="float: right;">83.4%</span>
+                                    </li>
+                                    <li class="list-group-item">
+                                        OEE
+                                        <span class="badge bg-primary rounded-pill ms-1"
+                                            style="float: right;">78.9%</span>
+                                    </li>
+                                </ol>
+                            </div>
+                            <div class="col-md-4 me-2" style="width: auto; text-align: center;">
+                                <h3>Bucker Elevator</h3>
+                                <ol class="list-group list-group-numbered" style="text-align: left;">
+                                    <li class="list-group-item">
+                                        Availability
+                                        <span class="badge bg-primary rounded-pill ms-1"
+                                            style="float: right;">74.5%</span>
+                                    </li>
+                                    <li class="list-group-item">
+                                        Performance
+                                        <span class="badge bg-primary rounded-pill ms-1"
+                                            style="float: right;">78.9%</span>
+                                    </li>
+                                    <li class="list-group-item">
+                                        Quality
+                                        <span class="badge bg-primary rounded-pill ms-1"
+                                            style="float: right;">83.4%</span>
+                                    </li>
+                                    <li class="list-group-item">
+                                        OEE
+                                        <span class="badge bg-primary rounded-pill ms-1"
+                                            style="float: right;">78.9%</span>
+                                    </li>
+                                </ol>
+                            </div>
+                            <div class="col-md-4 me-2" style="width: auto; text-align: center;">
+                                <h3>Truck Loader</h3>
+                                <ol class="list-group list-group-numbered" style="text-align: left;">
+                                    <li class="list-group-item">
+                                        Availability
+                                        <span class="badge bg-primary rounded-pill ms-1"
+                                            style="float: right;">74.5%</span>
+                                    </li>
+                                    <li class="list-group-item">
+                                        Performance
+                                        <span class="badge bg-primary rounded-pill ms-1"
+                                            style="float: right;">78.9%</span>
+                                    </li>
+                                    <li class="list-group-item">
+                                        Quality
+                                        <span class="badge bg-primary rounded-pill ms-1"
+                                            style="float: right;">83.4%</span>
+                                    </li>
+                                    <li class="list-group-item">
+                                        OEE
+                                        <span class="badge bg-primary rounded-pill ms-1"
+                                            style="float: right;">78.9%</span>
+                                    </li>
+                                </ol>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Notification -->
+                <div class="col-md-5 mx-1 my-2" style="margin: auto; width: auto;">
+                    <div class="position-relative" id="notificationIcon" style="font-size: x-small; cursor: pointer;">
+                        <span class="badge notificationBadge unread-notification" data-count=""
+                            style="position: absolute; right: -3px;">
+                        </span>
+                        <i class="bi bi-circle-fill text-white fs-2"></i>
+                        <i class="bi bi-bell fs-5 position-absolute top-50 start-50 translate-middle"
+                            style="transform: translate(-50%, -50%) !important;"></i>
+                    </div>
+                    <!-- Notification Dropdown -->
+                    <div id="notificationDropdown" class="dropdown-menu dropdown-menu-start notification-ui_dd"
+                        style="right: 0% !important; top: 7.5%;">
+                        <div class="notification-ui_dd-header">
+                            <h3 class="text-center">Notification</h3>
+                        </div>
+                        <div class="notification-ui_dd-content">
+                            <div class="notification-list notification-list--unread">
+                                <div class="notification-list_img">
+                                    <!-- <img src="https://i.imgur.com/zYxDCQT.jpg" alt="user"> -->
+                                </div>
+                                <div class="notification-list_detail">
+                                    <p><b>Johnny Dollar</b> reacted to your post</p>
+                                    <p><small>10 mins ago</small></p>
+                                </div>
+                                <div class="notification-list_feature-img">
+                                    <!-- <img src="https://i.imgur.com/AbZqFnR.jpg" alt="Feature image"> -->
+                                </div>
+                            </div>
+                            <div class="notification-list notification-list--unread">
+                                <div class="notification-list_img">
+                                    <!-- <img src="https://i.imgur.com/w4Mp4ny.jpg" alt="user"> -->
+                                </div>
+                                <div class="notification-list_detail">
+                                    <p><b>Richard Miles</b> reacted to your post</p>
+                                    <p><small>1 day ago</small></p>
+                                </div>
+                                <div class="notification-list_feature-img">
+                                    <!-- <img src="https://i.imgur.com/AbZqFnR.jpg" alt="Feature image"> -->
+                                </div>
+                            </div>
+                            <div class="notification-list">
+                                <div class="notification-list_img">
+                                    <!-- <img src="https://i.imgur.com/ltXdE4K.jpg" alt="user"> -->
+                                </div>
+                                <div class="notification-list_detail">
+                                    <p><b>Brian Cumin</b> reacted to your post</p>
+                                    <p><small>1 day ago</small></p>
+                                </div>
+                                <div class="notification-list_feature-img">
+                                    <!-- <img src="https://i.imgur.com/bpBpAlH.jpg" alt="Feature image"> -->
+                                </div>
+                            </div>
+                            <div class="notification-list">
+                                <div class="notification-list_img">
+                                    <!-- <img src="https://i.imgur.com/CtAQDCP.jpg" alt="user"> -->
+                                </div>
+                                <div class="notification-list_detail">
+                                    <p><b>Lance Bogrol</b> reacted to your post</p>
+                                    <p><small>1 day ago</small></p>
+                                </div>
+                                <div class="notification-list_feature-img">
+                                    <!-- <img src="https://i.imgur.com/iIhftMJ.jpg" alt="Feature image"> -->
+                                </div>
+                            </div>
+                            <div class="notification-list">
+                                <div class="notification-list_img">
+                                    <!-- <img src="https://i.imgur.com/CtAQDCP.jpg" alt="user"> -->
+                                </div>
+                                <div class="notification-list_detail">
+                                    <p><b>Lorem ipsum</b> reacted to your post</p>
+                                    <p><small>1 day ago</small></p>
+                                </div>
+                                <div class="notification-list_feature-img">
+                                    <!-- <img src="https://i.imgur.com/iIhftMJ.jpg" alt="Feature image"> -->
+                                </div>
+                            </div>
+                        </div>
+                        <div class="notification-ui_dd-footer text-center m-2 mb-0">
+                            <span id="viewAll" class="btn btn-success btn-block">Show All Notifications</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="dropdown col-md-4 mx-1 my-2" style="width: auto;">
+                    <button class="btn btn-secondary" id="today" style="background-color: whitesmoke; color: #000;">
+                        Today
+                    </button>
+                    <!-- <ul class="dropdown-menu">
+                        <li><a class="dropdown-item text-center" id="yesterday">Yesterday</a></li>
+                    </ul> -->
+                </div>
+            </div>
+        </div>
+        <hr style="width: 93.5vw; margin-top: 0.5rem; margin-bottom: 0.5rem;">
+        <div class="rb row" style="width: 93.5vw; height: auto; --bs-gutter-x: 0">
+            <div class="dcharts row" style="width: 70vw; height: auto; --bs-gutter-x: 0;">
+                <div class="dcharts-left" style="width: 35vw; padding-left: 1px; padding-right: 1px;">
+                    <div class="chart11 ms-2"
+                        style="height: 19vh; border-width: thin; border: 1px solid lightgray; border-radius: 4px; background-color: whitesmoke;">
+                        <div class="row">
+                            <div style="width: 9vw; margin: auto; text-align: center;">
+                                <h5 id="c11h5" style="padding-left: 5px; margin-bottom: 0;">OEE</h5>
+                                <div class="row" style="width: max-content; margin: auto;">
+                                    <span id="percent3"
+                                        style="width: auto; font-size: 1.1rem; padding-right: 0; padding-left: 0;"></span>
+                                    <div class="row" style="--bs-gutter-x: 0; width: auto;">
+                                        <i class="bi bi-arrow-up my-auto" id="arrowupc11"
+                                            style="display: none; font-weight: bolder; color: #0ef119; width: auto; padding-left: 1px; padding: inherit; font-size: medium;"></i>
+                                        <i class="bi bi-arrow-down my-auto" id="arrowdownc11"
+                                            style="display: none; font-weight: bolder; color: rgba(255, 0, 0); width: auto; padding-left: 1px; padding: inherit; font-size: medium;"></i>
+                                        <i class="bi bi-dash-circle my-auto" id="neutralc11"
+                                            style="display: none; font-weight: bolder; width: auto; padding-left: 1px; padding: inherit; font-size: medium;"></i>
+                                        <span id="c11diff" style="width: auto; font-size: small; margin: auto;"></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div style="width: 22vw; height: 18vh;">
+                                <canvas id="Chart11"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="chart10 mt-2 ms-2"
+                        style="height: 19vh; border-width: thin; border: 1px solid lightgray; border-radius: 4px; background-color: whitesmoke;">
+                        <div class="row">
+                            <div style="width: 9vw; margin: auto; text-align: center;">
+                                <h5 style="padding-left: 5px; margin-bottom: 0;">Performance</h5>
+                                <div class="row" style="width: max-content; margin: auto;">
+                                    <span id="percent2"
+                                        style="width: auto; font-size: 1.1rem; padding-right: 0; padding-left: 0;"></span>
+                                    <div class="row" style="--bs-gutter-x: 0; width: auto;">
+                                        <i class="bi bi-arrow-up my-auto" id="arrowupc10"
+                                            style="display: none; font-weight: bolder; color: #0ef119; width: auto; padding-left: 1px; padding: inherit; font-size: medium;"></i>
+                                        <i class="bi bi-arrow-down my-auto" id="arrowdownc10"
+                                            style="display: none; font-weight: bolder; color: rgba(255, 0, 0); width: auto; padding-left: 1px; padding: inherit; font-size: medium;"></i>
+                                        <i class="bi bi-dash-circle my-auto" id="neutralc10"
+                                            style="display: none; font-weight: bolder; width: auto; padding-left: 1px; padding: inherit; font-size: medium;"></i>
+                                        <span id="c10diff" style="width: auto; font-size: small; margin: auto;"></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div style="width: 22vw; height: 18vh;">
+                                <canvas id="Chart10"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="dcharts-right" style="width: 35vw; padding-left: 1px; padding-right: 1px;">
+                    <div class="chart12 ms-2"
+                        style="height: 19vh; border-width: thin; border: 1px solid lightgray; border-radius: 4px; background-color: whitesmoke;">
+                        <div class="row">
+                            <div style="width: 9vw; margin: auto; text-align: center;">
+                                <h5 style="padding-left: 5px; margin-bottom: 0;">Availability</h5>
+                                <div class="row" style="width: max-content; margin: auto;">
+                                    <span id="percent4"
+                                        style="width: auto; font-size: 1.1rem; padding-right: 0; padding-left: 0;"></span>
+                                    <div class="row" style="--bs-gutter-x: 0; width: auto;">
+                                        <i class="bi bi-arrow-up my-auto" id="arrowupc12"
+                                            style="display: none; font-weight: bolder; color: #0ef119; width: auto; padding-left: 1px; padding: inherit; font-size: medium;"></i>
+                                        <i class="bi bi-arrow-down my-auto" id="arrowdownc12"
+                                            style="display: none; font-weight: bolder; color: rgba(255, 0, 0); width: auto; padding-left: 1px; padding: inherit; font-size: medium;"></i>
+                                        <i class="bi bi-dash-circle my-auto" id="neutralc12"
+                                            style="display: none; font-weight: bolder; width: auto; padding-left: 1px; padding: inherit; font-size: medium;"></i>
+                                        <span id="c12diff" style="width: auto; font-size: small; margin: auto;"></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div style="width: 22vw; height: 18vh;">
+                                <canvas id="Chart12"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="chart9 mt-2 ms-2"
+                        style="height: 19vh; border-width: thin; border: 1px solid lightgray; border-radius: 4px; background-color: whitesmoke;">
+                        <div class="row">
+                            <div style="width: 9vw; margin: auto; text-align: center;">
+                                <h5 style="padding-left: 5px; margin-bottom: 0;">Quality</h5>
+                                <div class="row" style="width: max-content; margin: auto;">
+                                    <span id="percent1"
+                                        style="width: auto; font-size: 1.1rem; padding-right: 0; padding-left: 0;"></span>
+                                    <div class="row" style="--bs-gutter-x: 0; width: auto;">
+                                        <i class="bi bi-arrow-up my-auto" id="arrowupc9"
+                                            style="display: none; font-weight: bolder; color: #0ef119; width: auto; padding-left: 1px; padding: inherit; font-size: medium;"></i>
+                                        <i class="bi bi-arrow-down my-auto" id="arrowdownc9"
+                                            style="display: none; font-weight: bolder; color: rgba(255, 0, 0); width: auto; padding-left: 1px; padding: inherit; font-size: medium;"></i>
+                                        <i class="bi bi-dash-circle my-auto" id="neutralc9"
+                                            style="display: none; font-weight: bolder; width: auto; padding-left: 1px; padding: inherit; font-size: medium;"></i>
+                                        <span id="c9diff" style="width: auto; font-size: small; margin: auto;"></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div style="width: 22vw; height: 18vh;">
+                                <canvas id="Chart9"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="histStat row ms-2" style="width: 69.4vw; --bs-gutter-x: 0; justify-content: space-between;">
+                    <div class="my-auto" id="about" style="width: auto; height: 2.5vh;">
+                        <div id="info" style="width: auto; height: inherit; float: left; font-size: 0.75rem;">
+                            <span id="historicalLine" style="cursor: pointer;"></span>
+                            <!-- <span id="todate"></span> -->
+                        </div>
+                    </div>
+                    <!-- Go To Statistics -->
+                    <div id="gotoStat" style="width: auto; height: auto;">
+                        <button class="c11 btn border-none px-1 py-0" onclick="OEEstat()" style="font-size: medium;">
+                            Go to Statistics
+                        </button>
+                    </div>
+                </div>
+                <div class="dashboard-container" style="width: 69.3vw;">
+                    <div class="utilization-container row justify-content-between" style="--bs-gutter-x: 0;">
+                        <span class="utilization-label col-md-6">Utilization: Lower than expected</span>
+                        <!-- Go To Machine -->
+                        <a class="btn btn-outline-none col-md-6 py-0" id="gtm" href="/templates/views/base.html"
+                            style="display: block; width: auto; float: right;">Go To Machine</a>
+                        <hr class="divider">
+                    </div>
+                    <div class="chart-row" style="width: inherit; overflow-x: auto;">
+                        <div class="chart17 chart-item ms-1 mt-1">
+                            <a href="/templates/views/base.html?selectedOption=Packer&selectedSubOption=P-01"
+                                style="text-decoration: none;">
+                                <div class="progress-container">
+                                    <div data-num="32" class="progress-item"></div>
+                                </div>
+                                <h6 class="chart-label">PACKER-01</h6>
+                            </a>
+                        </div>
+                        <div class="chart18 chart-item mt-1">
+                            <a href="/templates/views/base.html?selectedOption=Packer&selectedSubOption=P-03"
+                                style="text-decoration: none;">
+                                <div class="progress-container">
+                                    <div data-num="41" class="progress-item"></div>
+                                </div>
+                                <h6 class="chart-label">PACKER-03</h6>
+                            </a>
+                        </div>
+                        <div class="chart21 chart-item mt-1">
+                            <a href="/templates/views/base.html?selectedOption=Packer&selectedSubOption=BE-02"
+                                style="text-decoration: none;">
+                                <div class="progress-container">
+                                    <div data-num="53" class="progress-item"></div>
+                                </div>
+                                <h6 class="chart-label">BUCKETELEVATOR-02</h6>
+                            </a>
+                        </div>
+                        <div class="chart22 chart-item mt-1">
+                            <a href="/templates/views/base.html?selectedOption=Packer&selectedSubOption=TL-01"
+                                style="text-decoration: none;">
+                                <div class="progress-container">
+                                    <div data-num="67" class="progress-item"></div>
+                                </div>
+                                <h6 class="chart-label">TRUCKLOADER-01</h6>
+                            </a>
+                        </div>
+                        <div class="chart23 chart-item me-1 mt-1">
+                            <a href="/templates/views/base.html?selectedOption=Packer&selectedSubOption=TL-04"
+                                style="text-decoration: none;">
+                                <div class="progress-container">
+                                    <div data-num="79" class="progress-item"></div>
+                                </div>
+                                <h6 class="chart-label">TRUCKLOADER-04</h6>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="ms-2 mt-1 row" id="liveStat"
+                style="--bs-gutter-x: 0; width: 69.3vw; height: 24vh; background: whitesmoke; border: 1px solid lightgray; border-radius: 5px;">
+                <div id="chart25" style="width: 58vw; height: inherit; overflow-x: auto;"></div>
+                <div class="my-auto px-1" style="width: 11vw; text-align: center;">
+                    <span style="width: auto;"><i class="bi-arrow-up" style="color: #0ef119;"></i> Active (<span
+                            id="greenCount">0:00</span>)</span><br>
+                    <span style="width: auto;"><i class="bi-arrow-down" style="color: red;"></i> Inactive (<span
+                            id="redCount">0:00</span>)</span>
+                </div>
+            </div>
+            <div class="side-dcharts position-fixed"
+                style="width: 24vw; height: 92vh; overflow: auto; right: 0; padding-left: inherit;">
+                <div class="chart13 m-3 me-1 mt-0"
+                    style="height: auto; padding: 5px; border-width: thin; border: 1px solid lightgray; border-radius: 4px; background-color: whitesmoke;">
+                    <div class="column">
+                        <div style="width: 20vw; margin: auto;">
+                            <h5 style="padding-left: 5px; margin-bottom: 0;">Production Volume</h5>
+                            <span style="padding-left: 5px; font-size: 1.5rem;">6,476</span>
+                        </div>
+                        <div id="progress" style="width: 20vw;">
+                            <div data-num="100" class="progress-item"></div>
+                            <div id="vals" style="width: 13vw; padding-left: 10px;">
+                                <div id="val1">
+                                    <span>Good</span>
+                                    <label for=""
+                                        style="background-color: darkblue; color: whitesmoke; border-radius: 15px; width: 5vw; text-align: center;">6476</label>
+                                </div>
+                                <div id="val2" style="margin-top: 5px;">
+                                    <span>Rejected</span>
+                                    <label for=""
+                                        style="background-color: rgb(19, 146, 196); color: whitesmoke; border-radius: 15px; width: 3vw; text-align: center;">0</label>
+                                </div>
+                                <div id="val3" style="margin-top: 5px;">
+                                    <span>Scrap</span>
+                                    <label for=""
+                                        style="background-color: rgb(103, 198, 236); color: whitesmoke; border-radius: 15px; width: 3vw; text-align: center;">0</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="chart14 m-3 me-1 mt-0"
+                    style="height: auto; padding: 5px; border-width: thin; border: 1px solid lightgray; border-radius: 4px; background-color: whitesmoke;">
+                    <div class="column">
+                        <div style="width: 20vw; margin: auto;">
+                            <h5 style="padding-left: 5px; margin-bottom: 0;">Machines Active</h5>
+                            <span style="padding-left: 5px; font-size: 1.5rem;">13 / 25</span>
+                        </div>
+                        <div id="progress" style="width: 20vw;">
+                            <div data-num="52" class="progress-item"></div>
+                            <div id="vals" style="width: 13vw; padding-left: 10px;">
+                                <div id="val1">
+                                    <span>Active</span>
+                                    <label for="Active" id="active"
+                                        style="background-color: rgb(15, 183, 15); color: whitesmoke; border-radius: 15px; width: 3vw; text-align: center;"></label>
+                                </div>
+                                <div id="val2" style="margin-top: 5px;">
+                                    <span>Idle</span>
+                                    <label for="Idle" id="idle"
+                                        style="background-color: blue; color: whitesmoke; border-radius: 15px; width: 3vw; text-align: center;"></label>
+                                </div>
+                                <div id="val3" style="margin-top: 5px;">
+                                    <span>In Fault</span>
+                                    <label for="In-Fault" id="in-fault"
+                                        style="background-color: red; color: whitesmoke; border-radius: 15px; width: 3vw; text-align: center;"></label>
+                                </div>
+                                <div id="val4" style="margin-top: 5px;">
+                                    <span>Other</span>
+                                    <label for="Other" id="other"
+                                        style="background-color: rgb(221, 221, 221); color: #000; border-radius: 15px; width: 3vw; text-align: center;"></label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="chart15 m-3 me-1 mt-0"
+                    style="height: auto; padding: 5px; border-width: thin; border: 1px solid lightgray; border-radius: 4px; background-color: whitesmoke;">
+                    <div class="column">
+                        <div style="width: 20vw; margin: auto;">
+                            <h5 style="padding-left: 5px; margin-bottom: 0;">Machines in Production</h5>
+                            <span style="padding-left: 5px; font-size: 1.5rem;">25 / 25</span>
+                        </div>
+                        <div id="progress" style="width: 20vw;">
+                            <div data-num="100" class="progress-item"></div>
+                            <div id="vals" style="width: 13vw; padding-left: 10px;">
+                                <div id="val1">
+                                    <span>Production</span>
+                                    <label for=""
+                                        style="background-color: rgb(15, 183, 15); color: whitesmoke; border-radius: 15px; width: 3vw; text-align: center;">25</label>
+                                </div>
+                                <div id="val2" style="margin-top: 5px;">
+                                    <span>In Setup</span>
+                                    <label for=""
+                                        style="background-color: rgb(228, 228, 28); color: black; border-radius: 15px; width: 3vw; text-align: center;">0</label>
+                                </div>
+                                <div id="val3" style="margin-top: 5px;">
+                                    <span>No Activity</span>
+                                    <label for=""
+                                        style="background-color: rgb(221, 221, 221); color: black; border-radius: 15px; width: 3vw; text-align: center;">0</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="chart16 m-3 me-1 mt-0"
+                    style="height: auto; border-width: thin; border: 1px solid lightgray; border-radius: 4px; background-color: whitesmoke; padding: 5px;">
+                    <div class="column">
+                        <div style="width: auto; margin: auto;">
+                            <h5 style="padding-left: 5px; margin-bottom: 0;">Downtime</h5>
+                            <span style="padding-left: 5px; font-size: 1.5rem;">56h 15m</span>
+                        </div>
+                        <div id="progress" style="width: auto; --bs-gutter-x: 0;">
+                            <div id="vals" style="width: auto; padding-left: 10px;">
+                                <div id="val1" style=" justify-content: space-between; width: auto;">
+                                    <span>Logistic Issue/Material Issue</span>
+                                    <label for=""
+                                        style="color: black; border-radius: 15px; width: auto; text-align: center; padding-left: 7px; padding-right: 2px;">21h
+                                        23m</label>
+                                    <div class="progress">
+                                        <div class="progress-bar" role="progressbar" style="width: 100%"
+                                            aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                                    </div>
+                                </div>
+                                <div id="val2" style="margin-top: 5px; justify-content: space-between; width: auto;">
+                                    <span>Tool Change</span>
+                                    <label for=""
+                                        style="color: black; border-radius: 15px; width: auto; text-align: center; padding-left: 2px; padding-right: 2px;">1h
+                                        53m</label>
+                                    <div class="progress">
+                                        <div class="progress-bar" role="progressbar" style="width: 25%"
+                                            aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                                    </div>
+                                </div>
+                                <div id="val3" style="margin-top: 5px; justify-content: space-between; width: auto;">
+                                    <span>Inspection | In process</span>
+                                    <label for=""
+                                        style="color: black; border-radius: 15px; width: auto; text-align: center; padding-left: 2px; padding-right: 2px;">1h
+                                        40m</label>
+                                    <div class="progress">
+                                        <div class="progress-bar" role="progressbar" style="width: 25%"
+                                            aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                                    </div>
+                                </div>
+                                <hr>
+                                <div id="val4" style="margin-top: 5px; width: auto; justify-content: space-between;">
+                                    <span>Uncategorized</span>
+                                    <label for=""
+                                        style="color: black; border-radius: 15px; width: auto; text-align: center; padding-left: 2px; padding-right: 2px;">31h
+                                        19m</label>
+                                    <div class="progress">
+                                        <div class="progress-bar" role="progressbar" style="width: 99%"
+                                            aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Alert Message -->
+        <div class="alert alert-success alert-dismissible fade show" id="alert" role="alert"
+            style="display: none; width: auto; position: absolute; margin: auto; bottom: 5px;">
+            <strong>All Charts are Updated!!!</strong>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    </div>
+    <footer id="footer" style="width: 100vw; height: 2vw;"></footer>
+
+    <div class="OEEstat" style="width: 95vw; height: 95vh; overflow: auto; background-color: whitesmoke;">
+        <div class="row" style="--bs-gutter-x: 0;">
+            <h3 class="offcanvas-title" id="overview_title" style="width: auto; margin-top: -30px; padding-left: 5px;">
+            </h3>
+            <span id="OEEstat_close">&times;</span>
+        </div>
+        <div class="offcanvas-body pt-0" style="--bs-gutter-x: 0;">
+        </div>
+    </div>
+
+</body>
+
+<script>
+    $(function () {
+        $(".offcanvas-body").load("OEEStatistics.html");
+    })
+</script>
+
+<script>
+    $(function () {
+        $("#footer").load("footer.html");
+    })
+</script>
+
+<script src="/public/JavaScripts/moment.js"></script>
+<!-- <script src="/public/JavaScripts/chart.js"></script> -->
+<script src="/public/JavaScripts/chart.umd.js"></script>
+<!-- <script src="/public/JavaScripts/header.js"></script> -->
+<script src="/public/JavaScripts/chartjs-plugin-datalabels.min.js"></script>
+<script src="/public/JavaScripts/chartjs-adapter-date-fns.bundle.min.js"></script>
+<script src="/public/JavaScripts/chartjs-chart-financial.js"></script>
+<!-- <script src="/public/JavaScripts/bootstrap/bootstrap.min.js"></script> -->
+<script type="text/javascript" src="/public/JavaScripts/canvasjs.min.js"></script>
+
+<!-- Universal Calculation -->
+<script>
+    const shift_length = 480;
+    var number_shift = 1;
+    var short_breaks_per_shift = Math.floor(Math.random() * 60);
+    var meal_break_per_shift = Math.floor(Math.random() * 60);
+    var idle_time_pershift = Math.floor(Math.random() * 60);
+    var down_time_per_shift = Math.floor(Math.random() * 60);
+    // console.log(short_breaks_per_shift);
+    // console.log(meal_break_per_shift);
+    // console.log(idle_time_pershift);
+    // console.log(down_time_per_shift);
+    var planned_maintenance_time_per_shift = 10;
+    var machine_capacity_perhour = 2400;    // Bags/Hour
+    var machine_capacity_permin = 40;    // Bage/Minute
+    var total_bags_produced_pershift = 12000;
+    var rejeted_bags_per_shift = 2000;
+    var Planned_Production_time = (shift_length - short_breaks_per_shift - meal_break_per_shift - planned_maintenance_time_per_shift) * number_shift;
+    var Operating_time = Planned_Production_time - (idle_time_pershift + down_time_per_shift) * number_shift;
+    var acceptable_bags = total_bags_produced_pershift - rejeted_bags_per_shift;
+    var Availability = Operating_time / Planned_Production_time;
+    var performance = (total_bags_produced_pershift * number_shift) / (machine_capacity_permin * Operating_time);
+    var quality = acceptable_bags / total_bags_produced_pershift;
+    var OEE = Availability * performance * quality;
+    const currentDated = new Date();
+    const startingDateYesterday = new Date(currentDated);
+    startingDateYesterday.setDate(currentDated.getDate() - 1);
+</script>
+
+<!-- Script for status -->
+<script>
+    function currentStatus() {
+        document.getElementById('chStatus').style.display = "block";
+    }
+
+    function hidecurrentStatus() {
+        document.getElementById('chStatus').style.display = "none";
+    }
+
+    var shift = document.querySelector("#shift");
+    const currentDate_shift = new Date();
+    const currentHour_shift = currentDate_shift.getHours();
+    // console.log(currentHour_shift);
+    if (currentHour_shift >= 6 && currentHour_shift < 14) {
+        shift.textContent = "1st Shift";
+    } else if (currentHour_shift >= 14 && currentHour_shift < 22) {
+        shift.textContent = "2nd Shift";
+    }
+    else {
+        shift.textContent = "3rd Shift";
+    }
+
+    setInterval(function () {
+        // Get all elements with the id 'blink' and the common ID
+        var blinkElements = document.querySelectorAll('#blink');
+
+        // Loop through each element
+        blinkElements.forEach(function (blinkElement) {
+            blinkElement.style.color = "green";
+            blinkElement.style.opacity = (blinkElement.style.opacity === '0' || blinkElement.style.opacity === '') ? '1' : '0';
+        });
+    }, 500);
+</script>
+
+<!-- Script for Chart 9 -->
+<script>
+    // Data generation for the second script
+    const datac9_today = [];
+    const datac9_yesterday = [];
+    const datac9_expected = [];
+    let prevc9_1 = 100;
+    let prevc9_2 = 80;
+
+    const currentDatec9 = new Date();
+    let currentHourc9 = currentDatec9.getHours();
+    // Function to get the current hour
+    function getCurrentHour() {
+        return new Date().getHours();
+    }
+    // console.log(currentHour);
+    const currentHour_lengthc9 = currentHourc9 - 6;
+    datac9_today.length = 0;
+    for (let i = 0; i <= currentHour_lengthc9; i++) {
+        // Ensure y-value does not exceed 100
+        prevc9_2 += 5 - Math.random() * 10;
+        const yValue4 = Math.min(prevc9_2, 99);
+        // data4.push({ x: i, y: yValue4 });
+
+        // console.log(currentHour);
+        const yValue = Math.min(prevc9_2 + (5 - Math.random() * 10), 99);
+        const clampedYValue = Math.min(yValue, 99);
+
+        datac9_today.push({ x: i, y: clampedYValue });
+    }
+
+    for (let i = 0; i < 25; i++) {
+        prevc9_1 += 5 - Math.random() * 10;
+        // Ensure y-value does not exceed 100
+        const yValue5 = Math.min(prevc9_1, 99);
+        datac9_yesterday.push({ x: i, y: yValue5 });
+
+        const yValueGreen = Math.min(50, 99); // Adjusted to a value within the visible range
+        datac9_expected.push({ x: i, y: yValueGreen });
+    }
+
+    const labelsc9 = ['2023-12-29 06:00:00', '2023-12-29 07:00:00', '2023-12-29 08:00:00', '2023-12-29 09:00:00', '2023-12-29 10:00:00', '2023-12-29 11:00:00', '2023-12-29 12:00:00', '2023-12-29 13:00:00', '2023-12-29 14:00:00', '2023-12-29 15:00:00', '2023-12-29 16:00:00', '2023-12-29 17:00:00', '2023-12-29 18:00:00', '2023-12-29 19:00:00', '2023-12-29 20:00:00', '2023-12-29 21:00:00', '2023-12-29 22:00:00', '2023-12-29 23:00:00', '2023-12-30 00:00:00', '2023-12-30 01:00:00', '2023-12-30 02:00:00', '2023-12-30 03:00:00', '2023-12-30 04:00:00', '2023-12-30 05:00:00', '2023-12-30 06:00:00'];
+
+    // Function to format the date to 'hh:mm A'
+    function formatTimeLabelc9(dateString) {
+        const date = new Date(dateString);
+        const hours = date.getHours();
+        const minutes = date.getMinutes();
+        const ampm = hours >= 12 ? 'PM' : 'AM';
+        return `${hours % 12 || 12}:${minutes < 10 ? '0' : ''}${minutes} ${ampm}`;
+    }
+
+    // Use the formatTimeLabel function to format the labels
+    const formattedLabelsc9 = labelsc9.map(formatTimeLabelc9);
+
+    // Compare current's value with yesterday's value
+    const currentRealTimeValuec9 = datac9_today[datac9_today.length - 1].y;
+    const yesterdayValuec9 = datac9_yesterday[datac9_today.length - 1].y;
+
+    // Update caret icons based on the comparison
+    const caretUpIconc9 = document.querySelector('#arrowupc9');
+    const caretDownIconc9 = document.querySelector('#arrowdownc9');
+    const neutralIconc9 = document.querySelector('#neutralc9');
+
+    const c9diff = document.getElementById("c9diff");
+
+    // Function to update the chart with real-time data
+    function updateRealTimeDatac9() {
+        const currentDate = new Date();
+        const currentHour = currentDate.getHours();
+        // console.log(currentHour);
+        const currentHour_length = currentHour - 6;
+        const currentRealTimeValuec9 = datac9_today[datac9_today.length - 1].y;
+        const yesterdayValuec9 = datac9_yesterday[datac9_today.length - 1].y;
+
+        // Remove old data points
+        datac9_today.length = 0;
+
+        // Add new data points based on the current time
+        for (let i = 0; i <= currentHour_length; i++) {
+            // console.log(currentHour);
+            const yValue = Math.min(prevc9_2 + (5 - Math.random() * 10), 99);
+            const clampedYValue = Math.min(yValue, 99);
+
+            datac9_today.push({ x: i, y: clampedYValue });
+            // console.log(i);
+        }
+
+        // Update the chart data
+        C9Line.data.datasets.find(dataset => dataset.label === 'current').data = datac9_today;
+
+        // Update the chart
+        C9Line.update();
+
+        if (currentRealTimeValuec9 > yesterdayValuec9) {
+            // Current value is greater than yesterday's value
+            caretUpIconc9.style.display = 'inline-block';
+            caretDownIconc9.style.display = 'none';
+            neutralIconc9.style.display = 'none';
+
+            c9diff.innerHTML = `${(currentRealTimeValuec9 - yesterdayValuec9).toFixed(2)}%(T)`;
+            // console.log(c9diff);
+        } else if (currentRealTimeValuec9 < yesterdayValuec9) {
+            // Current value is less than yesterday's value
+            caretUpIconc9.style.display = 'none';
+            caretDownIconc9.style.display = 'inline-block';
+            neutralIconc9.style.display = 'none';
+
+            c9diff.innerHTML = `${(yesterdayValuec9 - currentRealTimeValuec9).toFixed(2)}%(Y)`;
+            // console.log(c9diff);
+        } else {
+            // Values are equal (handle as needed)
+            caretUpIconc9.style.display = 'none';
+            caretDownIconc9.style.display = 'none';
+            neutralIconc9.style.display = 'block';
+            neutralIconc9.style.marginLeft = "5px";
+            c9diff.innerHTML = "0.00%";
+        }
+
+        // Update the displayed percentage
+        const sumCurrentDatac9 = datac9_today.reduce((acc, value) => acc + value.y, 0);
+        const averageCurrentDatac9 = sumCurrentDatac9 / datac9_today.length;
+        const percent1Span = document.getElementById('percent1');
+        percent1Span.textContent = `${averageCurrentDatac9.toFixed(1)}%`;
+    }
+
+    function checkAndUpdateChartc9() {
+        const newHourc9 = getCurrentHour();
+
+        // Check if the hour has changed
+        if (newHourc9 !== currentHourc9) {
+            currentHourc9 = newHourc9;
+            updateRealTimeDatac9();
+        }
+    }
+
+    // Call the updateRealTimeDatac9 function 1 hour
+    // console.log(setInterval(updateRealTimeDatac9, 5000));
+    setInterval(checkAndUpdateChartc9, 5000);
+
+    var ctx1 = document.getElementById("Chart9").getContext('2d');
+    var C9Line = new Chart(ctx1, {
+        type: 'line',
+        data: {
+            labels: formattedLabelsc9,
+            datasets: [
+                {
+                    label: 'Expected',
+                    data: datac9_expected,
+                    borderColor: 'darkgray',
+                    borderWidth: 2,
+                    borderDash: [2, 2],
+                    borderCapStyle: 'round',
+                    borderJoinStyle: 'round',
+                    pointRadius: 1,
+                    pointHoverRadius: 5
+                },
+                {
+                    label: 'current',
+                    data: datac9_today,
+                    borderColor: 'blue',
+                    borderWidth: 2,
+                    borderCapStyle: 'round',
+                    borderJoinStyle: 'round',
+                    borderDash: [2, 2],
+                    tension: 0.4,
+                    pointRadius: 1,
+                    pointHoverRadius: 5
+                },
+                {
+                    label: 'Yesterday',
+                    data: datac9_yesterday,
+                    borderColor: 'lightblue',
+                    borderWidth: 2,
+                    borderDash: [2, 2],
+                    borderCapStyle: 'round',
+                    borderJoinStyle: 'round',
+                    tension: 0.5,
+                    pointRadius: 1,
+                    pointHoverRadius: 5
+                }
+            ]
+        },
+        options: {
+            animations: {
+                radius: {
+                    duration: 400,
+                    easing: 'linear',
+                    loop: (context) => context.active
+                }
+            },
+            // hoverRadius: 12,
+            // hoverBackgroundColor: 'yellow',
+            // interaction: {
+            //     mode: 'nearest',
+            //     intersect: false,
+            //     axis: 'x'
+            // },
+            plugins: {
+                legend: {
+                    display: false
+                },
+                // tooltip: {
+                //     enabled: true
+                // }
+            },
+            indexAxis: 'x',
+            scales: {
+                y: {
+                    min: 0,
+                    max: 100, // Set the maximum value for the y-axis
+                    ticks: {
+                        stepSize: 100,
+                        callback: function (value) {
+                            return value + '%'; // Customize the label format
+                        }
+                    }
+                },
+                x: {
+                    // offset: true,
+                    type: 'category',
+                    ticks: {
+                        maxRotation: 0,
+                        // font: {
+                        //     size: 12
+                        // }
+                    }
+                },
+            },
+        }
+    });
+</script>
+
+<!-- Script for Chart 10 -->
+<script>
+    // Data generation for the second script
+    const datac10_today = [];
+    const datac10_yesterday = [];
+    const datac10_expected = [];
+    let prevc10_1 = 100;
+    let prevc10_2 = 80;
+
+    const currentDatec10 = new Date();
+    let currentHourc10 = currentDatec10.getHours();
+    // console.log(currentHour);
+    const currentHour_lengthc10 = currentHourc10 - 6;
+    datac10_today.length = 0;
+    for (let i = 0; i <= currentHour_lengthc10; i++) {
+        // Ensure y-value does not exceed 100
+        prevc10_2 += 5 - Math.random() * 10;
+        const yValue4 = Math.min(prevc10_2, 99);
+        // data4.push({ x: i, y: yValue4 });
+
+        // console.log(currentHour);
+        const yValue = Math.min(prevc10_2 + (5 - Math.random() * 10), 99);
+        const clampedYValue = Math.min(yValue, 99);
+
+        datac10_today.push({ x: i, y: clampedYValue });
+    }
+
+    for (let i = 0; i < 25; i++) {
+        prevc10_1 += 5 - Math.random() * 10;
+        // Ensure y-value does not exceed 100
+        const yValue5 = Math.min(prevc10_1, 99);
+        datac10_yesterday.push({ x: i, y: yValue5 });
+
+        const yValueGreen = Math.min(50, 99); // Adjusted to a value within the visible range
+        datac10_expected.push({ x: i, y: yValueGreen });
+    }
+
+    const labelsc10 = ['2023-12-29 06:00:00', '2023-12-29 07:00:00', '2023-12-29 08:00:00', '2023-12-29 09:00:00', '2023-12-29 10:00:00', '2023-12-29 11:00:00', '2023-12-29 12:00:00', '2023-12-29 13:00:00', '2023-12-29 14:00:00', '2023-12-29 15:00:00', '2023-12-29 16:00:00', '2023-12-29 17:00:00', '2023-12-29 18:00:00', '2023-12-29 19:00:00', '2023-12-29 20:00:00', '2023-12-29 21:00:00', '2023-12-29 22:00:00', '2023-12-29 23:00:00', '2023-12-30 00:00:00', '2023-12-30 01:00:00', '2023-12-30 02:00:00', '2023-12-30 03:00:00', '2023-12-30 04:00:00', '2023-12-30 05:00:00', '2023-12-30 06:00:00'];
+
+    // Function to format the date to 'hh:mm A'
+    function formatTimeLabelc10(dateString) {
+        const date = new Date(dateString);
+        const hours = date.getHours();
+        const minutes = date.getMinutes();
+        const ampm = hours >= 12 ? 'PM' : 'AM';
+        return `${hours % 12 || 12}:${minutes < 10 ? '0' : ''}${minutes} ${ampm}`;
+    }
+
+    // Use the formatTimeLabel function to format the labels
+    const formattedLabelsc10 = labelsc10.map(formatTimeLabelc10);
+
+    // Compare current's value with yesterday's value
+    const currentRealTimeValuec10 = datac10_today[datac10_today.length - 1].y;
+    const yesterdayValuec10 = datac10_yesterday[datac10_today.length - 1].y;
+
+    // Update caret icons based on the comparison
+    const caretUpIconc10 = document.querySelector('#arrowupc10');
+    const caretDownIconc10 = document.querySelector('#arrowdownc10');
+    const neutralIconc10 = document.querySelector('#neutralc10');
+
+    const c10diff = document.getElementById("c10diff");
+
+    // Function to update the chart with real-time data
+    function updateRealTimeDatac10() {
+        const currentDate = new Date();
+        const currentHour = currentDate.getHours();
+        const currentRealTimeValuec10 = datac10_today[datac10_today.length - 1].y;
+        const yesterdayValuec10 = datac10_yesterday[datac10_today.length - 1].y;
+        // console.log(currentHour);
+        const currentHour_length = currentHour - 6;
+        // Remove old data points
+        datac10_today.length = 0;
+
+        // Add new data points based on the current time
+        for (let i = 0; i <= currentHour_length; i++) {
+            // console.log(currentHour);
+            const yValue = Math.min(prevc10_2 + (5 - Math.random() * 10), 99);
+            const clampedYValue = Math.min(yValue, 99);
+
+            datac10_today.push({ x: i, y: clampedYValue });
+            // console.log(i);
+        }
+
+        // Update the chart data
+        C10Line.data.datasets.find(dataset => dataset.label === 'current').data = datac10_today;
+
+        if (currentRealTimeValuec10 > yesterdayValuec10) {
+            // Current value is greater than yesterday's value
+            caretUpIconc10.style.display = 'inline-block';
+            caretDownIconc10.style.display = 'none';
+            neutralIconc10.style.display = 'none';
+
+            c10diff.innerHTML = `${(currentRealTimeValuec10 - yesterdayValuec10).toFixed(2)}%(T)`;
+        } else if (currentRealTimeValuec10 < yesterdayValuec10) {
+            // Current value is less than yesterday's value
+            caretUpIconc10.style.display = 'none';
+            caretDownIconc10.style.display = 'inline-block';
+            neutralIconc10.style.display = 'none';
+
+            c10diff.innerHTML = `${(yesterdayValuec10 - currentRealTimeValuec10).toFixed(2)}%(Y)`;
+        } else {
+            // Values are equal (handle as needed)
+            caretUpIconc10.style.display = 'none';
+            caretDownIconc10.style.display = 'none';
+            neutralIconc10.style.display = 'block';
+            neutralIconc10.style.marginLeft = "5px";
+            c10diff.innerHTML = "0.00%";
+        }
+
+        // Update the chart
+        C10Line.update();
+
+        // Update the displayed percentage
+        const sumCurrentDatac10 = datac10_today.reduce((acc, value) => acc + value.y, 0);
+        const averageCurrentDatac10 = sumCurrentDatac10 / datac10_today.length;
+        const percent2Span = document.getElementById('percent2');
+        percent2Span.textContent = `${averageCurrentDatac10.toFixed(1)}%`;
+    }
+
+    function checkAndUpdateChartc10() {
+        const newHourc10 = getCurrentHour();
+
+        // Check if the hour has changed
+        if (newHourc10 !== currentHourc10) {
+            currentHourc10 = newHourc10;
+            updateRealTimeDatac10();
+        }
+    }
+
+    // Call the updateRealTimeDatac9 function 1 hour
+    // console.log(setInterval(updateRealTimeDatac9, 5000));
+    setInterval(checkAndUpdateChartc10, 5000);
+
+    var ctx2 = document.getElementById("Chart10").getContext('2d');
+    var C10Line = new Chart(ctx2, {
+        type: 'line',
+        data: {
+            labels: formattedLabelsc10,
+            datasets: [
+                {
+                    label: 'Expected',
+                    data: datac10_expected,
+                    borderColor: 'darkgray',
+                    borderWidth: 2,
+                    borderDash: [2, 2],
+                    borderCapStyle: 'round',
+                    borderJoinStyle: 'round',
+                    pointRadius: 1,
+                    pointHoverRadius: 5
+                },
+                {
+                    label: 'current',
+                    data: datac10_today,
+                    borderColor: 'blue',
+                    borderWidth: 2,
+                    borderDash: [2, 2],
+                    borderCapStyle: 'round',
+                    borderJoinStyle: 'round',
+                    tension: 0.4,
+                    pointRadius: 1,
+                    pointHoverRadius: 5
+                },
+                {
+                    label: 'Yesterday',
+                    data: datac10_yesterday,
+                    borderColor: 'lightblue',
+                    borderWidth: 2,
+                    borderDash: [2, 2],
+                    borderCapStyle: 'round',
+                    borderJoinStyle: 'round',
+                    tension: 0.5,
+                    pointRadius: 1,
+                    pointHoverRadius: 5
+                }
+            ]
+        },
+        options: {
+            animations: {
+                radius: {
+                    duration: 400,
+                    easing: 'linear',
+                    loop: (context) => context.active
+                }
+            },
+            plugins: {
+                legend: {
+                    display: false
+                },
+                // tooltip: {
+                //     enabled: false
+                // }
+            },
+            indexAxis: 'x',
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    max: 100,
+                    ticks: {
+                        stepSize: 100,
+                        callback: function (value) {
+                            return value + '%'; // Customize the label format
+                        }
+                    }
+                },
+                x: {
+                    // offset: true,
+                    type: 'category',
+                    ticks: {
+                        maxRotation: 0,
+                    }
+                },
+            },
+        }
+    });
+</script>
+
+<!-- Script for Chart12 -->
+<script>
+    // Data generation for the second script
+    const data4 = [];
+    const data5 = [];
+    const dataGreen = [];
+    let prev4 = 100;
+    let prev5 = 80;
+
+    const currentDate = new Date();
+    let currentHour = currentDate.getHours();
+    // console.log(currentHour);
+    const currentHour_length = currentHour - 6;
+    data4.length = 0;
+    for (let i = 0; i <= currentHour_length; i++) {
+        // Ensure y-value does not exceed 100
+        prev5 += 5 - Math.random() * 10;
+        const yValue4 = Math.min(prev5, 99);
+        // data4.push({ x: i, y: yValue4 });
+
+        // console.log(currentHour);
+        const yValue = Math.min(prev5 + (5 - Math.random() * 10), 99);
+        const clampedYValue = Math.min(yValue, 99);
+
+        data4.push({ x: i, y: clampedYValue });
+    }
+
+    for (let i = 0; i < 25; i++) {
+        prev4 += 5 - Math.random() * 10;
+        // Ensure y-value does not exceed 100
+        const yValue5 = Math.min(prev4, 99);
+        data5.push({ x: i, y: yValue5 });
+
+        const yValueGreen = Math.min(50, 99); // Adjusted to a value within the visible range
+        dataGreen.push({ x: i, y: yValueGreen });
+    }
+
+    const labels = ['2023-12-29 06:00:00', '2023-12-29 07:00:00', '2023-12-29 08:00:00', '2023-12-29 09:00:00', '2023-12-29 10:00:00', '2023-12-29 11:00:00', '2023-12-29 12:00:00', '2023-12-29 13:00:00', '2023-12-29 14:00:00', '2023-12-29 15:00:00', '2023-12-29 16:00:00', '2023-12-29 17:00:00', '2023-12-29 18:00:00', '2023-12-29 19:00:00', '2023-12-29 20:00:00', '2023-12-29 21:00:00', '2023-12-29 22:00:00', '2023-12-29 23:00:00', '2023-12-30 00:00:00', '2023-12-30 01:00:00', '2023-12-30 02:00:00', '2023-12-30 03:00:00', '2023-12-30 04:00:00', '2023-12-30 05:00:00', '2023-12-30 06:00:00'];
+
+    // Animation configuration for the second script
+    const totalDuration = 100;
+    const animation = {
+        x: {
+            type: 'number',
+            easing: 'linear',
+            duration: totalDuration
+        },
+        y: {
+            type: 'number',
+            easing: 'linear',
+            duration: totalDuration
+        }
+    };
+
+    // Function to format the date to 'hh:mm A'
+    function formatTimeLabel(dateString) {
+        const date = new Date(dateString);
+        const hours = date.getHours();
+        const minutes = date.getMinutes();
+        const ampm = hours >= 12 ? 'PM' : 'AM';
+        return `${hours % 12 || 12}:${minutes < 10 ? '0' : ''}${minutes} ${ampm}`;
+    }
+
+    // Use the formatTimeLabel function to format the labels
+    const formattedLabels = labels.map(formatTimeLabel);
+
+    // Compare current's value with yesterday's value
+    const currentRealTimeValuec12 = data4[data4.length - 1].y;
+    const yesterdayValuec12 = data5[data4.length - 1].y;
+
+    const c12diff = document.getElementById("c12diff");
+
+    // Update caret icons based on the comparison
+    const caretUpIconc12 = document.querySelector('#arrowupc12');
+    const caretDownIconc12 = document.querySelector('#arrowdownc12');
+    const neutralIconc12 = document.querySelector('#neutralc12');
+
+    // Chart configuration for the second script
+    const config1 = {
+        type: 'line',
+        data: {
+            datasets: [
+                {
+                    label: 'Today',
+                    borderColor: 'blue',
+                    borderWidth: 2,
+                    borderDash: [2, 2],
+                    borderCapStyle: 'round',
+                    borderJoinStyle: 'round',
+                    radius: 1,
+                    data: data4,
+                    pointRadius: 1,
+                    pointHoverRadius: 5
+                },
+                {
+                    label: 'Expected',
+                    borderColor: 'darkgray',
+                    borderWidth: 2,
+                    borderDash: [2, 2],
+                    borderCapStyle: 'round',
+                    borderJoinStyle: 'round',
+                    radius: 0,
+                    data: dataGreen,
+                    pointRadius: 1,
+                    pointHoverRadius: 5
+                },
+                {
+                    label: 'PreviousDay',
+                    borderColor: 'lightblue',
+                    borderWidth: 2,
+                    borderDash: [2, 2],
+                    borderCapStyle: 'round',
+                    borderJoinStyle: 'round',
+                    radius: 1,
+                    data: data5,
+                    pointRadius: 1,
+                    pointHoverRadius: 5
+                }
+            ],
+            labels: formattedLabels
+        },
+        options: {
+            animation,
+            interaction: {
+                intersect: false
+            },
+            plugins: {
+                legend: false
+            },
+            scales: {
+                x: {
+                    // offset: true,
+                    type: 'category',
+                    ticks: {
+                        maxRotation: 0,
+                    }
+                },
+                y: {
+                    min: 0,
+                    max: 100, // Set the maximum value for the y-axis
+                    ticks: {
+                        stepSize: 100,
+                        callback: function (value) {
+                            return value + '%'; // Customize the label format
+                        }
+                    }
+                }
+            }
+        }
+    };
+
+    // Function to update the chart with real-time data
+    function updateRealTimeDatac12() {
+        const currentDate = new Date();
+        const currentHour = currentDate.getHours();
+        const currentRealTimeValuec12 = data4[data4.length - 1].y;
+        const yesterdayValuec12 = data5[data4.length - 1].y;
+        // console.log(currentHour);
+        const currentHour_length = currentHour - 6;
+        // Remove old data points
+        data4.length = 0;
+
+        // Add new data points based on the current time
+        for (let i = 0; i <= currentHour_length; i++) {
+            // console.log(currentHour);
+            const yValue = Math.min(prev5 + (5 - Math.random() * 10), 99);
+            const clampedYValue = Math.min(yValue, 99);
+
+            data4.push({ x: i, y: clampedYValue });
+            // console.log(i);
+        }
+
+        // Update the chart data
+        C12Line.data.datasets.find(dataset => dataset.label === 'Today').data = data4;
+
+        if (currentRealTimeValuec12 > yesterdayValuec12) {
+            // Current value is greater than yesterday's value
+            caretUpIconc12.style.display = 'inline-block';
+            caretDownIconc12.style.display = 'none';
+            neutralIconc10.style.display = 'none';
+
+            c12diff.innerHTML = `${(currentRealTimeValuec12 - yesterdayValuec12).toFixed(2)}%(T)`;
+        } else if (currentRealTimeValuec12 < yesterdayValuec12) {
+            // Current value is less than yesterday's value
+            caretUpIconc12.style.display = 'none';
+            caretDownIconc12.style.display = 'inline-block';
+            neutralIconc10.style.display = 'none';
+
+            c12diff.innerHTML = `${(yesterdayValuec12 - currentRealTimeValuec12).toFixed(2)}%(Y)`;
+        } else {
+            // Values are equal (handle as needed)
+            caretUpIconc12.style.display = 'none';
+            caretDownIconc12.style.display = 'none';
+            neutralIconc12.style.display = 'block';
+            neutralIconc12.style.marginLeft = "5px";
+            c9diff.innerHTML = "0.00%";
+        }
+
+        // Update the chart
+        C12Line.update();
+
+        // Update the displayed percentage
+        const sumCurrentDatac12 = data4.reduce((acc, value) => acc + value.y, 0);
+        const averageCurrentDatac12 = sumCurrentDatac12 / data4.length;
+        const percent4Span = document.getElementById('percent4');
+        percent4Span.textContent = `${averageCurrentDatac12.toFixed(1)}%`;
+    }
+
+    function checkAndUpdateChartc12() {
+        const newHourc12 = getCurrentHour();
+
+        // Check if the hour has changed
+        if (newHourc12 !== currentHour) {
+            currentHour = newHourc12;
+            updateRealTimeDatac12();
+        }
+    }
+
+    // Call the updateRealTimeDatac9 function 1 hour
+    // console.log(setInterval(updateRealTimeDatac9, 5000));
+    setInterval(checkAndUpdateChartc12, 5000);
+
+    // Animation configuration for the second script
+    // const totalDuration = 100;
+    // const animation = {
+    //     x: {
+    //         type: 'number',
+    //         easing: 'linear',
+    //         duration: totalDuration
+    //     },
+    //     y: {
+    //         type: 'number',
+    //         easing: 'linear',
+    //         duration: totalDuration
+    //     }
+    // };
+
+    var ctx = document.getElementById("Chart12").getContext('2d');
+    var C12Line = new Chart(ctx, config1);
+</script>
+
+<!-- Script for Chart 11 -->
+<script>
+    // Data generation for the second script
+    const datac11_expected = [];
+
+    // Get the current data from c9Line, c10Line, and c12Line
+    const datac9_current = C9Line.data.datasets.find(dataset => dataset.label === 'current').data;
+    const datac10_current = C10Line.data.datasets.find(dataset => dataset.label === 'current').data;
+    const datac12_today = C12Line.data.datasets.find(dataset => dataset.label === 'Today').data;
+
+    // Calculate the average value for 'current' dataset
+    const averagedData_current = datac9_current.map((point, index) => {
+        const sum = point.y + datac10_current[index].y + datac12_today[index].y;
+        const average = sum / 3;
+        return { x: point.x, y: average };
+    });
+
+    // Calculate the average value for 'Yesterday' dataset
+    const datac9_yesterdays = C9Line.data.datasets.find(dataset => dataset.label === 'Yesterday').data;
+    const datac10_yesterdays = C10Line.data.datasets.find(dataset => dataset.label === 'Yesterday').data;
+    const datac12_yesterday = C12Line.data.datasets.find(dataset => dataset.label === 'PreviousDay').data;
+
+    const averagedData_yesterday = datac9_yesterdays.map((point, index) => {
+        const sum = point.y + datac10_yesterdays[index].y + datac12_yesterday[index].y;
+        const average = sum / 3;
+        return { x: point.x, y: average };
+    });
+
+    for (let i = 0; i < 25; i++) {
+        // prevc11_1 += 5 - Math.random() * 10;
+        // // Ensure y-value does not exceed 100
+        // const yValue5 = Math.min(prevc11_1, 99);
+        // datac11_yesterday.push({ x: i, y: yValue5 });
+
+        const yValueGreen = Math.min(50, 99); // Adjusted to a value within the visible range
+        datac11_expected.push({ x: i, y: yValueGreen });
+    }
+
+    const labelsc11 = ['2023-12-29 06:00:00', '2023-12-29 07:00:00', '2023-12-29 08:00:00', '2023-12-29 09:00:00', '2023-12-29 10:00:00', '2023-12-29 11:00:00', '2023-12-29 12:00:00', '2023-12-29 13:00:00', '2023-12-29 14:00:00', '2023-12-29 15:00:00', '2023-12-29 16:00:00', '2023-12-29 17:00:00', '2023-12-29 18:00:00', '2023-12-29 19:00:00', '2023-12-29 20:00:00', '2023-12-29 21:00:00', '2023-12-29 22:00:00', '2023-12-29 23:00:00', '2023-12-30 00:00:00', '2023-12-30 01:00:00', '2023-12-30 02:00:00', '2023-12-30 03:00:00', '2023-12-30 04:00:00', '2023-12-30 05:00:00', '2023-12-30 06:00:00'];
+
+    // Function to format the date to 'hh:mm A'
+    function formatTimeLabelc11(dateString) {
+        const date = new Date(dateString);
+        const hours = date.getHours();
+        const minutes = date.getMinutes();
+        const ampm = hours >= 12 ? 'PM' : 'AM';
+        return `${hours % 12 || 12}:${minutes < 10 ? '0' : ''}${minutes} ${ampm}`;
+    }
+
+    // Use the formatTimeLabel function to format the labels
+    const formattedLabelsc11 = labelsc11.map(formatTimeLabelc11);
+
+    // Compare current's value with yesterday's value
+    const currentRealTimeValuec11 = averagedData_current[averagedData_current.length - 1].y;
+    const yesterdayValuec11 = averagedData_yesterday[averagedData_current.length - 1].y;
+
+    // Update caret icons based on the comparison
+    const caretUpIconc11 = document.querySelector('#arrowupc11');
+    const caretDownIconc11 = document.querySelector('#arrowdownc11');
+    const neutralIconc11 = document.querySelector('#neutralc11');
+
+    const c11diff = document.getElementById("c11diff");
+
+    function updateRealTimeDatac11() {
+        // Get the current data from c9Line, c10Line, and c12Line
+        const datac9_current = C9Line.data.datasets.find(dataset => dataset.label === 'current').data;
+        const datac10_current = C10Line.data.datasets.find(dataset => dataset.label === 'current').data;
+        const datac12_today = C12Line.data.datasets.find(dataset => dataset.label === 'Today').data;
+
+        // Calculate the average value for 'current' dataset
+        const averagedData_current = datac9_current.map((point, index) => {
+            const sum = point.y + datac10_current[index].y + datac12_today[index].y;
+            const average = sum / 3;
+            return { x: point.x, y: average };
+        });
+
+        // Update the 'current' dataset of c11Line
+        C11Line.data.datasets.find(dataset => dataset.label === 'current').data = averagedData_current;
+
+        // Calculate the average value for 'Yesterday' dataset
+        const datac9_yesterday = C9Line.data.datasets.find(dataset => dataset.label === 'Yesterday').data;
+        const datac10_yesterday = C10Line.data.datasets.find(dataset => dataset.label === 'Yesterday').data;
+        const datac12_yesterday = C12Line.data.datasets.find(dataset => dataset.label === 'PreviousDay').data;
+
+        const averagedData_yesterday = datac9_yesterday.map((point, index) => {
+            const sum = point.y + datac10_yesterday[index].y + datac12_yesterday[index].y;
+            const average = sum / 3;
+            return { x: point.x, y: average };
+        });
+
+        const currentRealTimeValuec11 = averagedData_current[averagedData_current.length - 1].y;
+        const yesterdayValuec11 = averagedData_yesterday[averagedData_current.length - 1].y;
+
+        // Update the 'Yesterday' dataset of c11Line
+        C11Line.data.datasets.find(dataset => dataset.label === 'Yesterday').data = averagedData_yesterday;
+
+        // Update the chart
+        C11Line.update();
+
+        // Update the displayed percentage
+        const sumCurrentDatac11 = averagedData_current.reduce((acc, value) => acc + value.y, 0);
+        const averageCurrentDatac11 = sumCurrentDatac11 / averagedData_current.length;
+        const percent3Span = document.getElementById('percent3');
+        percent3Span.textContent = `${averageCurrentDatac11.toFixed(1)}%`;// Get the current data from c9Line, c10Line, and c12Line
+
+        if (currentRealTimeValuec11 > yesterdayValuec11) {
+            // Current value is greater than yesterday's value
+            caretUpIconc11.style.display = 'inline-block';
+            caretDownIconc11.style.display = 'none';
+            neutralIconc11.style.display = 'none';
+
+            c11diff.innerHTML = `${(currentRealTimeValuec11 - yesterdayValuec11).toFixed(2)}%(T)`;
+        } else if (currentRealTimeValuec11 < yesterdayValuec11) {
+            // Current value is less than yesterday's value
+            caretUpIconc11.style.display = 'none';
+            caretDownIconc11.style.display = 'inline-block';
+            neutralIconc11.style.display = 'none';
+
+            c11diff.innerHTML = `${(yesterdayValuec11 - currentRealTimeValuec11).toFixed(2)}%(Y)`;
+        } else {
+            // Values are equal (handle as needed)
+            caretUpIconc11.style.display = 'none';
+            caretDownIconc11.style.display = 'none';
+            neutralIconc11.style.display = 'block';
+            neutralIconc11.style.marginLeft = "5px";
+            c11diff.innerHTML = "0.00%";
+        }
+    }
+
+    function checkAndUpdateChartc10() {
+        const newHourc10 = getCurrentHour();
+
+        // Check if the hour has changed
+        if (newHourc10 !== currentHourc10) {
+            currentHourc10 = newHourc10;
+            updateRealTimeDatac10();
+        }
+    }
+
+    // Call the updateRealTimeDatac9 function 1 hour
+    // console.log(setInterval(updateRealTimeDatac9, 5000));
+    setInterval(checkAndUpdateChartc10, 5000);
+
+    var ctx3 = document.getElementById("Chart11").getContext('2d');
+    var C11Line = new Chart(ctx3, {
+        type: 'line',
+        data: {
+            labels: formattedLabelsc11,
+            datasets: [
+                {
+                    label: 'Expected',
+                    data: datac11_expected,
+                    borderColor: 'darkgray',
+                    borderWidth: 2,
+                    borderDash: [2, 2],
+                    borderCapStyle: 'round',
+                    borderJoinStyle: 'round',
+                    pointRadius: 1,
+                    pointHoverRadius: 5
+                },
+                {
+                    label: 'current',
+                    data: averagedData_current,
+                    borderColor: 'blue',
+                    borderWidth: 2,
+                    borderDash: [2, 2],
+                    borderCapStyle: 'round',
+                    borderJoinStyle: 'round',
+                    tension: 0.4,
+                    pointRadius: 1,
+                    pointHoverRadius: 5
+                },
+                {
+                    label: 'Yesterday',
+                    data: averagedData_yesterday,
+                    borderColor: 'lightblue',
+                    borderWidth: 2,
+                    borderDash: [2, 2],
+                    borderCapStyle: 'round',
+                    borderJoinStyle: 'round',
+                    tension: 0.5,
+                    pointRadius: 1,
+                    pointHoverRadius: 5
+                }
+            ]
+        },
+        options: {
+            plugins: {
+                legend: {
+                    display: false
+                },
+                // tooltip: {
+                //     enabled: false
+                // }
+            },
+            indexAxis: 'x',
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    max: 100,
+                    ticks: {
+                        stepSize: 100,
+                        callback: function (value) {
+                            return value + '%'; // Customize the label format
+                        }
+                    }
+                },
+                x: {
+                    // offset: true,
+                    type: 'category',
+                    ticks: {
+                        maxRotation: 0,
+                        // font: {
+                        //     size: 12
+                        // }
+                    }
+                },
+            },
+        }
+    })
+
+    if (currentRealTimeValuec11 > yesterdayValuec11) {
+        // Current value is greater than yesterday's value
+        caretUpIconc11.style.display = 'inline-block';
+        caretDownIconc11.style.display = 'none';
+        neutralIconc11.style.display = 'none';
+
+        c11diff.innerHTML = `${(currentRealTimeValuec11 - yesterdayValuec11).toFixed(2)}%(T)`;
+    } else if (currentRealTimeValuec11 < yesterdayValuec11) {
+        // Current value is less than yesterday's value
+        caretUpIconc11.style.display = 'none';
+        caretDownIconc11.style.display = 'inline-block';
+        neutralIconc11.style.display = 'none';
+
+        c11diff.innerHTML = `${(yesterdayValuec11 - currentRealTimeValuec11).toFixed(2)}%(Y)`;
+    } else {
+        // Values are equal (handle as needed)
+        caretUpIconc11.style.display = 'none';
+        caretDownIconc11.style.display = 'none';
+        neutralIconc11.style.display = 'block';
+        neutralIconc11.style.marginLeft = "5px";
+        c11diff.innerHTML = "0.00%";
+    }
+
+    const sumCurrentDatac11 = averagedData_current.reduce((acc, value) => acc + value.y, 0);
+    const averageCurrentDatac11 = sumCurrentDatac11 / averagedData_current.length;
+
+    // Display the percentage in the span with id 'percent3'
+    const percent3Span = document.getElementById('percent3');
+    percent3Span.textContent = `${averageCurrentDatac11.toFixed(1)}%`;
+</script>
+
+<!-- Script for highlighting particular date's data and Dynamically updating chart's data and percentage values -->
+<script>
+    const historicalLine = document.getElementById("historicalLine");
+    const todayDate = new Date();
+    const yesterdayDate = new Date(todayDate);
+    yesterdayDate.setDate(todayDate.getDate() - 1);
+
+    const createDotSpan = (color) => {
+        const dotsSpan = document.createElement('span');
+        dotsSpan.style.color = color;
+        dotsSpan.textContent = '•••';
+        return dotsSpan;
+    };
+
+    const formatDate = (date) => date.toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' });
+
+    historicalLine.innerHTML = `••• Historical Baseline ${createDotSpan('lightblue').outerHTML}${formatDate(yesterdayDate)} ${createDotSpan('darkblue').outerHTML}${formatDate(todayDate)}`;
+
+    // Function to toggle colors between yesterday and today datasets
+    function toggleColors(yesterdayDataset, todayDataset) {
+        // Swap the colors for yesterday and today datasets
+        const tempBorderColor = yesterdayDataset.borderColor;
+        const tempPointBorderColor = yesterdayDataset.pointBorderColor;
+
+        yesterdayDataset.borderColor = todayDataset.borderColor;
+        yesterdayDataset.pointBorderColor = todayDataset.pointBorderColor;
+
+        todayDataset.borderColor = tempBorderColor;
+        todayDataset.pointBorderColor = tempPointBorderColor;
+    }
+
+    // Add an event listener to the historicalLine element
+    historicalLine.addEventListener('click', function () {
+        // Toggle the colors for yesterday and today in C9Line
+        const c9DatasetYesterday = C9Line.data.datasets.find(dataset => dataset.label === 'Yesterday');
+        const c9DatasetToday = C9Line.data.datasets.find(dataset => dataset.label === 'current');
+        toggleColors(c9DatasetYesterday, c9DatasetToday);
+
+        // Toggle the colors for yesterday and today in C10Line
+        const c10DatasetYesterday = C10Line.data.datasets.find(dataset => dataset.label === 'Yesterday');
+        const c10DatasetToday = C10Line.data.datasets.find(dataset => dataset.label === 'current');
+        toggleColors(c10DatasetYesterday, c10DatasetToday);
+
+        // Toggle the colors for yesterday and today in C11Line
+        const c11DatasetYesterday = C11Line.data.datasets.find(dataset => dataset.label === 'Yesterday');
+        const c11DatasetToday = C11Line.data.datasets.find(dataset => dataset.label === 'current');
+        toggleColors(c11DatasetYesterday, c11DatasetToday);
+
+        // Toggle the colors for yesterday and today in C12Line
+        const c12DatasetYesterday = C12Line.data.datasets.find(dataset => dataset.label === 'PreviousDay');
+        const c12DatasetToday = C12Line.data.datasets.find(dataset => dataset.label === 'Today');
+        toggleColors(c12DatasetYesterday, c12DatasetToday);
+
+        // Update the charts
+        C9Line.update();
+        C10Line.update();
+        C11Line.update();
+        C12Line.update();
+    });
+
+    // Chart 9 Today's data's percentage Calculation
+    // Calculate the sum of 'current' data
+    const currentDatac9 = C9Line.data.datasets.find(dataset => dataset.label === 'current').data;
+    const sumCurrentDatac9 = currentDatac9.reduce((acc, value) => acc + value.y, 0);
+
+    if (currentRealTimeValuec9 > yesterdayValuec9) {
+        // Current value is greater than yesterday's value
+        caretUpIconc9.style.display = 'inline-block';
+        caretDownIconc9.style.display = 'none';
+        neutralIconc9.style.display = 'none';
+
+        c9diff.innerHTML = `${(currentRealTimeValuec9 - yesterdayValuec9).toFixed(2)}%(T)`;
+    } else if (currentRealTimeValuec9 < yesterdayValuec9) {
+        // Current value is less than yesterday's value
+        caretUpIconc9.style.display = 'none';
+        caretDownIconc9.style.display = 'inline-block';
+        neutralIconc9.style.display = 'none';
+
+        c9diff.innerHTML = `${(yesterdayValuec9 - currentRealTimeValuec9).toFixed(2)}%(Y)`;
+    } else {
+        // Values are equal (handle as needed)
+        caretUpIconc9.style.display = 'none';
+        caretDownIconc9.style.display = 'none';
+        neutralIconc9.style.display = 'block';
+        neutralIconc9.style.marginLeft = "5px";
+        c9diff.innerHTML = "0.00%";
+    }
+
+    // Calculate the average (sum / number of values)
+    const averageCurrentDatac9 = sumCurrentDatac9 / currentDatac9.length;
+
+    // Display the percentage in the span with id 'percent3'
+    const percent1Span = document.getElementById('percent1');
+    percent1Span.textContent = `${averageCurrentDatac9.toFixed(1)}%`;
+    // END
+
+    // Chart 10 Today's data's percentage Calculation
+    // Calculate the sum of 'current' data
+    const currentDatac10 = C10Line.data.datasets.find(dataset => dataset.label === 'current').data;
+    const sumCurrentDatac10 = currentDatac10.reduce((acc, value) => acc + value.y, 0);
+
+    if (currentRealTimeValuec10 > yesterdayValuec10) {
+        // Current value is greater than yesterday's value
+        caretUpIconc10.style.display = 'inline-block';
+        caretDownIconc10.style.display = 'none';
+        neutralIconc10.style.display = 'none';
+
+        c10diff.innerHTML = `${(currentRealTimeValuec10 - yesterdayValuec10).toFixed(2)}%(T)`;
+    } else if (currentRealTimeValuec10 < yesterdayValuec10) {
+        // Current value is less than yesterday's value
+        caretUpIconc10.style.display = 'none';
+        caretDownIconc10.style.display = 'inline-block';
+        neutralIconc10.style.display = 'none';
+
+        c10diff.innerHTML = `${(yesterdayValuec10 - currentRealTimeValuec10).toFixed(2)}%(Y)`;
+    } else {
+        // Values are equal (handle as needed)
+        caretUpIconc10.style.display = 'none';
+        caretDownIconc10.style.display = 'none';
+        neutralIconc10.style.display = 'block';
+        neutralIconc10.style.marginLeft = "5px";
+        c10diff.innerHTML = "0.00%";
+    }
+
+    // Calculate the average (sum / number of values)
+    const averageCurrentDatac10 = sumCurrentDatac10 / currentDatac10.length;
+
+    // Display the percentage in the span with id 'percent3'
+    const percent2Span = document.getElementById('percent2');
+    percent2Span.textContent = `${averageCurrentDatac10.toFixed(1)}%`;
+    // END
+
+    // Chart 12 Today's data's percentage Calculation
+    // Calculate the sum of 'current' data
+    const currentDatac12 = C12Line.data.datasets.find(dataset => dataset.label === 'Today').data;
+    const sumCurrentDatac12 = currentDatac12.reduce((acc, value) => acc + value.y, 0); // Use value.y
+
+    if (currentRealTimeValuec12 > yesterdayValuec12) {
+        // Current value is greater than yesterday's value
+        caretUpIconc12.style.display = 'inline-block';
+        caretDownIconc12.style.display = 'none';
+        neutralIconc12.style.display = 'none';
+
+        c12diff.innerHTML = `${(currentRealTimeValuec12 - yesterdayValuec12).toFixed(2)}%(T)`;
+    } else if (currentRealTimeValuec12 < yesterdayValuec12) {
+        // Current value is less than yesterday's value
+        caretUpIconc12.style.display = 'none';
+        caretDownIconc12.style.display = 'inline-block';
+        neutralIconc12.style.display = 'none';
+
+        c12diff.innerHTML = `${(yesterdayValuec12 - currentRealTimeValuec12).toFixed(2)}%(Y)`;
+    } else {
+        // Values are equal (handle as needed)
+        caretUpIconc12.style.display = 'none';
+        caretDownIconc12.style.display = 'none';
+        neutralIconc12.style.display = 'block';
+        neutralIconc12.style.marginLeft = "5px";
+        c12diff.innerHTML = "0.00%";
+    }
+
+    // Calculate the average (sum / number of values)
+    const averageCurrentDatac12 = sumCurrentDatac12 / currentDatac12.length;
+
+    // Display the percentage in the span with id 'percent3'
+    const percent4Span = document.getElementById('percent4');
+    percent4Span.textContent = `${averageCurrentDatac12.toFixed(1)}%`;
+</script>
+
+<!-- Script Chart 25 Timepline -->
+<script>
+    var currentDatectx11 = new Date();
+    var currentMonthctx11 = currentDatectx11.getMonth(); // Months are zero-based, so January is 0
+    var currentDayctx11 = currentDatectx11.getDate();
+    var currentHourctx11 = currentDatectx11.getHours();
+
+    // Initialize counters
+    var greenCount = 0;
+    var redCount = 0;
+
+    if (currentHourctx11 >= 6 && currentHourctx11 < 14) {
+        generateChartData(6, currentHourctx11);
+    } else if (currentHourctx11 >= 14 && currentHourctx11 < 22) {
+        generateChartData(14, currentHourctx11);
+    } else if (currentHourctx11 >= 22 || currentHourctx11 <= 5) {
+        generateChartData(22, currentHourctx11); // Assuming the day changes at 6 AM, so consider up to 5 AM of the next day
+    }
+
+    function generateChartData(startHour, endHour) {
+        var dataPoints = [];
+        var previousDataPoint = null;
+
+        for (var i = startHour; i <= endHour; i++) {
+            for (var j = 0; j < 60; j++) {
+                var dataPointTime = new Date(currentDatectx11.getFullYear(), currentDatectx11.getMonth(), currentDatectx11.getDate(), i, j, 0);
+                var dataPoint = {
+                    x: dataPointTime,
+                    y: [Math.random() * 50 + 10, Math.random() * 30 + 15, Math.random() * 40 + 30, Math.random() * 30 + 35],
+                    color: null
+                };
+
+                if (previousDataPoint) {
+                    if (dataPoint.y[3] > previousDataPoint.y[3]) {
+                        dataPoint.color = "green";
+                        greenCount++;
+                    } else if (dataPoint.y[3] < previousDataPoint.y[3]) {
+                        dataPoint.color = "red";
+                        redCount++;
+                    }
+                }
+
+                dataPoints.push(dataPoint);
+                previousDataPoint = dataPoint;
+            }
+        }
+
+        var chart = new CanvasJS.Chart("chart25", {
+            animationEnabled: true,
+            exportEnabled: true,
+            zoomEnabled: true,
+            exportFileName: "Planned-Production-Time",
+            title: {
+                text: "Planned Production Time",
+                fontFamily: 'Times New Roman',
+                fontSize: 15,
+                fontWeight: "bold",
+                fontColor: "#1E90FF",
+                dockInsidePlotArea: false
+            },
+            axisX: {
+                valueFormatString: "hh:mm tt",
+                intervalType: "hour",
+                interval: 1
+            },
+            axisY: {
+                beginAtZero: true,
+                maximum: 100
+            },
+            style: {
+                borderRadius: 10
+            },
+            data: [{
+                type: "candlestick",
+                yValueFormatString: "###0.00",
+                xValueFormatString: "HH:MM",
+                toolTipContent: "Time: {x}<br/>Open: {y[0]}<br/>High: {y[1]}<br/>Low: {y[2]}<br/>Close: {y[3]}",
+                dataPoints: dataPoints
+            }]
+        });
+        chart.render();
+
+        // Convert minutes to hours and minutes
+        var greenHours = Math.floor(greenCount / 60);
+        var greenMinutes = greenCount % 60;
+        var redHours = Math.floor(redCount / 60);
+        var redMinutes = redCount % 60;
+
+        // Update counters
+        document.getElementById("greenCount").innerText = greenHours + ":" + (greenMinutes < 10 ? '0' : '') + greenMinutes;
+        document.getElementById("redCount").innerText = redHours + ":" + (redMinutes < 10 ? '0' : '') + redMinutes;
+    }
+</script>
+
+<!-- Script for Progress -->
+<script>
+    var active = document.getElementById('active');
+    var active_Value = 13
+    active.innerText += active_Value;
+    var idle = document.getElementById('idle');
+    var idle_Value = 11
+    idle.innerText += idle_Value;
+    var in_fault = document.getElementById('in-fault');
+    var in_fault_Value = 0
+    in_fault.innerText += in_fault_Value;
+    var other = document.getElementById('other');
+    var other_Value = 1
+    other.innerText += other_Value;
+
+    let items = document.querySelectorAll('.progress-item');
+    const counters = Array(items.length);
+    const intervals = Array(items.length);
+    counters.fill(0);
+    items.forEach((number, index) => {
+        intervals[index] = setInterval(() => {
+            if (counters[index] == parseInt(number.dataset.num)) {
+                clearInterval(intervals[index]);
+            } else {
+                counters[index] += 1;
+                number.style.background = "conic-gradient(blue calc(" + counters[index] + "%), gray 0deg)";
+                number.setAttribute('data-value', counters[index] + "%");
+                number.innerHTML = counters[index] + "%";
+            }
+        }, 15);
+    });
+
+</script>
+
+<!-- Script for offcanvas -->
+<script>
+    // console.log("First Script of offcanvas");
+    const gotoStat = document.getElementById("gotoStat");
+    document.addEventListener('DOMContentLoaded', function () {
+        const C11 = document.querySelector(".c11");
+        // console.log(C11);
+        const c11h5 = document.getElementById("c11h5");
+        // console.log(c11h5);
+        const Chart19 = document.getElementById("Chart19");
+        var overview_title = document.getElementById("overview_title");
+        var offcanvas_body = document.querySelector(".offcanvas-body");
+        gotoStat.addEventListener('click', function () {
+            // console.log("gotoStat Clicked");
+            // console.log(c11h5)
+            overview_title.textContent = c11h5.textContent + " Overview";
+            // Chart19.setAttribute('style', 'display: block; width: auto; height: auto;');
+        })
+    });
+</script>
+
+<!-- Script for Notification -->
+<script>
+    const nc = document.querySelector(".notification-ui_dd-content");
+    const ni = document.getElementById("notificationIcon");
+    const nl = document.getElementsByClassName("notification-list");
+    const nd = document.getElementById("notificationDropdown");
+    const va = document.getElementById("viewAll");
+    const badge = document.querySelector(".notificationBadge");
+    $(function () {
+        $(ni).on('click', function () {
+            $(nd).toggleClass('show');
+        });
+    });
+
+    function nCount() {
+        const notificationCount = nl.length;
+        badge.setAttribute("data-count", notificationCount);
+
+        for (let i = 3; i < nl.length; i++) {
+            nl[i].style.display = 'none';
+        }
+
+        // Show "Show All Notifications" link if there are more than 3 notifications
+        if (notificationCount > 3) {
+            va.style.display = 'block';
+        }
+    }
+
+    $(function () {
+        $(va).on('click', function () {
+            // Show all notifications
+            for (let i = 3; i < nl.length; i++) {
+                nl[i].style.display = nl[i].style.display === 'none' ? 'block' : 'none';
+            }
+
+            // Hide "Show All Notifications" link after showing all notifications
+            va.textContent = va.textContent === "Show All Notifications" ? "Hide" : "Show All Notifications";
+        });
+    })
+
+    nCount(); // Call the function initially
+
+    document.getElementById("ch").textContent = "" + currentDate.getHours() + ":00";
+</script>

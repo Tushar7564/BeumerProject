@@ -1,0 +1,619 @@
+<title>Profile</title>
+<link rel="stylesheet" href="/public/CSS/bootstrap/bootstrap.min.css">
+<script src="/public/JavaScripts/jquery-3.7.1.js"></script>
+<script src="/public/JavaScripts/bootstrap/bootstrap.min.js"></script>
+<script>
+    $(function () {
+        $("#header").load("header.html");
+    })
+</script>
+<style>
+    .row {
+        --bs-gutter-x: 0 !important;
+    }
+
+    .toggle {
+        left: 6.45% !important;
+    }
+
+    canvas#Chart20_1,
+    canvas#Chart20_2,
+    canvas#Chart20_3 {
+        width: 48vw !important;
+        max-height: 30.5vh !important;
+    }
+
+    .badge[data-count]:after {
+        position: absolute;
+        right: 4px;
+        top: 0%;
+        content: attr(data-count);
+        font-size: 85%;
+        padding: 0.6em;
+        border-radius: 999px;
+        line-height: 0.75em;
+        color: white;
+        background: rgba(255, 0, 0, 0.85);
+        text-align: center;
+        min-width: 2em;
+        font-weight: bold;
+    }
+
+    .notification-ui a:after {
+        display: none;
+    }
+
+    .notification-ui_icon {
+        position: relative;
+    }
+
+    .notification-ui_icon .unread-notification {
+        display: inline-block;
+        height: 7px;
+        width: 7px;
+        border-radius: 7px;
+        background-color: #66BB6A;
+        position: absolute;
+        top: 7px;
+        left: 12px;
+    }
+
+    @media (min-width: 900px) {
+        .notification-ui_icon .unread-notification {
+            left: 20px;
+        }
+    }
+
+    .notification-ui_dd {
+        padding: 0;
+        border-radius: 10px 0px 10px 10px !important;
+        /* -webkit-box-shadow: 0 5px 20px -3px rgba(0, 0, 0, 0.16); */
+        box-shadow: 0px 0px 5px 12px lightgray;
+        border: 0;
+        max-width: auto !important;
+    }
+
+    @media (min-width: 900px) {
+        .notification-ui_dd {
+            width: auto;
+            /* position: absolute;
+            right: -38.5px; */
+            top: 52px;
+        }
+    }
+
+    .notification-ui_dd:after {
+        content: "";
+        position: absolute;
+        top: -30px;
+        left: calc(92.8% - 7px);
+        border-top: 15px solid transparent;
+        border-right: 15px solid transparent;
+        border-bottom: 15px solid #fff;
+        border-left: 15px solid transparent;
+    }
+
+    .notification-ui_dd .notification-ui_dd-header {
+        border-bottom: 1px solid #ddd;
+        padding: 15px;
+    }
+
+    .notification-ui_dd .notification-ui_dd-header h3 {
+        margin-bottom: 0;
+    }
+
+    .notification-ui_dd .notification-ui_dd-content {
+        max-height: 500px;
+        overflow: auto;
+    }
+
+    .notification-list {
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        -webkit-box-pack: justify;
+        -ms-flex-pack: justify;
+        justify-content: space-between;
+        padding: 20px 0;
+        margin: 0 25px;
+        border-bottom: 1px solid #ddd;
+    }
+
+    .notification-list--unread {
+        position: relative;
+    }
+
+    .notification-list--unread:before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: -25px;
+        height: calc(100% + 1px);
+        border-left: 2px solid #29B6F6;
+    }
+
+    .notification-list .notification-list_img img {
+        height: 48px;
+        width: 48px;
+        border-radius: 50px;
+        margin-right: 20px;
+    }
+
+    .notification-list .notification-list_detail p {
+        margin-bottom: 5px;
+        line-height: 1.2;
+    }
+
+    .notification-list .notification-list_feature-img img {
+        height: 48px;
+        width: 48px;
+        border-radius: 5px;
+        margin-left: 20px;
+    }
+
+    footer {
+        /* height: 6vh; */
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        text-align: center;
+        font-size: 18px;
+    }
+</style>
+
+<body class="row" style="background-color: rgb(237, 237, 237); --bs-gutter-x: 0; position: fixed;">
+    <header id="header" style="width: 7vw;"></header>
+    <div class="right" style="width: 93vw; height: auto;">
+        <div class="rt" style="width: 92.5vw; height: auto; padding-left: 10px;">
+            <span style="font-size: 30px;">Company Dashboard</span>
+            <div class="row" id="dates" style="float: right; margin-top: 7px; --bs-gutter-x: 0; width: auto;">
+                <div style="margin: auto;">
+                    <div class="position-relative" id="notificationIcon" style="font-size: x-small; cursor: pointer;">
+                        <span class="badge unread-notification" data-count="">
+                        </span>
+                        <i class="bi bi-circle-fill text-white fs-2"></i>
+                        <i class="bi bi-bell fs-5 position-absolute top-50 start-50 translate-middle"
+                            style="transform: translate(-20%, -50%) !important;"></i>
+                    </div>
+                    <div id="notificationDropdown" class="dropdown-menu notification-ui_dd"
+                        style="right: 0.5% !important;">
+                        <div class="notification-ui_dd-header">
+                            <h3 class="text-center">Notification</h3>
+                        </div>
+                        <div class="notification-ui_dd-content">
+                            <div class="notification-list notification-list--unread">
+                                <div class="notification-list_img">
+                                    <img src="#" alt="user">
+                                </div>
+                                <div class="notification-list_detail">
+                                    <p><b>Johnny Dollar</b> reacted to your post</p>
+                                    <p><small>10 mins ago</small></p>
+                                </div>
+                                <div class="notification-list_feature-img">
+                                    <img src="#" alt="Feature image">
+                                </div>
+                            </div>
+                            <div class="notification-list notification-list--unread">
+                                <div class="notification-list_img">
+                                    <img src="#" alt="user">
+                                </div>
+                                <div class="notification-list_detail">
+                                    <p><b>Richard Miles</b> reacted to your post</p>
+                                    <p><small>1 day ago</small></p>
+                                </div>
+                                <div class="notification-list_feature-img">
+                                    <img src="#" alt="Feature image">
+                                </div>
+                            </div>
+                            <div class="notification-list">
+                                <div class="notification-list_img">
+                                    <img src="#" alt="user">
+                                </div>
+                                <div class="notification-list_detail">
+                                    <p><b>Brian Cumin</b> reacted to your post</p>
+                                    <p><small>1 day ago</small></p>
+                                </div>
+                                <div class="notification-list_feature-img">
+                                    <img src="#" alt="Feature image">
+                                </div>
+                            </div>
+                            <div class="notification-list">
+                                <div class="notification-list_img">
+                                    <img src="#" alt="user">
+                                </div>
+                                <div class="notification-list_detail">
+                                    <p><b>Lance Bogrol</b> reacted to your post</p>
+                                    <p><small>1 day ago</small></p>
+                                </div>
+                                <div class="notification-list_feature-img">
+                                    <img src="#" alt="Feature image">
+                                </div>
+                            </div>
+                            <div class="notification-list">
+                                <div class="notification-list_img">
+                                    <img src="#" alt="user">
+                                </div>
+                                <div class="notification-list_detail">
+                                    <p><b>Lorem ipsum</b> reacted to your post</p>
+                                    <p><small>1 day ago</small></p>
+                                </div>
+                                <div class="notification-list_feature-img">
+                                    <img src="#" alt="Feature image">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="notification-ui_dd-footer text-center m-2 mb-0">
+                            <span id="viewAll" class="btn btn-success btn-block">View All</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <hr style="padding-left: 0; margin: 0;">
+        </div>
+        <nav aria-label="breadcrumb" class="m-2 mt-1 mb-0" id="ambc" style="display: block; width: auto;">
+            <ol class="breadcrumb mb-0">
+                <li class="breadcrumb-item"><a href="dashboard.html">Dashboard</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Profile</li>
+            </ol>
+        </nav>
+        <div class="rb row" style="width: 92.5vw; height: auto;">
+            <div class="card mx-4 my-3"
+                style="width: 90vw; height: 85vh; border: 2px solid lightgray; border-radius: 30px; background-color: whitesmoke;">
+                <div class="Action">
+                    <div class="row m-1">
+                        <div class="col-md-4 m-1 mt-0" id="user_pic" style="width: auto;">
+                            <div id="user_details" style="width: 10vw;">
+                                <img src="/public/Images/profile.png" alt="profile_pic" id="profile_pic"
+                                    style="width: 10vw;">
+                                <label for="input-file" id="upload-pic">Upload Picture</label>
+                                <input type="file" accept="image/jpeg, image/jpg, image/png" id="input-file"
+                                    style="display: none;">
+                            </div>
+                        </div>
+                        <div class="col-md-4 m-1" id="user_details" style="width: auto;">
+                            <h3 id="userType" style="margin: 0.25rem;">Super-Admin</h3>
+                            <span id="userDesignation" style="font-size: smaller; margin: 0.25rem;">Head</span><br>
+                            <label for="MailId" style="margin: 0.25rem;">Mail: </label><br>
+                            <div class="row">
+                                <input type="email" name="mail" id="UserMail"
+                                    style="width: 12.25vw; border: none; background-color: #fff; margin: 0.25rem;"
+                                    placeholder="abc@xyz.com" disabled>
+                                <i class="bi-pencil-fill mailEdit"
+                                    style="font-size: small; display: none; width: max-content; margin: auto; cursor: pointer;"></i>
+                            </div>
+                            <label for="Mobile" style="margin: 0.25rem;">Contact Number: </label><br>
+                            <div class="row">
+                                <input type="number" name="ContactNumber" id="UserContactNumber"
+                                    style="width: 12.25vw; border: none; background-color: #fff; margin: 0.25rem;"
+                                    placeholder="9050xxxxxx" min="5" max="10" disabled>
+                                <i class="bi-pencil-fill ContactEdit"
+                                    style="font-size: small; display: none; width: max-content; margin: auto; cursor: pointer;"></i>
+                            </div>
+                            <button class="btn btn-outline-success UserInfoSaveChanges"
+                                style="float: right; margin: 0.25rem; display: none;">Save
+                                Changes</button>
+                        </div>
+                        <div class="col-md-4 me-1" id="user_actions"
+                            style="width: auto; text-align: right; margin: auto;">
+                            <a onclick="" id="ChangeRoles"
+                                style="color: blue; border-bottom: 1px solid blue; padding: 0; cursor: pointer;">Change
+                                Roles</a><br>
+                            <a onclick="ChangePlantSettings()" id="PlantSettings"
+                                style="color: blue; border-bottom: 1px solid blue; margin-left: 2px; padding: 0; cursor: pointer;">Change
+                                Plant Settings</a><br>
+                            <a onclick="ChangeInfo()" id="EditInfo"
+                                style="color: blue; border-bottom: 1px solid blue; margin-left: 2px; padding: 0; cursor: pointer;">Edit
+                                Information</a>
+                        </div>
+                    </div>
+                </div>
+                <!-- Plant Settings -->
+                <div id="plantSettings" style="display: none; margin: 0.5rem; text-align: center;">
+                    <div class="row" style="justify-content: space-evenly;">
+                        <!-- Packers -->
+                        <div class="col-md-4" style="width: auto;">
+                            <h4>Packers</h4>
+                            <select name="selectPackers" id="numberofPackers"
+                                style="width: auto; padding: 0; background: #fff;" disabled>
+                                <option value="Select Packers" id="default" hidden>Select Packers</option>
+                                <option value="1" id="item1">1</option>
+                                <option value="2" id="item2">2</option>
+                                <option value="3" id="item3">3</option>
+                                <option value="4" id="item4">4</option>
+                                <option value="5" id="item5">5</option>
+                            </select><i class="bi-pencil-fill fs-6 pEdit" style="cursor: pointer;"></i>
+                            <div class="row mt-1" id="P-01" style="width: auto;display: none;">
+                                <span style="width: auto; font-size: small; padding-right: 2px;">Packer-01: </span>
+                                <select name="spouts" id="spouts"
+                                    style="width: auto; font-size: small; padding: 0; background: #fff;">
+                                    <option value="Select Spouts" id="spotsdefault" hidden>Select</option>
+                                    <option value="8spouts">8</option>
+                                    <option value="16spouts">16</option>
+                                </select>
+                                <span
+                                    style="width: auto; font-size: small; padding-left: 2px; padding-right: 0;">Spouts</span>
+                            </div>
+                            <div class="row mt-1" id="P-02" style="width: auto;display: none;">
+                                <span style="width: auto; font-size: small; padding-right: 2px;">Packer-02: </span>
+                                <select name="spouts" id="spouts"
+                                    style="width: auto; font-size: small; padding: 0; background: #fff;">
+                                    <option value="Select Spouts" id="spotsdefault" hidden>Select</option>
+                                    <option value="8spouts">8</option>
+                                    <option value="16spouts">16</option>
+                                </select>
+                                <span
+                                    style="width: auto; font-size: small; padding-left: 2px; padding-right: 0;">Spouts</span>
+                            </div>
+                            <div class="row mt-1" id="P-03" style="width: auto;display: none;">
+                                <span style="width: auto; font-size: small; padding-right: 2px;">Packer-03: </span>
+                                <select name="spouts" id="spouts"
+                                    style="width: auto; font-size: small; padding: 0; background: #fff;">
+                                    <option value="Select Spouts" id="spotsdefault" hidden>Select</option>
+                                    <option value="8spouts">8</option>
+                                    <option value="16spouts">16</option>
+                                </select>
+                                <span
+                                    style="width: auto; font-size: small; padding-left: 2px; padding-right: 0;">Spouts</span>
+                            </div>
+                            <div class="row mt-1" id="P-04" style="width: auto;display: none;">
+                                <span style="width: auto; font-size: small; padding-right: 2px;">Packer-04: </span>
+                                <select name="spouts" id="spouts"
+                                    style="width: auto; font-size: small; padding: 0; background: #fff;">
+                                    <option value="Select Spouts" id="spotsdefault" hidden>Select</option>
+                                    <option value="8spouts">8</option>
+                                    <option value="16spouts">16</option>
+                                </select>
+                                <span
+                                    style="width: auto; font-size: small; padding-left: 2px; padding-right: 0;">Spouts</span>
+                            </div>
+                            <div class="row mt-1" id="P-05" style="width: auto;display: none;">
+                                <span style="width: auto; font-size: small; padding-right: 2px;">Packer-05: </span>
+                                <select name="spouts" id="spouts"
+                                    style="width: auto; font-size: small; padding: 0; background: #fff;">
+                                    <option value="Select Spouts" id="spotsdefault" hidden>Select</option>
+                                    <option value="8spouts">8</option>
+                                    <option value="16spouts">16</option>
+                                </select>
+                                <span
+                                    style="width: auto; font-size: small; padding-left: 2px; padding-right: 0;">Spouts</span>
+                            </div>
+                        </div>
+                        <!-- Truck Loaders -->
+                        <div class="col-md-4" style="width: auto; padding-left: 5px;">
+                            <h4>Truck Loaders</h4>
+                            <select name="selectTruckLoaders" id="numberofTruckLoaders"
+                                style="width: auto; padding: 0; background: #fff;" disabled>
+                                <option value="Select Truck Loaders" id="default" hidden>Select Truck Loaders</option>
+                                <option value="1" id="item1">1</option>
+                                <option value="2" id="item2">2</option>
+                                <option value="3" id="item3">3</option>
+                                <option value="4" id="item4">4</option>
+                                <option value="5" id="item5">5</option>
+                                <option value="6" id="item6">6</option>
+                                <option value="7" id="item7">7</option>
+                                <option value="8" id="item8">8</option>
+                                <option value="9" id="item9">9</option>
+                                <option value="10" id="item10">10</option>
+                                <option value="11" id="item11">11</option>
+                                <option value="12" id="item12">12</option>
+                                <option value="13" id="item13">13</option>
+                                <option value="14" id="item14">14</option>
+                                <option value="15" id="item15">15</option>
+                                <option value="16" id="item16">16</option>
+                            </select><i class="bi-pencil-fill fs-6 tlEdit" style="cursor: pointer;"></i>
+                        </div>
+                        <!-- Bucket Elevators -->
+                        <div class="col-md-4" style="width: auto; padding-left: 5px;">
+                            <h4>Bucket Elevators</h4>
+                            <select name="selectBucketElevators" id="numberofBucketElevators"
+                                style="width: auto; padding: 0; background: #fff;" disabled>
+                                <option value="Select Bucket Elevators" id="default" hidden>Select Bucket Elevators
+                                </option>
+                                <option value="1" id="item1">1</option>
+                                <option value="2" id="item2">2</option>
+                                <option value="3" id="item3">3</option>
+                                <option value="4" id="item4">4</option>
+                                <option value="5" id="item5">5</option>
+                            </select><i class="bi-pencil-fill fs-6 beEdit" style="cursor: pointer;"></i>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <button class="btn btn-outline-success m-2 save" style="float: right; display: none;"
+                            onclick="saveChanges()">Save
+                            Changes</button>
+                    </div>
+                </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <footer style="height: 2vw; text-align: center;">Copyright © 2023 BEUMER Group India. All Rights Reserved.
+    </footer>
+    </div>
+</body>
+
+<!-- Script for Notification -->
+<script>
+    const nc = document.querySelector(".notification-ui_dd-content");
+    const ni = document.getElementById("notificationIcon");
+    const nl = document.getElementsByClassName("notification-list");
+    const nd = document.getElementById("notificationDropdown");
+    const va = document.getElementById("viewAll");
+    const badge = document.querySelector(".badge");
+    $(function () {
+        $(ni).on('click', function () {
+            $(nd).toggleClass('show');
+        });
+    });
+
+    function nCount() {
+        const notificationCount = nl.length;
+        badge.setAttribute("data-count", notificationCount);
+
+        for (let i = 3; i < nl.length; i++) {
+            nl[i].style.display = 'none';
+        }
+
+        // Show "View All" link if there are more than 3 notifications
+        if (notificationCount > 3) {
+            va.style.display = 'block';
+        }
+    }
+
+    $(function () {
+        $(va).on('click', function () {
+            // Show all notifications
+            for (let i = 3; i < nl.length; i++) {
+                nl[i].style.display = nl[i].style.display === 'none' ? 'block' : 'none';
+            }
+
+            // Hide "View All" link after showing all notifications
+            va.textContent = va.textContent === "View All" ? "Hide" : "View All";
+        });
+    })
+
+    nCount(); // Call the function initially
+</script>
+
+<!-- Script for adding Profile Pic -->
+<script>
+    // Profile Picture
+    const profilePic = document.getElementById("profile_pic");
+    const inputFile = document.getElementById("input-file");
+
+    inputFile.onchange = function () {
+        profilePic.src = URL.createObjectURL(inputFile.files[0]);
+        profilePic.style.borderRadius = "50px";
+    }
+
+    // User Info
+    const editInfoBtn = document.getElementById("EditInfo");
+    const mailEdit = document.querySelector(".mailEdit");
+    const contactEdit = document.querySelector(".ContactEdit");
+    const userInfoSaveChanges = document.querySelector(".UserInfoSaveChanges");
+    const userMail = document.getElementById("UserMail");
+    const userContactNumber = document.getElementById("UserContactNumber");
+    let editBtnClickCounter = 0;
+
+    editInfoBtn.onclick = () => {
+        editBtnClickCounter++;
+        if (editBtnClickCounter % 2 === 0) {
+            hideEditSection();
+            // hidePlantSettings();
+        } else {
+            showEditSection();
+        }
+    }
+
+    function showEditSection() {
+        mailEdit.style.display = "block";
+        contactEdit.style.display = "block";
+        userInfoSaveChanges.style.display = "block";
+        hidePlantSettings();
+    }
+
+    function hidePlantSettings() {
+        plantSettings.style.display = "none";
+    }
+
+    function hideEditSection() {
+        mailEdit.style.display = "none";
+        contactEdit.style.display = "none";
+        userInfoSaveChanges.style.display = "none";
+    }
+
+    mailEdit.onclick = () => {
+        userMail.disabled = false;
+    };
+
+    contactEdit.onclick = () => {
+        userContactNumber.disabled = false;
+    };
+
+    userInfoSaveChanges.onclick = () => {
+        userMail.disabled = true;
+        userContactNumber.disabled = true;
+    }
+
+    // Plant Settings
+    const plantSettingsBtn = document.getElementById("PlantSettings");
+
+    plantSettingsBtn.onclick = () => {
+        hideEditSection();
+        togglePlantSettings();
+        hideEditSection();
+    }
+
+    function togglePlantSettings() {
+        const plantSettings = document.getElementById("plantSettings");
+        plantSettings.style.display = plantSettings.style.display === "block" ? "none" : "block";
+    }
+</script>
+
+<!-- Dynamic divs based on selection -->
+<script>
+    // Packers
+    // Function to handle pencil icon click
+    var selectPackers = document.getElementById("numberofPackers");
+    var selectTruckLoaders = document.getElementById("numberofTruckLoaders");
+    var selectBucketElevators = document.getElementById("numberofBucketElevators");
+    var saveChangesBtn = document.querySelector('.save');
+
+    // Function to handle Save Changes button click
+    function saveChanges() {
+        // var spoutsSelect = document.getElementById("spouts-" + packerId);
+
+        selectPackers.setAttribute("disabled", "disabled");
+
+        // Disable spouts select for each packer
+        for (var i = 1; i <= 5; i++) {
+            var spoutsSelect = document.getElementById("P-" + ("0" + i).slice(-2)).querySelector("#spouts");
+            spoutsSelect.setAttribute("disabled", "disabled");
+        }
+
+        selectTruckLoaders.setAttribute("disabled", "disabled");
+        selectBucketElevators.setAttribute("disabled", "disabled");
+        // spoutsSelect.disabled = true;
+        saveChangesBtn.style.display = "none";
+    }
+
+    document.querySelector('.pEdit').addEventListener("click", function () {
+        selectPackers.removeAttribute("disabled");
+        saveChangesBtn.style.display = "block";
+    });
+
+    document.querySelector('.tlEdit').addEventListener("click", function () {
+        selectTruckLoaders.removeAttribute("disabled");
+        saveChangesBtn.style.display = "block";
+    });
+
+    document.querySelector('.beEdit').addEventListener("click", function () {
+        selectBucketElevators.removeAttribute("disabled");
+        saveChangesBtn.style.display = "block";
+    });
+
+    selectPackers.addEventListener("change", function () {
+        // Get the selected value
+        var selectedValue = parseInt(this.value);
+        for (var i = 1; i <= 5; i++) {
+            var Pdiv = document.getElementById("P-" + ("0" + i).slice(-2));
+            var spoutsSelect = Pdiv.querySelector("#spouts");
+
+            if (i <= selectedValue) {
+                Pdiv.style.display = "block";
+                spoutsSelect.removeAttribute("disabled");
+            } else {
+                Pdiv.style.display = "none";
+                spoutsSelect.setAttribute("disabled", "disabled");
+            }
+        }
+    });
+</script>
+
+<!-- Script for Footer -->
+<script>
+    $(function () {
+        $("#footer").load("footer.html");
+    })
+</script>

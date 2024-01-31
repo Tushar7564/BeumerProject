@@ -1,0 +1,1110 @@
+<title>Truck Loader</title>
+<link rel="stylesheet" href="/public/CSS/base.css">
+<script src="/public/JavaScripts/jquery-3.7.1.js"></script>
+<script>
+    $(function () {
+        $("#header").load("header.html");
+    })
+</script>
+<style>
+    input::placeholder {
+        font-size: x-small;
+    }
+
+    .row {
+        --bs-gutter-x: 0 !important;
+    }
+</style>
+
+<body class="row" style="background-color: rgb(237, 237, 237); --bs-gutter-x: 0;">
+    <header id="header" style="width: 6vw;"></header>
+    <div class="right row" style="width: 93.5vw; padding: 0; height: 100vh; overflow: auto;">
+        <div class="top-row"
+            style="width: 27.5vw; border-right: 1px solid #d3d3d3; background-color: white; padding: 0;">
+            <div class="row">
+                <select class="form-select m-2" id="AllMachines" aria-label="Default select example"
+                    style="width: 21.5vw;">
+                    <option selected>All Machines</option>
+                    <option value="TruckLoader">Truck Loader</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                    <option value="6">6</option>
+                    <option value="7">7</option>
+                    <option value="8">8</option>
+                    <option value="9">9</option>
+                    <option value="10">10</option>
+                    <option value="11">11</option>
+                    <option value="12">12</option>
+                    <option value="13">13</option>
+                    <option value="14">14</option>
+                    <option value="15">15</option>
+                    <option value="16">16</option>
+                </select>
+                <div id="dots"
+                    style="width: auto; height: auto; border: 1px solid lightgray; border-radius: 5px; margin: 0.5rem; padding: 10px; text-align: center;">
+                    <i class="bi-three-dots"></i>
+                </div>
+                <hr>
+                <div class="col-md-4 m-2 mt-0" id="iSearch" style="width: 21vw;">
+                    <input type="search"
+                        style="width: inherit; border: 1px solid lightgray; font-size: 17.5px; border-radius: 2px; outline: none;"
+                        placeholder="Search...">
+                </div>
+                <div class="col-md-4 mb-2 row justify-content-between"
+                    style="width: auto; text-align: center; height: auto;">
+                    <div id="filters"
+                        style="border: 1px solid lightgray; width: auto; font-size: 22px; border-radius: 5px; padding: 2px;">
+                        <i class="bi-filter"></i>
+                    </div>
+                    <div class="btn-group" style="padding-left:4px; padding-right:4px; width: auto;">
+                        <button type="button" class="btn" data-bs-toggle="dropdown" data-bs-display="static"
+                            aria-expanded="false" style="border: 1px solid lightgray; border-radius: 5px; width: inherit; padding: 4px;
+                            font-size: 17px;">
+                            <i class="bi-arrow-down-up"></i>
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-end" style="width: auto;">
+                            <li style="display: inline-flex; width: 17vw;">
+                                <input type="radio" name="orderType" id="defaultOrder"
+                                    style="margin: auto; margin-right: 5px; margin-left: 5px;">
+                                <label for="">Default Machine Order</label>
+                            </li>
+                            <li style="display: inline-flex; width: auto;">
+                                <input type="radio" name="orderType" id="topPerforming"
+                                    style="margin: auto; margin-right: 5px; margin-left: 5px;">
+                                <label for="">Top Performing Machines</label>
+                            </li>
+                            <li style="display: inline-flex; width: auto;">
+                                <input type="radio" name="orderType" id="lowestPerforming"
+                                    style="margin: auto; margin-right: 5px; margin-left: 5px;">
+                                <label for="">Lowest Performing Machines</label>
+                            </li>
+                            <li style="display: inline-flex; width: auto;">
+                                <input type="radio" name="orderType" id="machineNamesAZ"
+                                    style="margin: auto; margin-right: 5px; margin-left: 5px;">
+                                <label for="">Machine Names (A-Z)</label>
+                            </li>
+                            <li style="display: inline-flex; width: auto;">
+                                <input type="radio" name="orderType" id="machineNamesZA"
+                                    style="margin: auto; margin-right: 5px; margin-left: 5px;">
+                                <label for="">Machine Names (Z-A)</label>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <hr style="margin-bottom: 5px;">
+                <div class="row">
+                    <label class="ms-3" for="Live"
+                        style="border: 1px solid lightgray; border-radius: 30px; text-align: center; width: 50px; font-size: 12px; height: 20px;">LIVE</label>
+                    <h6 style="width: auto;">Compared to: Baseline</h6>
+                </div>
+                <hr style="margin-bottom: 5px;">
+                <div style="height: auto;">
+                    <a onclick="">
+                        <div class="ms-3" id="m1" style="background-color: lightblue; border-right: 2px solid red; margin-left: 0 !important;">
+                            <h4 id="tlSpan1" style="margin-top: 0.5rem;">TL-01</h4>
+                            <span class="ms-2"
+                                style="height: 7px; width: 7px; background-color: green; border-radius: 50%; display: inline-block;"></span>
+                            <span style="font-size: small;">Active: 5h 20m</span>
+                            <h6 style="margin-top: 10px;">OEE Rate</h6>
+                            <h3>93.7%</h3>
+                        </div>
+                    </a>
+                    <hr>
+                    <a onclick="">
+                        <div class="ms-3" id="m2">
+                            <h4 id="tlSpan2" style="margin-top: 0.5rem;">TL-02</h4>
+                            <span class="ms-2"
+                                style="height: 7px; width: 7px; background-color: green; border-radius: 50%; display: inline-block;"></span>
+                            <span style="font-size: small;">Active: 5h 20m</span>
+                            <h6 style="margin-top: 10px;">OEE Rate</h6>
+                            <h3>96.9%</h3>
+                        </div>
+                    </a>
+                    <hr>
+                    <a onclick="">
+                        <div class="ms-3" id="m3">
+                            <h4 id="tlSpan3" style="margin-top: 0.5rem;">TL-03</h4>
+                            <span class="ms-2"
+                                style="height: 7px; width: 7px; background-color: green; border-radius: 50%; display: inline-block;"></span>
+                            <span style="font-size: small;">Active: 5h 20m</span>
+                            <h6 style="margin-top: 10px;">OEE Rate</h6>
+                            <h3>95%</h3>
+                        </div>
+                    </a>
+                    <hr>
+                    <a onclick="">
+                        <div class="ms-3" id="m4">
+                            <h4 id="tlSpan4" style="margin-top: 0.5rem;">TL-04</h4>
+                            <span class="ms-2"
+                                style="height: 7px; width: 7px; background-color: green; border-radius: 50%; display: inline-block;"></span>
+                            <span style="font-size: small; padding-top: 3px;">Active: 5h 20m</span>
+                            <h6 style="margin-top: 10px;">OEE Rate</h6>
+                            <h3>92%</h3>
+                        </div>
+                    </a>
+                    <hr>
+                    <a onclick="">
+                        <div class="ms-3" id="m5">
+                            <h4 id="tlSpan5" style="margin-top: 0.5rem;">TL-05</h4>
+                            <span class="ms-2"
+                                style="height: 7px; width: 7px; background-color: green; border-radius: 50%; display: inline-block;"></span>
+                            <span style="font-size: small; padding-top: 3px;">Active: 5h 20m</span>
+                            <h6 style="margin-top: 10px;">OEE Rate</h6>
+                            <h3>91.3%</h3>
+                        </div>
+                    </a>
+                    <hr>
+                    <a onclick="">
+                        <div class="ms-3" id="m6">
+                            <h4 id="tlSpan6" style="margin-top: 0.5rem;">TL-06</h4>
+                            <span class="ms-2"
+                                style="height: 7px; width: 7px; background-color: green; border-radius: 50%; display: inline-block;"></span>
+                            <span style="font-size: small; padding-top: 3px;">Active: 5h 20m</span>
+                            <h6 style="margin-top: 10px;">OEE Rate</h6>
+                            <h3>91.3%</h3>
+                        </div>
+                    </a>
+                    <hr>
+                    <a onclick="">
+                        <div class="ms-3" id="m7">
+                            <h4 id="tlSpan7" style="margin-top: 0.5rem;">TL-07</h4>
+                            <span class="ms-2"
+                                style="height: 7px; width: 7px; background-color: green; border-radius: 50%; display: inline-block;"></span>
+                            <span style="font-size: small; padding-top: 3px;">Active: 5h 20m</span>
+                            <h6 style="margin-top: 10px;">OEE Rate</h6>
+                            <h3>91.3%</h3>
+                        </div>
+                    </a>
+                    <hr>
+                    <a onclick="">
+                        <div class="ms-3" id="m8">
+                            <h4 id="tlSpan8" style="margin-top: 0.5rem;">TL-08</h4>
+                            <span class="ms-2"
+                                style="height: 7px; width: 7px; background-color: green; border-radius: 50%; display: inline-block;"></span>
+                            <span style="font-size: small; padding-top: 3px;">Active: 5h 20m</span>
+                            <h6 style="margin-top: 10px;">OEE Rate</h6>
+                            <h3>91.3%</h3>
+                        </div>
+                    </a>
+                    <hr>
+                    <a onclick="">
+                        <div class="ms-3" id="m9">
+                            <h4 id="tlSpan9" style="margin-top: 0.5rem;">TL-09</h4>
+                            <span class="ms-2"
+                                style="height: 7px; width: 7px; background-color: green; border-radius: 50%; display: inline-block;"></span>
+                            <span style="font-size: small; padding-top: 3px;">Active: 5h 20m</span>
+                            <h6 style="margin-top: 10px;">OEE Rate</h6>
+                            <h3>91.3%</h3>
+                        </div>
+                    </a>
+                    <hr>
+                    <a onclick="">
+                        <div class="ms-3" id="m10">
+                            <h4 id="tlSpan10" style="margin-top: 0.5rem;">TL-10</h4>
+                            <span class="ms-2"
+                                style="height: 7px; width: 7px; background-color: green; border-radius: 50%; display: inline-block;"></span>
+                            <span style="font-size: small; padding-top: 3px;">Active: 5h 20m</span>
+                            <h6 style="margin-top: 10px;">OEE Rate</h6>
+                            <h3>91.3%</h3>
+                        </div>
+                    </a>
+                    <hr>
+                    <a onclick="">
+                        <div class="ms-3" id="m11">
+                            <h4 id="tlSpan11" style="margin-top: 0.5rem;">TL-11</h4>
+                            <span class="ms-2"
+                                style="height: 7px; width: 7px; background-color: green; border-radius: 50%; display: inline-block;"></span>
+                            <span style="font-size: small; padding-top: 3px;">Active: 5h 20m</span>
+                            <h6 style="margin-top: 10px;">OEE Rate</h6>
+                            <h3>91.3%</h3>
+                        </div>
+                    </a>
+                    <hr>
+                    <a onclick="">
+                        <div class="ms-3" id="m12">
+                            <h4 id="tlSpan12" style="margin-top: 0.5rem;">TL-12</h4>
+                            <span class="ms-2"
+                                style="height: 7px; width: 7px; background-color: green; border-radius: 50%; display: inline-block;"></span>
+                            <span style="font-size: small; padding-top: 3px;">Active: 5h 20m</span>
+                            <h6 style="margin-top: 10px;">OEE Rate</h6>
+                            <h3>91.3%</h3>
+                        </div>
+                    </a>
+                    <hr>
+                    <a onclick="">
+                        <div class="ms-3" id="m13">
+                            <h4 id="tlSpan13" style="margin-top: 0.5rem;">TL-13</h4>
+                            <span class="ms-2"
+                                style="height: 7px; width: 7px; background-color: green; border-radius: 50%; display: inline-block;"></span>
+                            <span style="font-size: small; padding-top: 3px;">Active: 5h 20m</span>
+                            <h6 style="margin-top: 10px;">OEE Rate</h6>
+                            <h3>91.3%</h3>
+                        </div>
+                    </a>
+                    <hr>
+                    <a onclick="">
+                        <div class="ms-3" id="m14">
+                            <h4 id="tlSpan14" style="margin-top: 0.5rem;">TL-14</h4>
+                            <span class="ms-2"
+                                style="height: 7px; width: 7px; background-color: green; border-radius: 50%; display: inline-block;"></span>
+                            <span style="font-size: small; padding-top: 3px;">Active: 5h 20m</span>
+                            <h6 style="margin-top: 10px;">OEE Rate</h6>
+                            <h3>91.3%</h3>
+                        </div>
+                    </a>
+                    <hr>
+                    <a onclick="">
+                        <div class="ms-3" id="m15">
+                            <h4 id="tlSpan15" style="margin-top: 0.5rem;">TL-15</h4>
+                            <span class="ms-2"
+                                style="height: 7px; width: 7px; background-color: green; border-radius: 50%; display: inline-block;"></span>
+                            <span style="font-size: small; padding-top: 3px;">Active: 5h 20m</span>
+                            <h6 style="margin-top: 10px;">OEE Rate</h6>
+                            <h3>91.3%</h3>
+                        </div>
+                    </a>
+                    <hr>
+                    <a onclick="">
+                        <div class="ms-3" id="m16">
+                            <h4 id="tlSpan16" style="margin-top: 0.5rem;">TL-16</h4>
+                            <span class="ms-2"
+                                style="height: 7px; width: 7px; background-color: green; border-radius: 50%; display: inline-block;"></span>
+                            <span style="font-size: small; padding-top: 3px;">Active: 5h 20m</span>
+                            <h6 style="margin-top: 10px;">OEE Rate</h6>
+                            <h3>91.3%</h3>
+                        </div>
+                    </a>
+                    <hr style="margin-bottom: 1px;">
+                </div>
+            </div>
+        </div>
+        <div class="top-mid" style="width: 66vw; padding: 0;">
+            <div class="row">
+                <h2 id="tlm" style="padding-top: 10px; padding-left: 20px; width: 10vw;">TL-01</h2>
+                <span class="m-4 mx-0" id="rorg"
+                    style="height: 7px; width: 7px; background-color: green; border-radius: 50%;--bs-gutter-x: 0;"></span>
+                <span class="m-3 mx-0" id="ActiveTime"
+                    style="font-size: 13px; width: auto; padding-top: 1px; padding-left: 5px;">Active: 5h
+                    20m</span>
+                <nav class="mt-2" id="tls" aria-label="Page navigation example"
+                    style="width: 48.8vw; padding: 0;">
+                    <ul class="pagination justify-content-end" style="margin: inherit;">
+                        <li class="page-item">
+                            <a class="page-link" href=""
+                                style="background-color: transparent; border: none; padding: 0; padding-right: 15px; height: auto;">&lsaquo;</a>
+                        </li>
+                        <li class="page-item">
+                            <a class="page-link disabled" href=""
+                                style="height: auto; border: none; padding: 0; background-color: transparent; color: #000;">
+                                <span id="PageNumber" style="padding-right: 5px;">1</span>
+                            </a>
+                        </li>
+                        <li class="page-item disabled"><a class="page-link" href=""
+                                style="height: auto; border: none; padding: 0; padding-right: 5px; background-color: transparent; color: #000;">of</a>
+                        </li>
+                        <li class="page-item disabled">
+                            <a class="page-link"
+                                style="height: auto; border: none; padding: 0; padding-right: 5px; background-color: transparent; color: #000;">16</a>
+                        </li>
+                        <li class="page-item">
+                            <a class="page-link" href=""
+                                style="background-color: transparent; border: none; padding: 0; padding-left: 15px; height: auto;">&rsaquo;</a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+            <div class="row" id="details" style="width: auto;">
+                <a id="info" style="width: auto;">
+                    <h5 id="overviewHeading" style="padding-left: 20px; margin-bottom: 4px;">Overview</h5>
+                    <hr id="overviewHr" style="display: block; margin: 0; margin-left: 21px; border-top: 5px solid blue; opacity: 0.5;">
+                </a>
+                <a id="info" style="width: auto;">
+                    <h5 id="timelineHeading" style="padding-left: 20px; margin-bottom: 4px;">Timeline</h5>
+                    <hr id="timelineHr" style="display: none;">
+                </a>
+                <a id="info" style="width: auto;">
+                    <h5 id="diagnosticsHeading" style="padding-left: 20px; margin-bottom: 4px;">Diagnostics</h5>
+                    <hr id="diagnosticsHr" style="display: none;">
+                </a>
+            </div>
+            <hr id="info" style="margin-top: 0px;">
+            <div id="Packercharts">
+                <canvas id="tlChart1"></canvas>
+                <canvas id="tlChart2" style="display: none;"></canvas>
+                <canvas id="tlChart3" style="display: none;"></canvas>
+                <canvas id="tlChart4" style="display: none;"></canvas>
+                <canvas id="tlChart5" style="display: none;"></canvas>
+                <canvas id="tlChart6" style="display: none;"></canvas>
+                <canvas id="tlChart7" style="display: none;"></canvas>
+                <canvas id="tlChart8" style="display: none;"></canvas>
+                <canvas id="tlChart9" style="display: none;"></canvas>
+                <canvas id="tlChart10" style="display: none;"></canvas>
+                <canvas id="tlChart11" style="display: none;"></canvas>
+                <canvas id="tlChart12" style="display: none;"></canvas>
+                <canvas id="tlChart13" style="display: none;"></canvas>
+                <canvas id="tlChart14" style="display: none;"></canvas>
+                <canvas id="tlChart15" style="display: none;"></canvas>
+                <canvas id="tlChart16" style="display: none;"></canvas>
+            </div>
+        </div>
+    </div>
+    <!-- <footer id="footer" style=" width: 100vw; height: 3vh;"></footer> -->
+</body>
+<!-- <script>
+    $(function () {
+        $("#footer").load("footer.html");
+    })
+</script> -->
+<script src="/public/JavaScripts/chart.umd.js"></script>
+
+<script>
+    // Retrieve the selected option from the query parameter
+    const urlParams = new URLSearchParams(window.location.search);
+    const selectedOption = urlParams.get('selectedOption');
+
+    // Set the selected option in the dropdown
+    if (selectedOption) {
+        const selectElement = document.getElementById('AllMachines');
+        selectElement.value = selectedOption;
+    }
+</script>
+
+<script>
+    var ctx1 = document.getElementById("tlChart1").getContext('2d');
+    var tlc1 = new Chart(ctx1, {
+        type: 'line',
+        data: {
+            labels: ['6:00 AM', '10:00 AM', '2:00 PM', '6:00 PM', '10:00 PM'],
+            datasets: [{
+                label: 'Some label',
+                data: ['12', '85', '45', null, null],
+                borderColor: 'red',
+                borderWidth: 2,
+                borderDash: [2, 2],
+                borderCapStyle: 'round',
+                borderJoinStyle: 'round'
+            }]
+        },
+        options: {
+            indexAxis: 'x',
+            scales: {
+                y: {
+                    beginAtZero: true
+                },
+                x: {
+                    offset: true
+                }
+            }
+        }
+    })
+    var ctx2 = document.getElementById("tlChart2").getContext('2d');
+    var tlc2 = new Chart(ctx2, {
+        type: 'line',
+        data: {
+            labels: ['6:00 AM', '10:00 AM', '2:00 PM', '6:00 PM', '10:00 PM'],
+            datasets: [{
+                label: 'Some label',
+                data: ['12', '85', '45', null, null],
+                borderColor: 'grey',
+                borderWidth: 2,
+                borderDash: [2, 2],
+                borderCapStyle: 'round',
+                borderJoinStyle: 'round'
+            }]
+        },
+        options: {
+            indexAxis: 'x',
+            scales: {
+                y: {
+                    beginAtZero: true
+                },
+                x: {
+                    offset: true
+                }
+            }
+        }
+    })
+    var ctx3 = document.getElementById("tlChart3").getContext('2d');
+    var tlc3 = new Chart(ctx3, {
+        type: 'line',
+        data: {
+            labels: ['6:00 AM', '10:00 AM', '2:00 PM', '6:00 PM', '10:00 PM'],
+            datasets: [{
+                label: 'Some label',
+                data: ['12', '85', '45', null, null],
+                borderColor: 'green',
+                borderWidth: 2,
+                borderDash: [2, 2],
+                borderCapStyle: 'round',
+                borderJoinStyle: 'round'
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    ticks: {
+                        format: {
+                            style: 'percent'
+                        }
+                    }
+                }
+            },
+            indexAxis: 'x',
+            scales: {
+                y: {
+                    beginAtZero: true
+                },
+                x: {
+                    offset: true
+                }
+            }
+        }
+    })
+    var ctx4 = document.getElementById("tlChart4").getContext('2d');
+    var tlc4 = new Chart(ctx4, {
+        type: 'line',
+        data: {
+            labels: ['6:00 AM', '10:00 AM', '2:00 PM', '6:00 PM', '10:00 PM'],
+            datasets: [{
+                label: 'Some label',
+                data: ['12', '85', '45', null, null],
+                borderColor: 'lightblue',
+                borderWidth: 2,
+                borderDash: [2, 2],
+                borderCapStyle: 'round',
+                borderJoinStyle: 'round'
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    ticks: {
+                        format: {
+                            style: 'percent'
+                        }
+                    }
+                }
+            },
+            indexAxis: 'x',
+            scales: {
+                y: {
+                    beginAtZero: true
+                },
+                x: {
+                    offset: true
+                }
+            }
+        }
+    })
+    var ctx5 = document.getElementById("tlChart5").getContext('2d');
+    var tlc5 = new Chart(ctx5, {
+        type: 'line',
+        data: {
+            labels: ['6:00 AM', '10:00 AM', '2:00 PM', '6:00 PM', '10:00 PM'],
+            datasets: [{
+                label: 'Some label',
+                data: ['12', '85', '45', null, null],
+                borderColor: 'orange',
+                borderWidth: 2,
+                borderDash: [2, 2],
+                borderCapStyle: 'round',
+                borderJoinStyle: 'round'
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    ticks: {
+                        format: {
+                            style: 'percent'
+                        }
+                    }
+                }
+            },
+            indexAxis: 'x',
+            scales: {
+                y: {
+                    beginAtZero: true
+                },
+                x: {
+                    offset: true
+                }
+            }
+        }
+    })
+    var ctx6 = document.getElementById("tlChart6").getContext('2d');
+    var tlc6 = new Chart(ctx6, {
+        type: 'line',
+        data: {
+            labels: ['6:00 AM', '10:00 AM', '2:00 PM', '6:00 PM', '10:00 PM'],
+            datasets: [{
+                label: 'Some label',
+                data: ['12', '85', '45', null, null],
+                borderColor: 'orange',
+                borderWidth: 2,
+                borderDash: [2, 2],
+                borderCapStyle: 'round',
+                borderJoinStyle: 'round'
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    ticks: {
+                        format: {
+                            style: 'percent'
+                        }
+                    }
+                }
+            },
+            indexAxis: 'x',
+            scales: {
+                y: {
+                    beginAtZero: true
+                },
+                x: {
+                    offset: true
+                }
+            }
+        }
+    })
+    var ctx7 = document.getElementById("tlChart7").getContext('2d');
+    var tlc7 = new Chart(ctx7, {
+        type: 'line',
+        data: {
+            labels: ['6:00 AM', '10:00 AM', '2:00 PM', '6:00 PM', '10:00 PM'],
+            datasets: [{
+                label: 'Some label',
+                data: ['12', '85', '45', null, null],
+                borderColor: 'orange',
+                borderWidth: 2,
+                borderDash: [2, 2],
+                borderCapStyle: 'round',
+                borderJoinStyle: 'round'
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    ticks: {
+                        format: {
+                            style: 'percent'
+                        }
+                    }
+                }
+            },
+            indexAxis: 'x',
+            scales: {
+                y: {
+                    beginAtZero: true
+                },
+                x: {
+                    offset: true
+                }
+            }
+        }
+    })
+    var ctx8 = document.getElementById("tlChart8").getContext('2d');
+    var tlc8 = new Chart(ctx8, {
+        type: 'line',
+        data: {
+            labels: ['6:00 AM', '10:00 AM', '2:00 PM', '6:00 PM', '10:00 PM'],
+            datasets: [{
+                label: 'Some label',
+                data: ['12', '85', '45', null, null],
+                borderColor: 'orange',
+                borderWidth: 2,
+                borderDash: [2, 2],
+                borderCapStyle: 'round',
+                borderJoinStyle: 'round'
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    ticks: {
+                        format: {
+                            style: 'percent'
+                        }
+                    }
+                }
+            },
+            indexAxis: 'x',
+            scales: {
+                y: {
+                    beginAtZero: true
+                },
+                x: {
+                    offset: true
+                }
+            }
+        }
+    })
+    var ctx9 = document.getElementById("tlChart9").getContext('2d');
+    var tlc9 = new Chart(ctx9, {
+        type: 'line',
+        data: {
+            labels: ['6:00 AM', '10:00 AM', '2:00 PM', '6:00 PM', '10:00 PM'],
+            datasets: [{
+                label: 'Some label',
+                data: ['12', '85', '45', null, null],
+                borderColor: 'orange',
+                borderWidth: 2,
+                borderDash: [2, 2],
+                borderCapStyle: 'round',
+                borderJoinStyle: 'round'
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    ticks: {
+                        format: {
+                            style: 'percent'
+                        }
+                    }
+                }
+            },
+            indexAxis: 'x',
+            scales: {
+                y: {
+                    beginAtZero: true
+                },
+                x: {
+                    offset: true
+                }
+            }
+        }
+    })
+    var ctx10 = document.getElementById("tlChart10").getContext('2d');
+    var tlc10 = new Chart(ctx10, {
+        type: 'line',
+        data: {
+            labels: ['6:00 AM', '10:00 AM', '2:00 PM', '6:00 PM', '10:00 PM'],
+            datasets: [{
+                label: 'Some label',
+                data: ['12', '85', '45', null, null],
+                borderColor: 'orange',
+                borderWidth: 2,
+                borderDash: [2, 2],
+                borderCapStyle: 'round',
+                borderJoinStyle: 'round'
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    ticks: {
+                        format: {
+                            style: 'percent'
+                        }
+                    }
+                }
+            },
+            indexAxis: 'x',
+            scales: {
+                y: {
+                    beginAtZero: true
+                },
+                x: {
+                    offset: true
+                }
+            }
+        }
+    })
+    var ctx11 = document.getElementById("tlChart11").getContext('2d');
+    var tlc11 = new Chart(ctx11, {
+        type: 'line',
+        data: {
+            labels: ['6:00 AM', '10:00 AM', '2:00 PM', '6:00 PM', '10:00 PM'],
+            datasets: [{
+                label: 'Some label',
+                data: ['12', '85', '45', null, null],
+                borderColor: 'orange',
+                borderWidth: 2,
+                borderDash: [2, 2],
+                borderCapStyle: 'round',
+                borderJoinStyle: 'round'
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    ticks: {
+                        format: {
+                            style: 'percent'
+                        }
+                    }
+                }
+            },
+            indexAxis: 'x',
+            scales: {
+                y: {
+                    beginAtZero: true
+                },
+                x: {
+                    offset: true
+                }
+            }
+        }
+    })
+    var ctx12 = document.getElementById("tlChart12").getContext('2d');
+    var tlc12 = new Chart(ctx12, {
+        type: 'line',
+        data: {
+            labels: ['6:00 AM', '10:00 AM', '2:00 PM', '6:00 PM', '10:00 PM'],
+            datasets: [{
+                label: 'Some label',
+                data: ['12', '85', '45', null, null],
+                borderColor: 'orange',
+                borderWidth: 2,
+                borderDash: [2, 2],
+                borderCapStyle: 'round',
+                borderJoinStyle: 'round'
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    ticks: {
+                        format: {
+                            style: 'percent'
+                        }
+                    }
+                }
+            },
+            indexAxis: 'x',
+            scales: {
+                y: {
+                    beginAtZero: true
+                },
+                x: {
+                    offset: true
+                }
+            }
+        }
+    })
+    var ctx13 = document.getElementById("tlChart13").getContext('2d');
+    var tlc13 = new Chart(ctx13, {
+        type: 'line',
+        data: {
+            labels: ['6:00 AM', '10:00 AM', '2:00 PM', '6:00 PM', '10:00 PM'],
+            datasets: [{
+                label: 'Some label',
+                data: ['12', '85', '45', null, null],
+                borderColor: 'orange',
+                borderWidth: 2,
+                borderDash: [2, 2],
+                borderCapStyle: 'round',
+                borderJoinStyle: 'round'
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    ticks: {
+                        format: {
+                            style: 'percent'
+                        }
+                    }
+                }
+            },
+            indexAxis: 'x',
+            scales: {
+                y: {
+                    beginAtZero: true
+                },
+                x: {
+                    offset: true
+                }
+            }
+        }
+    })
+    var ctx14 = document.getElementById("tlChart14").getContext('2d');
+    var tlc14 = new Chart(ctx14, {
+        type: 'line',
+        data: {
+            labels: ['6:00 AM', '10:00 AM', '2:00 PM', '6:00 PM', '10:00 PM'],
+            datasets: [{
+                label: 'Some label',
+                data: ['12', '85', '45', null, null],
+                borderColor: 'orange',
+                borderWidth: 2,
+                borderDash: [2, 2],
+                borderCapStyle: 'round',
+                borderJoinStyle: 'round'
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    ticks: {
+                        format: {
+                            style: 'percent'
+                        }
+                    }
+                }
+            },
+            indexAxis: 'x',
+            scales: {
+                y: {
+                    beginAtZero: true
+                },
+                x: {
+                    offset: true
+                }
+            }
+        }
+    })
+    var ctx15 = document.getElementById("tlChart15").getContext('2d');
+    var tlc15 = new Chart(ctx15, {
+        type: 'line',
+        data: {
+            labels: ['6:00 AM', '10:00 AM', '2:00 PM', '6:00 PM', '10:00 PM'],
+            datasets: [{
+                label: 'Some label',
+                data: ['12', '85', '45', null, null],
+                borderColor: 'orange',
+                borderWidth: 2,
+                borderDash: [2, 2],
+                borderCapStyle: 'round',
+                borderJoinStyle: 'round'
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    ticks: {
+                        format: {
+                            style: 'percent'
+                        }
+                    }
+                }
+            },
+            indexAxis: 'x',
+            scales: {
+                y: {
+                    beginAtZero: true
+                },
+                x: {
+                    offset: true
+                }
+            }
+        }
+    })
+    var ctx16 = document.getElementById("tlChart16").getContext('2d');
+    var tlc16 = new Chart(ctx16, {
+        type: 'line',
+        data: {
+            labels: ['6:00 AM', '10:00 AM', '2:00 PM', '6:00 PM', '10:00 PM'],
+            datasets: [{
+                label: 'Some label',
+                data: ['12', '85', '45', null, null],
+                borderColor: 'orange',
+                borderWidth: 2,
+                borderDash: [2, 2],
+                borderCapStyle: 'round',
+                borderJoinStyle: 'round'
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    ticks: {
+                        format: {
+                            style: 'percent'
+                        }
+                    }
+                }
+            },
+            indexAxis: 'x',
+            scales: {
+                y: {
+                    beginAtZero: true
+                },
+                x: {
+                    offset: true
+                }
+            }
+        }
+    })
+</script>
+
+<script>
+    const tlm1 = document.getElementById("m1");
+    const tlm2 = document.getElementById("m2");
+    const tlm3 = document.getElementById("m3");
+    const tlm4 = document.getElementById("m4");
+    const tlm5 = document.getElementById("m5");
+    var tlm = document.getElementById("tlm");
+    const tlSpan1 = document.getElementById("tlSpan1");
+    const tlSpan2 = document.getElementById("tlSpan2");
+    const tlSpan3 = document.getElementById("tlSpan3");
+    const tlSpan4 = document.getElementById("tlSpan4");
+    const tlSpan5 = document.getElementById("tlSpan5");
+    const tls = document.getElementById("tls");
+    const pn = document.getElementById("PageNumber");
+    const rg = document.getElementById("rorg");
+    const At = document.getElementById("ActiveTime");
+    const info = document.querySelectorAll("#info");
+    const tlChart1 = document.getElementById("tlChart1");
+    const tlChart2 = document.getElementById("tlChart2");
+    const tlChart3 = document.getElementById("tlChart3");
+    const tlChart4 = document.getElementById("tlChart4");
+    const tlChart5 = document.getElementById("tlChart5");
+    const tlChart6 = document.getElementById("tlChart6");
+    const tlChart7 = document.getElementById("tlChart7");
+    const tlChart8 = document.getElementById("tlChart8");
+    const tlChart9 = document.getElementById("tlChart9");
+    const tlChart10 = document.getElementById("tlChart10");
+    const tlChart11 = document.getElementById("tlChart11");
+    const tlChart12 = document.getElementById("tlChart12");
+    const tlChart13 = document.getElementById("tlChart13");
+    const tlChart14 = document.getElementById("tlChart14");
+    const tlChart15 = document.getElementById("tlChart15");
+    const tlChart16 = document.getElementById("tlChart16");
+    tlm1.addEventListener('click', () => {
+        tlm1.setAttribute('style', 'background-color: lightblue; border-right: 2px solid red; margin-left: 0 !important;');
+        tlm2.setAttribute('style', '');
+        tlm3.setAttribute('style', '');
+        tlm4.setAttribute('style', '');
+        tlm5.setAttribute('style', '');
+        tlm.textContent = tlSpan1.textContent;
+        pn.textContent = 1;
+        ohr.setAttribute('style', 'display: block; margin: 0; margin-left: 21px; border-top: 5px solid blue; opacity: 0.5;');
+        thr.style.display = "none";
+        dhr.style.display = "none";
+        rg.style.display = "inline-block";
+        At.style.display = "inline-block";
+        info.forEach(element => {
+            element.style.display = "block";
+        })
+        tls.setAttribute('style', 'display: block; width: 48.84vw; float: right;');
+        tlChart1.style.display = "block";
+        tlChart2.style.display = "none";
+        tlChart3.style.display = "none";
+        tlChart4.style.display = "none";
+        tlChart5.style.display = "none";
+    });
+    tlm2.addEventListener('click', () => {
+        tlm1.setAttribute('style', '');
+        tlm2.setAttribute('style', 'background-color: lightblue; border-right: 2px solid red; margin-left: 0 !important;');
+        tlm3.setAttribute('style', '');
+        tlm4.setAttribute('style', '');
+        tlm5.setAttribute('style', '');
+        tlm5.setAttribute('style', '');
+        tlm.textContent = tlSpan2.textContent;
+        pn.textContent = 2;
+        ohr.setAttribute('style', 'display: block; margin: 0; margin-left: 21px; border-top: 5px solid blue; opacity: 0.5;');
+        thr.style.display = "none";
+        dhr.style.display = "none";
+        rg.style.display = "inline-block";
+        At.style.display = "inline-block";
+        info.forEach(element => {
+            element.style.display = "block";
+        })
+        tls.setAttribute('style', 'display: block; width: 48.84vw; float: right;');
+        tlChart1.style.display = "none";
+        tlChart2.style.display = "block";
+        tlChart3.style.display = "none";
+        tlChart4.style.display = "none";
+        tlChart5.style.display = "none";
+    });
+    tlm3.addEventListener('click', () => {
+        tlm1.setAttribute('style', '');
+        tlm2.setAttribute('style', '');
+        tlm3.setAttribute('style', 'background-color: lightblue; border-right: 2px solid red; margin-left: 0 !important;');
+        tlm4.setAttribute('style', '');
+        tlm5.setAttribute('style', '');
+        tlm.textContent = tlSpan3.textContent;
+        pn.textContent = 3;
+        ohr.setAttribute('style', 'display: block; margin: 0; margin-left: 21px; border-top: 5px solid blue; opacity: 0.5;');
+        thr.style.display = "none";
+        dhr.style.display = "none";
+        rg.style.display = "inline-block";
+        At.style.display = "inline-block";
+        info.forEach(element => {
+            element.style.display = "block";
+        })
+        tls.setAttribute('style', 'display: block; width: 48.84vw; float: right;');
+        tlChart1.style.display = "none";
+        tlChart2.style.display = "none";
+        tlChart3.style.display = "block";
+        tlChart4.style.display = "none";
+        tlChart5.style.display = "none";
+    });
+    tlm4.addEventListener('click', () => {
+        tlm1.setAttribute('style', '');
+        tlm2.setAttribute('style', '');
+        tlm3.setAttribute('style', '');
+        tlm4.setAttribute('style', 'background-color: lightblue; border-right: 2px solid red; margin-left: 0 !important;');
+        tlm5.setAttribute('style', '');
+        tlm.textContent = tlSpan4.textContent;
+        pn.textContent = 4;
+        ohr.setAttribute('style', 'display: block; margin: 0; margin-left: 21px; border-top: 5px solid blue; opacity: 0.5;');
+        thr.style.display = "none";
+        dhr.style.display = "none";
+        rg.style.display = "inline-block";
+        At.style.display = "inline-block";
+        info.forEach(element => {
+            element.style.display = "block";
+        })
+        tls.setAttribute('style', 'display: block; width: 48.84vw; float: right;');
+        tlChart1.style.display = "none";
+        tlChart2.style.display = "none";
+        tlChart3.style.display = "none";
+        tlChart4.style.display = "block";
+        tlChart5.style.display = "none";
+    });
+    tlm5.addEventListener('click', () => {
+        tlm1.setAttribute('style', '');
+        tlm2.setAttribute('style', '');
+        tlm3.setAttribute('style', '');
+        tlm4.setAttribute('style', '');
+        tlm5.setAttribute('style', 'background-color: lightblue; border-right: 2px solid red; margin-left: 0 !important;');
+        tlm.textContent = tlSpan5.textContent;
+        pn.textContent = 5;
+        ohr.setAttribute('style', 'display: block; margin: 0; margin-left: 21px; border-top: 5px solid blue; opacity: 0.5;');
+        thr.style.display = "none";
+        dhr.style.display = "none";
+        rg.style.display = "inline-block";
+        At.style.display = "inline-block";
+        info.forEach(element => {
+            element.style.display = "block";
+        })
+        tls.setAttribute('style', 'display: block; width: 48.84vw; float: right;');
+        tlChart1.style.display = "none";
+        tlChart2.style.display = "none";
+        tlChart3.style.display = "none";
+        tlChart4.style.display = "none";
+        tlChart5.style.display = "block";
+    });
+</script>
+
+<!-- Individual Packer Data -->
+<script>
+    const oh = document.getElementById("overviewHeading");
+    const ohr = document.getElementById("overviewHr");
+    const th = document.getElementById("timelineHeading");
+    const thr = document.getElementById("timelineHr");
+    const dh = document.getElementById("diagnosticsHeading");
+    const dhr = document.getElementById("diagnosticsHr");
+    oh.addEventListener('click', () => {
+        ohr.setAttribute('style', 'display: block; margin: 0; margin-left: 21px; border-top: 5px solid blue; opacity: 0.5;');
+        thr.style.display = "none";
+        dhr.style.display = "none";
+    })
+    th.addEventListener('click', () => {
+        ohr.style.display = "none";
+        thr.setAttribute('style', 'display: block; margin: 0; margin-left: 21px; border-top: 5px solid blue; opacity: 0.5;');
+        dhr.style.display = "none";
+    })
+    dh.addEventListener('click', () => {
+        ohr.style.display = "none";
+        thr.style.display = "none";
+        dhr.setAttribute('style', 'display: block; margin: 0; margin-left: 21px; border-top: 5px solid blue; opacity: 0.5;');
+    })
+
+</script>
